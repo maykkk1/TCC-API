@@ -16,63 +16,50 @@ namespace Gerenciador.Application.Controllers
             _baseUserService = baseUserService;
         }
 
-        [HttpGet("search")]
-        public string Teste()
+        [HttpPost]
+        public int Create([FromBody] User user)
         {
-            return "teste";
+            return _baseUserService.Add<UserValidator>(user).Id;
         }
 
-        [HttpPut]
-        public IActionResult Update([FromBody] User user)
-        {
-            if (user == null)
-                return NotFound();
-
-            return Execute(() => _baseUserService.Update<UserValidator>(user));
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            if (id == 0)
-                return NotFound();
-
-            Execute(() =>
-            {
-                _baseUserService.Delete(id);
-                return true;
-            });
-
-            return new NoContentResult();
-        }
-
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return Execute(() => _baseUserService.Get());
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            if (id == 0)
-                return NotFound();
-
-            return Execute(() => _baseUserService.GetById(id));
-        }
-
-        private IActionResult Execute(Func<object> func)
-        {
-            try
-            {
-                var result = func();
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-        }
+        // [HttpPut]
+        // public IActionResult Update([FromBody] User user)
+        // {
+        //     if (user == null)
+        //         return NotFound();
+        //
+        //     return Execute(() => _baseUserService.Update<UserValidator>(user));
+        // }
+        //
+        // [HttpDelete("{id}")]
+        // public IActionResult Delete(int id)
+        // {
+        //     if (id == 0)
+        //         return NotFound();
+        //
+        //     Execute(() =>
+        //     {
+        //         _baseUserService.Delete(id);
+        //         return true;
+        //     });
+        //
+        //     return new NoContentResult();
+        // }
+        //
+        // [HttpGet]
+        // public IActionResult Get()
+        // {
+        //     return Execute(() => _baseUserService.Get());
+        // }
+        //
+        // [HttpGet("{id}")]
+        // public IActionResult Get(int id)
+        // {
+        //     if (id == 0)
+        //         return NotFound();
+        //
+        //     return Execute(() => _baseUserService.GetById(id));
+        // }
+        
     }
 }

@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Gerenciador.Infra.Data.Context;
 
-public class Context : DbContext
+public class GerenciadorContext : DbContext
 {
-    public Context(DbContextOptions<Context> options) : base(options)
+    public GerenciadorContext(DbContextOptions<GerenciadorContext> options) : base(options)
     {
 
     }

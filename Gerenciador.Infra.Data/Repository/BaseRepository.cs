@@ -1,14 +1,15 @@
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Interfaces;
+using Gerenciador.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gerenciador.Infra.Data.Repository;
 
 public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
 {
-    protected readonly DbContext _dbContext;
+    protected readonly GerenciadorContext _dbContext;
 
-    public BaseRepository(DbContext dbContext)
+    public BaseRepository(GerenciadorContext dbContext)
     {
         _dbContext = dbContext;
     }
