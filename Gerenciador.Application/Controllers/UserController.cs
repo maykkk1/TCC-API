@@ -1,16 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Service.Validators;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gerenciador.Application.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -21,13 +16,10 @@ namespace Gerenciador.Application.Controllers
             _baseUserService = baseUserService;
         }
 
-        [HttpPost]
-        public IActionResult Create([FromBody] User user)
+        [HttpGet("search")]
+        public string Teste()
         {
-            if (user == null)
-                return NotFound();
-
-            return Execute(() => _baseUserService.Add<UserValidator>(user).Id);
+            return "teste";
         }
 
         [HttpPut]

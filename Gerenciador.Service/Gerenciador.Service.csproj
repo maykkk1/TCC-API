@@ -12,6 +12,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Gerenciador.Domain\Gerenciador.Domain.csproj" />
+      <ProjectReference Include="..\Gerenciador.Infra.Data\Gerenciador.Infra.Data.csproj" />
     </ItemGroup>
 
 </Project>
