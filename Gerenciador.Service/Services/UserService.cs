@@ -40,7 +40,12 @@ public class UserService : IUserService
         _userRepository.Update(obj);
         return obj;
     }
-    
+
+    public User validate(User user)
+    {
+        return _userRepository.validate(user);
+    }
+
     private void Validate(User obj, AbstractValidator<User> validator)
     {
         if (obj == null)

@@ -10,10 +10,10 @@ namespace Gerenciador.Service.Services;
 public class TokenService
 {
     private readonly IConfiguration _configuration;
-    public string GenerateToken(User user)
+    public string GenerateToken(User user, string keyString)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+        var key = Encoding.ASCII.GetBytes(keyString);
         var tokenDecriptor = new SecurityTokenDescriptor()
         {
             Subject = new ClaimsIdentity(new[]
@@ -27,5 +27,11 @@ public class TokenService
 
         var token = tokenHandler.CreateToken(tokenDecriptor);
         return tokenHandler.WriteToken(token);
+    }
+
+    public bool ValidateToken(String token, string keyString)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        tokenHandler.ValidateToken()
     }
 }
