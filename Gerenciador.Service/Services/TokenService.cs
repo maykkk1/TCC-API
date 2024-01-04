@@ -29,9 +29,30 @@ public class TokenService
         return tokenHandler.WriteToken(token);
     }
 
-    public bool ValidateToken(String token, string keyString)
+    public bool ValidateToken(string token, string keyString)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        tokenHandler.ValidateToken()
+        var key = Encoding.ASCII.GetBytes(keyString);
+
+        TokenValidationParameters validationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false, // Pode ajustar de acordo com seus requisitos
+            ValidateAudience = false, // Pode ajustar de acordo com seus requisitos
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+        };
+
+        try
+        {
+            SecurityToken validatedToken;
+            ClaimsPrincipal principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
+            return true; // Token é válido
+        }
+        catch (SecurityTokenException)
+        {
+            return false; // Token é inválido
+        }
     }
 }
