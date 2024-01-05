@@ -27,6 +27,7 @@ namespace Gerenciador.Application.Controllers
         [Authorize]
         public IList<User> Get()
         {
+            var userId = User; 
             return _userService.Get();
         }
     }
