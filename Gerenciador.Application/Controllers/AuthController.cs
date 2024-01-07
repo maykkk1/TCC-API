@@ -27,7 +27,7 @@ public class AuthController : ControllerBase
         var usuario = _userService.validate(user);
         if (usuario == null)
         {
-            return NotFound(new {message = "Usuário inexistente ou senha inválida"});
+            return Unauthorized(new {message = "Usuário inexistente ou senha inválida"});
         }
 
         var token = _tokenService.GenerateToken(usuario, _configuration["Jwt:Key"]);
