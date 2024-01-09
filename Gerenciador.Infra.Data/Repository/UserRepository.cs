@@ -1,4 +1,5 @@
 using Gerenciador.Domain.Entities;
+using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +42,7 @@ public class UserRepository : IUserRepository
         return _dbContext.Set<User>().Find(id);
     }
 
-    public User validate(User user)
+    public User validate(UserLoginDto user)
     {
         var usuario = _dbContext.Users.FirstOrDefault(s => s.Name == user.Name && s.Password == user.Password);
         return usuario;

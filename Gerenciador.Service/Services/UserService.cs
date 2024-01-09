@@ -1,5 +1,6 @@
 using FluentValidation;
 using Gerenciador.Domain.Entities;
+using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Interfaces;
 
 namespace Gerenciador.Service.Services;
@@ -41,7 +42,7 @@ public class UserService : IUserService
         return obj;
     }
 
-    public User validate(User user)
+    public User validate(UserLoginDto user)
     {
         return _userRepository.validate(user);
     }

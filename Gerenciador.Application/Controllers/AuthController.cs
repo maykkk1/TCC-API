@@ -1,4 +1,5 @@
 using Gerenciador.Domain.Entities;
+using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Service.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ public class AuthController : ControllerBase
     
     [HttpPost]
     [Route("login")]
-    public async Task<ActionResult<dynamic>> Autenticate([FromBody] User user)
+    public async Task<ActionResult<dynamic>> Autenticate([FromBody] UserLoginDto user)
     {
         var usuario = _userService.validate(user);
         if (usuario == null)
