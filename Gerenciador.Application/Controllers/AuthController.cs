@@ -25,7 +25,7 @@ public class AuthController : ControllerBase
     [Route("login")]
     public async Task<ActionResult<dynamic>> Autenticate([FromBody] UserLoginDto user)
     {
-        var usuario = _userService.validate(user);
+        var usuario = _userService.ValidateLogin(user);
         if (usuario == null)
         {
             return Unauthorized(new {message = "Usuário inexistente ou senha inválida"});

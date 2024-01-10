@@ -42,9 +42,9 @@ public class UserService : IUserService
         return obj;
     }
 
-    public User validate(UserLoginDto user)
+    public User ValidateLogin(UserLoginDto user)
     {
-        return _userRepository.validate(user);
+        return _userRepository.ValidateLogin(user);
     }
 
     private void Validate(User obj, AbstractValidator<User> validator)

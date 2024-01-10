@@ -42,7 +42,7 @@ public class UserRepository : IUserRepository
         return _dbContext.Set<User>().Find(id);
     }
 
-    public User validate(UserLoginDto user)
+    public User ValidateLogin(UserLoginDto user)
     {
         var usuario = _dbContext.Users.FirstOrDefault(s => s.Name == user.Name && s.Password == user.Password);
         return usuario;
