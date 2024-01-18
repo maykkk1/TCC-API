@@ -23,15 +23,25 @@ public class AuthController : ControllerBase
     
     [HttpPost]
     [Route("login")]
-    public async Task<ActionResult<dynamic>> Autenticate([FromBody] UserLoginDto user)
+    public async Task<ActionResult<AuthParams>> Autenticate([FromBody] UserLoginDto user)
     {
         var usuario = _userService.ValidateLogin(user);
+        // passar tudo isso aqui para um service
         if (usuario == null)
         {
             return Unauthorized(new {message = "Usuário inexistente ou senha inválida"});
         }
-
         var token = _tokenService.GenerateToken(usuario, _configuration["Jwt:Key"]);
-        return Ok(new { token = token });
+
+        var auth = new AuthParams()
+        {
+            Token = token,
+            User = new UserDto()
+            {
+                Name = usuario.Name
+            }
+        };
+            
+        return Ok(auth);
     }
 }
