@@ -29,5 +29,10 @@ public class UserMap : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasColumnName("Password")
             .HasColumnType("varchar(100)");
+        
+        builder.Property(prop => prop.Tipo)
+            .IsRequired()
+            .HasColumnName("tipo")
+            .HasColumnType("int");
     }
 }
