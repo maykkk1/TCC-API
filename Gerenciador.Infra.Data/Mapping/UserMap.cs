@@ -34,5 +34,15 @@ public class UserMap : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasColumnName("tipo")
             .HasColumnType("int");
+        
+        builder.Property(prop => prop.Tipo)
+            .IsRequired()
+            .HasColumnName("tipo")
+            .HasColumnType("int");
+        
+        builder.HasOne(user => user.Orientador)
+            .WithMany()
+            .HasForeignKey(user => user.OrientadorId)
+            .IsRequired(false);
     }
 }
