@@ -37,7 +37,7 @@ public class UserMap : IEntityTypeConfiguration<User>
         
         builder.Property(prop => prop.Tipo)
             .IsRequired()
-            .HasColumnName("tipo")
+            .HasColumnName("Tipo")
             .HasColumnType("int");
         
         builder.HasOne(user => user.Orientador)
