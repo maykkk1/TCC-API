@@ -12,6 +12,7 @@ public class GerenciadorContext : DbContext
     }
 
     public DbSet<User> Users { get; set; }
+    public DbSet<Tarefa> Tarefas { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

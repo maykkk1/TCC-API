@@ -24,7 +24,6 @@ public class TarefaMap :  IEntityTypeConfiguration<Tarefa>
             .HasColumnType("int");
 
         builder.HasOne(tarefa => tarefa.Pessoa)
-            .WithMany()
-            .HasForeignKey(tarefa => tarefa.IdPessoa);
+            .WithMany(user => user.Tarefas);
     }
 }

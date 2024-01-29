@@ -11,4 +11,5 @@ public class User : BaseEntity
     public int? OrientadorId { get; set; }
     public User Orientador { get; set; }
     public string Password { get; set; }
+    public ICollection<Tarefa> Tarefas { get; set; }
 }
