@@ -2,7 +2,7 @@ using Gerenciador.Domain.Enums;
 
 namespace Gerenciador.Domain.Entities;
 
-public class Tarefa
+public class Tarefa : BaseEntity
 {
     public int Id { get; set; }
     public string Descricao { get; set; }

@@ -56,6 +56,7 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITarefaRepository, TarefaRepository>();
 
 //services
 builder.Services.AddScoped<TokenService>();
