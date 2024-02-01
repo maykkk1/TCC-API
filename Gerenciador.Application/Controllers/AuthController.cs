@@ -38,6 +38,7 @@ public class AuthController : ControllerBase
             Token = token,
             User = new UserDto()
             {
+                Id = usuario.Id,
                 Name = usuario.Name,
                 Tipo = usuario.Tipo
             }
