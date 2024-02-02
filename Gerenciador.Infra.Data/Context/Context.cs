@@ -19,5 +19,6 @@ public class GerenciadorContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<User>(new UserMap().Configure);
+        modelBuilder.Entity<Tarefa>(new TarefaMap().Configure);
     }
 }

@@ -7,6 +7,12 @@ namespace Gerenciador.Infra.Data.Repository;
 public class TarefaRepository : ITarefaRepository
 {
     protected readonly GerenciadorContext _dbContext;
+
+    public TarefaRepository(GerenciadorContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
     public void Insert(Tarefa obj)
     {
         _dbContext.Set<Tarefa>().Add(obj);

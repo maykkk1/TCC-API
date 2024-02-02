@@ -62,6 +62,7 @@ builder.Services.AddScoped<ITarefaRepository, TarefaRepository>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<IBaseService<User>, BaseService<User>>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITarefaService, TarefaService>();
 
 var app = builder.Build();
 app.UseCors("AllowAnyOrigin");
