@@ -10,12 +10,21 @@ namespace Gerenciador.Service.Services;
 public class TokenService
 {
     private readonly IConfiguration _configuration;
-    public string GenerateToken(User user, string keyString)
+
+    public TokenService(IConfiguration configuration)
     {
+        _configuration = configuration;
+    }
+
+    public string GenerateToken(User user)
+    {
+        var teste = _configuration["Jwt:Issuer"];
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(keyString);
+        var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
+            Issuer = _configuration["Jwt:Issuer"],
+            Audience = _configuration["Jwt:Audience"],
             Subject = new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.Name, user.Name)

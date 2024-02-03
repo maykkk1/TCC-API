@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gerenciador.Domain.Entities;
 using Gerenciador.Service.Validators;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -25,10 +26,11 @@ namespace Gerenciador.Application.Controllers
         [Route("save")]
         public async Task<ActionResult> save([FromBody] Tarefa tarefa)
         {
-            _tarefaService.Add<TarefaValidator>(tarefa);
+            await _tarefaService.Add<TarefaValidator>(tarefa);
             return Ok();
         }
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<Tarefa>>> get()
         {
             var result = await _tarefaService.Get();

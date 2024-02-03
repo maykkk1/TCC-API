@@ -12,13 +12,11 @@ public class AuthController : ControllerBase
 {
     private TokenService _tokenService;
     private IUserService _userService;
-    private readonly IConfiguration _configuration;
     
     public AuthController(TokenService tokenService, IUserService userService, IConfiguration configuration)
     {
         _tokenService = tokenService;
         _userService = userService;
-        _configuration = configuration;
     }
     
     [HttpPost]
@@ -31,7 +29,7 @@ public class AuthController : ControllerBase
         {
             return Unauthorized(new {message = "Usuário inexistente ou senha inválida"});
         }
-        var token = _tokenService.GenerateToken(usuario, _configuration["Jwt:Key"]);
+        var token = _tokenService.GenerateToken(usuario);
 
         var auth = new AuthParams()
         {
