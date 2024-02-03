@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Gerenciador.Domain.Entities;
 using Gerenciador.Service.Validators;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gerenciador.Application.Controllers
@@ -26,6 +27,12 @@ namespace Gerenciador.Application.Controllers
         {
             _tarefaService.Add<TarefaValidator>(tarefa);
             return Ok();
+        }
+        [HttpGet]
+        public async Task<ActionResult<List<Tarefa>>> get()
+        {
+            var result = await _tarefaService.Get();
+            return Ok(result);
         }
     }
 }

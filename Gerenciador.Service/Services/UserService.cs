@@ -13,38 +13,38 @@ public class UserService : IUserService
     {
         _userRepository = userRepository;
     }
-    public User Add<TValidator>(User obj) where TValidator : AbstractValidator<User>
+    public async Task<User> Add<TValidator>(User obj) where TValidator : AbstractValidator<User>
     {
         Validate(obj, Activator.CreateInstance<TValidator>());
-        _userRepository.Insert(obj);
+        await _userRepository.Insert(obj);
         return obj;
     }
 
-    public void Delete(int id)
+    public async Task Delete(int id)
     {
-        _userRepository.Delete(id);
+        await _userRepository.Delete(id);
     }
 
-    public IList<User> Get()
+    public async Task<IList<User>> Get()
     {
-        return _userRepository.Select();
+        return await _userRepository.Select();
     }
 
-    public User GetById(int id)
+    public async Task<User> GetById(int id)
     {
-        return _userRepository.Select(id);
+        return await _userRepository.Select(id);
     }
 
-    public User Update<TValidator>(User obj) where TValidator : AbstractValidator<User>
+    public async Task<User> Update<TValidator>(User obj) where TValidator : AbstractValidator<User>
     {
         Validate(obj, Activator.CreateInstance<TValidator>());
-        _userRepository.Update(obj);
+        await _userRepository.Update(obj);
         return obj;
     }
 
-    public User ValidateLogin(UserLoginDto user)
+    public async Task<User> ValidateLogin(UserLoginDto user)
     {
-        return _userRepository.ValidateLogin(user);
+        return await _userRepository.ValidateLogin(user);
     }
 
     private void Validate(User obj, AbstractValidator<User> validator)

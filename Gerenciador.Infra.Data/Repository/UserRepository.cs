@@ -14,37 +14,37 @@ public class UserRepository : IUserRepository
     {
         _dbContext = dbContext;
     }
-    public void Insert(User obj)
+    public async Task Insert(User obj)
     {
         _dbContext.Set<User>().Add(obj);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
     }
 
-    public void Update(User obj)
+    public async Task Update(User obj)
     {
         _dbContext.Entry(obj).State = EntityState.Modified;
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
     }
 
-    public void Delete(int id)
+    public async Task Delete(int id)
     {
-        _dbContext.Set<User>().Remove(Select(id));
-        _dbContext.SaveChanges();
+        _dbContext.Set<User>().Remove(await Select(id));
+        await _dbContext.SaveChangesAsync();
     }
 
-    public IList<User> Select()
+    public async Task<IList<User>> Select()
     {
-        return _dbContext.Set<User>().ToList();
+        return await _dbContext.Set<User>().ToListAsync();
     }
 
-    public User Select(int id)
+    public async Task<User> Select(int id)
     {
-        return _dbContext.Set<User>().Find(id);
+        return await _dbContext.Set<User>().FindAsync(id);
     }
 
-    public User ValidateLogin(UserLoginDto user)
+    public async Task<User> ValidateLogin(UserLoginDto user)
     {
-        var usuario = _dbContext.Users.FirstOrDefault(s => s.Name == user.Name && s.Password == user.Password);
+        var usuario = await _dbContext.Users.FirstOrDefaultAsync(s => s.Name == user.Name && s.Password == user.Password);
         return usuario;
     }
 }

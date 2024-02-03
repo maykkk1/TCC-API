@@ -13,23 +13,23 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
         _baseRepository = baseRepository;
     }
 
-    public TEntity Add<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
+    public async Task<TEntity> Add<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
     {
         Validate(obj, Activator.CreateInstance<TValidator>());
-        _baseRepository.Insert(obj);
+        await _baseRepository.Insert(obj);
         return obj;
     }
 
-    public void Delete(int id) => _baseRepository.Delete(id);
+    public async Task Delete(int id) => await _baseRepository.Delete(id);
 
-    public IList<TEntity> Get() => _baseRepository.Select();
+    public async Task<IList<TEntity>> Get() => await _baseRepository.Select();
 
-    public TEntity GetById(int id) => _baseRepository.Select(id);
+    public async Task<TEntity> GetById(int id) => await _baseRepository.Select(id);
 
-    public TEntity Update<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
+    public async Task<TEntity> Update<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
     {
         Validate(obj, Activator.CreateInstance<TValidator>());
-        _baseRepository.Update(obj);
+        await _baseRepository.Update(obj);
         return obj;
     }
 

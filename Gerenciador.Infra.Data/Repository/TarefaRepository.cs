@@ -13,31 +13,31 @@ public class TarefaRepository : ITarefaRepository
         _dbContext = dbContext;
     }
 
-    public void Insert(Tarefa obj)
+    public async Task Insert(Tarefa obj)
     {
         _dbContext.Set<Tarefa>().Add(obj);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
     }
 
-    public void Update(Tarefa obj)
+    public async Task Update(Tarefa obj)
     {
         _dbContext.Entry(obj).State = EntityState.Modified;
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
     }
 
-    public void Delete(int id)
+    public async Task Delete(int id)
     {
-        _dbContext.Set<Tarefa>().Remove(Select(id));
-        _dbContext.SaveChanges();
+        _dbContext.Set<Tarefa>().Remove(await Select(id));
+        await _dbContext.SaveChangesAsync();
     }
 
-    public IList<Tarefa> Select()
+    public async Task<IList<Tarefa>> Select()
     {
-        return _dbContext.Set<Tarefa>().ToList();
+        return await _dbContext.Set<Tarefa>().ToListAsync();
     }
 
-    public Tarefa Select(int id)
+    public async Task<Tarefa> Select(int id)
     {
-        return _dbContext.Set<Tarefa>().Find(id);
+        return await _dbContext.Set<Tarefa>().FindAsync(id);
     }
 }

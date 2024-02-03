@@ -14,31 +14,31 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         _dbContext = dbContext;
     }
 
-    public void Insert(TEntity obj)
+    public async Task Insert(TEntity obj)
     {
         _dbContext.Set<TEntity>().Add(obj);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
     }
 
-    public void Update(TEntity obj)
+    public async Task Update(TEntity obj)
     {
         _dbContext.Entry(obj).State = EntityState.Modified;
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
     }
 
-    public void Delete(int id)
+    public async Task Delete(int id)
     {
-        _dbContext.Set<TEntity>().Remove(Select(id));
-        _dbContext.SaveChanges();
+        _dbContext.Set<TEntity>().Remove(await Select(id));
+        await _dbContext.SaveChangesAsync();
     }
 
-    public IList<TEntity> Select()
+    public async Task<IList<TEntity>> Select()
     {
-        return _dbContext.Set<TEntity>().ToList();
+        return await _dbContext.Set<TEntity>().ToListAsync();
     }
 
-    public TEntity Select(int id)
+    public async Task<TEntity> Select(int id)
     {
-        return _dbContext.Set<TEntity>().Find(id);
+        return await _dbContext.Set<TEntity>().FindAsync(id);
     }
 }

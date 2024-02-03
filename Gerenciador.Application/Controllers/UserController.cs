@@ -25,10 +25,10 @@ namespace Gerenciador.Application.Controllers
         
         [HttpGet]
         [Authorize]
-        public IList<User> Get()
+        public async Task<IList<User>> Get()
         {
             var userId = User; 
-            return _userService.Get();
+            return await _userService.Get();
         }
     }
 }

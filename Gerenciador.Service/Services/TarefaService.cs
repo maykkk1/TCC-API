@@ -12,28 +12,28 @@ public class TarefaService : ITarefaService
         _tarefaRepository = tarefaRepository;
     }
 
-    public Tarefa Add<TValidator>(Tarefa obj) where TValidator : AbstractValidator<Tarefa>
+    public async Task<Tarefa> Add<TValidator>(Tarefa obj) where TValidator : AbstractValidator<Tarefa>
     {
-       _tarefaRepository.Insert(obj);
+       await _tarefaRepository.Insert(obj);
        return obj;
     }
 
-    public void Delete(int id)
+    public Task Delete(int id)
     {
         throw new NotImplementedException();
     }
 
-    public IList<Tarefa> Get()
+    public async Task<IList<Tarefa>> Get()
+    {
+        return await _tarefaRepository.Select();
+    }
+
+    public Task<Tarefa> GetById(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Tarefa GetById(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Tarefa Update<TValidator>(Tarefa obj) where TValidator : AbstractValidator<Tarefa>
+    public Task<Tarefa> Update<TValidator>(Tarefa obj) where TValidator : AbstractValidator<Tarefa>
     {
         throw new NotImplementedException();
     }

@@ -4,13 +4,13 @@ namespace Gerenciador.Domain.Interfaces;
 
 public interface IBaseRepository<TEntity> where TEntity : BaseEntity
 {
-    void Insert(TEntity obj);
+    Task Insert(TEntity obj);
 
-    void Update(TEntity obj);
+    Task Update(TEntity obj);
 
-    void Delete(int id);
+    Task Delete(int id);
 
-    IList<TEntity> Select();
+    Task<IList<TEntity>> Select();
 
-    TEntity Select(int id);
+    Task<TEntity> Select(int id);
 }

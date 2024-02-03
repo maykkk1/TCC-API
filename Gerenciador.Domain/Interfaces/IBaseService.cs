@@ -5,13 +5,13 @@ namespace Gerenciador.Domain.Interfaces;
 
 public interface IBaseService<TEntity> where TEntity : BaseEntity
 {
-    TEntity Add<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>;
+    Task<TEntity> Add<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>;
 
-    void Delete(int id);
+    Task Delete(int id);
 
-    IList<TEntity> Get();
+    Task<IList<TEntity>> Get();
 
-    TEntity GetById(int id);
+    Task<TEntity> GetById(int id);
 
-    TEntity Update<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>;
+    Task<TEntity> Update<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>;
 }

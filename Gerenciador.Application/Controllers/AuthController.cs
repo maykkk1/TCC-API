@@ -25,7 +25,7 @@ public class AuthController : ControllerBase
     [Route("login")]
     public async Task<ActionResult<AuthParams>> Autenticate([FromBody] UserLoginDto user)
     {
-        var usuario = _userService.ValidateLogin(user);
+        var usuario = await _userService.ValidateLogin(user);
         // passar tudo isso aqui para um service
         if (usuario == null)
         {

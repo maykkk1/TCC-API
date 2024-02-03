@@ -5,5 +5,5 @@ namespace Gerenciador.Domain.Interfaces;
 
 public interface IUserService : IBaseService<User>
 {
-    User ValidateLogin(UserLoginDto user);
+    Task<User> ValidateLogin(UserLoginDto user);
 }

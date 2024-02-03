@@ -5,5 +5,5 @@ namespace Gerenciador.Domain.Interfaces;
 
 public interface IUserRepository : IBaseRepository<User>
 { 
-    User ValidateLogin(UserLoginDto user);
+    Task<User> ValidateLogin(UserLoginDto user);
 }
