@@ -33,8 +33,9 @@ public class TarefaService : ITarefaService
         throw new NotImplementedException();
     }
 
-    public Task<Tarefa> Update<TValidator>(Tarefa obj) where TValidator : AbstractValidator<Tarefa>
+    public async Task<Tarefa> Update<TValidator>(Tarefa obj) where TValidator : AbstractValidator<Tarefa>
     {
-        throw new NotImplementedException();
+        await _tarefaRepository.Update(obj);
+        return obj;
     }
 }

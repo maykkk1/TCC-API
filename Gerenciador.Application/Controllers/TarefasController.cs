@@ -24,14 +24,22 @@ namespace Gerenciador.Application.Controllers
 
         [HttpPost]
         [Route("save")]
-        public async Task<ActionResult> save([FromBody] Tarefa tarefa)
+        public async Task<ActionResult> Save([FromBody] Tarefa tarefa)
         {
             await _tarefaService.Add<TarefaValidator>(tarefa);
             return Ok();
         }
+        [HttpPut]
+        [Authorize]
+        public async Task<ActionResult> Update([FromBody] Tarefa tarefa)
+        {
+            await _tarefaService.Update<TarefaValidator>(tarefa);
+            return Ok();
+        }
+        
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<List<Tarefa>>> get()
+        public async Task<ActionResult<List<Tarefa>>> Get()
         {
             var result = await _tarefaService.Get();
             return Ok(result);
