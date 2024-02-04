@@ -40,4 +40,9 @@ public class TarefaRepository : ITarefaRepository
     {
         return await _dbContext.Set<Tarefa>().FindAsync(id);
     }
+
+    public async Task<List<Tarefa>> GetByUserId(int userId)
+    {
+        return await _dbContext.Set<Tarefa>().Where(t => t.IdPessoa == userId).ToListAsync();
+    }
 }

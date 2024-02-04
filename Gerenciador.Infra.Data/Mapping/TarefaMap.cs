@@ -22,6 +22,16 @@ public class TarefaMap :  IEntityTypeConfiguration<Tarefa>
             .IsRequired()
             .HasColumnName("Situacao")
             .HasColumnType("int");
+        
+        builder.Property(prop => prop.Tipo)
+            .IsRequired()
+            .HasColumnName("tipo")
+            .HasColumnType("int");
+        
+        builder.Property(prop => prop.Titulo)
+            .IsRequired()
+            .HasColumnName("titulo")
+            .HasColumnType("varchar(100)");
 
         builder.HasOne(tarefa => tarefa.Pessoa)
             .WithMany(user => user.Tarefas);

@@ -38,4 +38,9 @@ public class TarefaService : ITarefaService
         await _tarefaRepository.Update(obj);
         return obj;
     }
+
+    public async Task<List<Tarefa>> getByUserId(int userId)
+    {
+        return await _tarefaRepository.GetByUserId(userId);
+    }
 }

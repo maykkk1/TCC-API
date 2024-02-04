@@ -5,4 +5,5 @@ using Gerenciador.Domain.Interfaces;
 
 public interface ITarefaService : IBaseService<Tarefa>
 {
+    Task<List<Tarefa>> getByUserId(int userId);
 }
