@@ -6,4 +6,5 @@ namespace Gerenciador.Domain.Interfaces;
 public interface IUserRepository : IBaseRepository<User>
 { 
     Task<User> ValidateLogin(UserLoginDto user);
+    Task<List<User>> GetOrientandosById(int orientadorId);
 }

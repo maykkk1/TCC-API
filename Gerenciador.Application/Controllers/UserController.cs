@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Service.Validators;
@@ -29,6 +30,16 @@ namespace Gerenciador.Application.Controllers
         {
             var userId = User; 
             return await _userService.Get();
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("orientandos")]
+        public async Task<ActionResult<List<Tarefa>>> getOrientandosById()
+        {
+            var orientadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var result = await _userService.GetOrientandosById(orientadorId);
+            return Ok(result);
         }
     }
 }

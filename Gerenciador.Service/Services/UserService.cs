@@ -47,6 +47,11 @@ public class UserService : IUserService
         return await _userRepository.ValidateLogin(user);
     }
 
+    public async Task<List<User>> GetOrientandosById(int orientadorId)
+    {
+        return await _userRepository.GetOrientandosById(orientadorId);
+    }
+
     private void Validate(User obj, AbstractValidator<User> validator)
     {
         if (obj == null)

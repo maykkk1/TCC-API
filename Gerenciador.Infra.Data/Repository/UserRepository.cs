@@ -47,4 +47,9 @@ public class UserRepository : IUserRepository
         var usuario = await _dbContext.Users.FirstOrDefaultAsync(s => s.Name == user.Name && s.Password == user.Password);
         return usuario;
     }
+
+    public async Task<List<User>> GetOrientandosById(int orientadorId)
+    {
+        return await _dbContext.Set<User>().Where(t => t.OrientadorId == orientadorId).ToListAsync();
+    }
 }
