@@ -1,4 +1,5 @@
 using Gerenciador.Domain.Entities;
+using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,9 +43,29 @@ public class TarefaRepository : ITarefaRepository
         return await _dbContext.Set<Tarefa>().FindAsync(id);
     }
 
-    public async Task<List<Tarefa>> GetByUserId(int userId)
+    public async Task<List<TarefaDto>> GetByUserId(int userId)
     {
-        return await _dbContext.Set<Tarefa>().Where(t => t.IdPessoa == userId).ToListAsync();
+        var query = await _dbContext.Set<Tarefa>().Where(t => t.IdPessoa == userId).Include(t => t.CreatedBy)
+            .ToListAsync();
+        
+        return (List<TarefaDto>)query.Select(t => new TarefaDto()
+        {
+            Id = t.Id,
+            IdPessoa = t.IdPessoa,
+            CreatedById = t.CreatedById,
+            Titulo = t.Titulo,
+            Tipo = t.Tipo,
+            Descricao = t.Descricao,
+            Situacao = t.Situacao,
+            CreatedBy = new UserDto()
+            {
+                Id = t.CreatedBy.Id,
+                Name = t.CreatedBy.Name,
+                Tipo = t.CreatedBy.Tipo
+            },
+            DataCriacao = t.DataCriacao,
+            DataFinal = t.DataFinal,
+        }).ToList();
     }
 
     public async Task InsertTarefaPrincipal(Tarefa tarefa)

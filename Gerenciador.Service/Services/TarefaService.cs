@@ -1,5 +1,6 @@
 using FluentValidation;
 using Gerenciador.Domain.Entities;
+using Gerenciador.Domain.Entities.Dtos;
 
 namespace Gerenciador.Service.Services;
 
@@ -39,7 +40,7 @@ public class TarefaService : ITarefaService
         return obj;
     }
 
-    public async Task<List<Tarefa>> getByUserId(int userId)
+    public async Task<List<TarefaDto>> getByUserId(int userId)
     {
         return await _tarefaRepository.GetByUserId(userId);
     }

@@ -1,5 +1,6 @@
 
 using System.Text;
+using System.Text.Json.Serialization;
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Infra.Data.Context;
@@ -53,6 +54,8 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddAuthorization();
+builder.Services.AddControllers().AddJsonOptions(x =>
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
