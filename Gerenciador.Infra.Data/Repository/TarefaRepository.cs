@@ -15,6 +15,7 @@ public class TarefaRepository : ITarefaRepository
 
     public async Task Insert(Tarefa obj)
     {
+        obj.DataCriacao = DateTime.Now;
         _dbContext.Set<Tarefa>().Add(obj);
         await _dbContext.SaveChangesAsync();
     }
@@ -48,6 +49,7 @@ public class TarefaRepository : ITarefaRepository
 
     public async Task InsertTarefaPrincipal(Tarefa tarefa)
     {
+        tarefa.DataCriacao = DateTime.Now;
         _dbContext.Set<Tarefa>().Add(tarefa);
         await _dbContext.SaveChangesAsync();
     }

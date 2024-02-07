@@ -1,5 +1,4 @@
 using Gerenciador.Domain.Enums;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Gerenciador.Domain.Entities;
 
@@ -13,4 +12,6 @@ public class Tarefa : BaseEntity
     public User? CreatedBy { get; set; }
     public int CreatedById { get; set; }
     public int IdPessoa { get; set; }
+    public DateTime? DataCriacao { get; set; }
+    public DateTime? DataFinal { get; set; }
 }

@@ -33,6 +33,14 @@ public class TarefaMap :  IEntityTypeConfiguration<Tarefa>
             .HasColumnName("titulo")
             .HasColumnType("varchar(100)");
 
+        builder.Property(prop => prop.DataCriacao)
+            .HasColumnName("data_criacao")
+            .HasColumnType("date");
+        
+        builder.Property(prop => prop.DataFinal)
+            .HasColumnName("data_final")
+            .HasColumnType("date");
+
         builder.HasOne(tarefa => tarefa.Pessoa)
             .WithMany(user => user.Tarefas)
             .HasForeignKey(tarefa => tarefa.IdPessoa);
