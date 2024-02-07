@@ -44,10 +44,5 @@ public class UserMap : IEntityTypeConfiguration<User>
             .WithMany()
             .HasForeignKey(user => user.OrientadorId)
             .IsRequired(false);
-        
-        builder.HasMany(user => user.Tarefas)
-            .WithOne(tarefa => tarefa.Pessoa)
-            .HasForeignKey(tarefa => tarefa.IdPessoa)
-            .OnDelete(DeleteBehavior.Cascade); 
     }
 }

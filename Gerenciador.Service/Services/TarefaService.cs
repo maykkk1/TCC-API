@@ -43,4 +43,10 @@ public class TarefaService : ITarefaService
     {
         return await _tarefaRepository.GetByUserId(userId);
     }
+
+    public async Task<Tarefa> InsertTarefaPrincipal(Tarefa tarefa)
+    {
+        await _tarefaRepository.InsertTarefaPrincipal(tarefa);
+        return tarefa;
+    }
 }

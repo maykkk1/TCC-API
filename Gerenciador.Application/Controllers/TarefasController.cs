@@ -46,5 +46,14 @@ namespace Gerenciador.Application.Controllers
             var result = await _tarefaService.getByUserId(userId);
             return Ok(result);
         }
+        
+        [HttpPost]
+        [Route("save-principal")]
+        public async Task<ActionResult> SavePrincipal([FromBody] Tarefa tarefa)
+        {
+            // implementar validador no servico
+            await _tarefaService.InsertTarefaPrincipal(tarefa);
+            return Ok();
+        }
     }
 }

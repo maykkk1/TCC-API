@@ -45,4 +45,10 @@ public class TarefaRepository : ITarefaRepository
     {
         return await _dbContext.Set<Tarefa>().Where(t => t.IdPessoa == userId).ToListAsync();
     }
+
+    public async Task InsertTarefaPrincipal(Tarefa tarefa)
+    {
+        _dbContext.Set<Tarefa>().Add(tarefa);
+        await _dbContext.SaveChangesAsync();
+    }
 }

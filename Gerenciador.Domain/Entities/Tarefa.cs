@@ -1,4 +1,5 @@
 using Gerenciador.Domain.Enums;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Gerenciador.Domain.Entities;
 
@@ -9,5 +10,7 @@ public class Tarefa : BaseEntity
     public SituacaoTarefaEnum Situacao  { get; set; }
     public TipoTarefa Tipo { get; set; }
     public User? Pessoa { get; set; }
+    public User? CreatedBy { get; set; }
+    public int CreatedById { get; set; }
     public int IdPessoa { get; set; }
 }
