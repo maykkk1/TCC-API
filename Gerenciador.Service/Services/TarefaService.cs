@@ -40,9 +40,9 @@ public class TarefaService : ITarefaService
         return obj;
     }
 
-    public async Task<List<TarefaDto>> getByUserId(int userId)
+    public async Task<List<TarefaDto>> getByUserId(int userId, bool isPrincipal)
     {
-        return await _tarefaRepository.GetByUserId(userId);
+        return await _tarefaRepository.GetByUserId(userId, isPrincipal);
     }
 
     public async Task<Tarefa> InsertTarefaPrincipal(Tarefa tarefa)

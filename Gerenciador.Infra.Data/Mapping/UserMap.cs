@@ -28,7 +28,7 @@ public class UserMap : IEntityTypeConfiguration<User>
             .HasConversion(prop => prop.ToString(), prop => prop)
             .IsRequired()
             .HasColumnName("Password")
-            .HasColumnType("varchar(100)");
+            .HasColumnType("varchar(50)");
         
         builder.Property(prop => prop.Tipo)
             .IsRequired()

@@ -6,6 +6,6 @@ using Gerenciador.Domain.Interfaces;
 
 public interface ITarefaService : IBaseService<Tarefa>
 {
-    Task<List<TarefaDto>> getByUserId(int userId);
+    Task<List<TarefaDto>> getByUserId(int userId, bool isPrincipal);
     Task<Tarefa> InsertTarefaPrincipal(Tarefa tarefa);
 }

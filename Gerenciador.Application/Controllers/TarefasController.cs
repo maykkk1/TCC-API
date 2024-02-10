@@ -40,10 +40,10 @@ namespace Gerenciador.Application.Controllers
         
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<List<Tarefa>>> Get()
+        public async Task<ActionResult<List<Tarefa>>> Get(bool isPrincipal)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            var result = await _tarefaService.getByUserId(userId);
+            var result = await _tarefaService.getByUserId(userId, isPrincipal);
             return Ok(result);
         }
         

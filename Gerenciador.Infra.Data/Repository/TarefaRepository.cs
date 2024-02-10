@@ -1,5 +1,6 @@
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
+using Gerenciador.Domain.Enums;
 using Gerenciador.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,10 +44,11 @@ public class TarefaRepository : ITarefaRepository
         return await _dbContext.Set<Tarefa>().FindAsync(id);
     }
 
-    public async Task<List<TarefaDto>> GetByUserId(int userId)
+    public async Task<List<TarefaDto>> GetByUserId(int userId, bool isPrincipal)
     {
-        var query = await _dbContext.Set<Tarefa>().Where(t => t.IdPessoa == userId).Include(t => t.CreatedBy)
-            .ToListAsync();
+        var query = await _dbContext.Set<Tarefa>().Where(t => t.IdPessoa == userId).Include(t => t.CreatedBy).ToListAsync();
+        var filtro = isPrincipal ? TipoTarefa.Principal : TipoTarefa.Secundaria;
+        query = query.Where(t => t.Tipo == filtro).ToList();
         
         return (List<TarefaDto>)query.Select(t => new TarefaDto()
         {
