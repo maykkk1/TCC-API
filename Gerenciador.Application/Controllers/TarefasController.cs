@@ -34,7 +34,8 @@ namespace Gerenciador.Application.Controllers
         [Authorize]
         public async Task<ActionResult> Update([FromBody] Tarefa tarefa)
         {
-            await _tarefaService.Update<TarefaValidator>(tarefa);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            await _tarefaService.UpdateTarefaPrincipal(tarefa, userId);
             return Ok();
         }
         
