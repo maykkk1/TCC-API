@@ -52,11 +52,11 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = false
     };
 });
-
-builder.Services.AddAuthorization();
+builder.Services.AddControllers(
+    options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-
+builder.Services.AddAuthorization();
 builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITarefaRepository, TarefaRepository>();
