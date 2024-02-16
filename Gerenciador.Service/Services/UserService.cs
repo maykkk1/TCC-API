@@ -8,14 +8,16 @@ namespace Gerenciador.Service.Services;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IValidator<User> _userValidator;
 
-    public UserService(IUserRepository userRepository, IBaseRepository<User> baseRepository)
+    public UserService(IUserRepository userRepository, IBaseRepository<User> baseRepository, IValidator<User> userValidator)
     {
         _userRepository = userRepository;
+        _userValidator = userValidator;
     }
-    public async Task<User> Add<TValidator>(User obj) where TValidator : AbstractValidator<User>
+    public async Task<User> Add(User obj)
     {
-        Validate(obj, Activator.CreateInstance<TValidator>());
+        _userValidator.ValidateAndThrow(obj);
         await _userRepository.Insert(obj);
         return obj;
     }
@@ -35,9 +37,8 @@ public class UserService : IUserService
         return await _userRepository.Select(id);
     }
 
-    public async Task<User> Update<TValidator>(User obj) where TValidator : AbstractValidator<User>
+    public async Task<User> Update(User obj)
     {
-        Validate(obj, Activator.CreateInstance<TValidator>());
         await _userRepository.Update(obj);
         return obj;
     }

@@ -1,12 +1,15 @@
 
 using System.Text;
 using System.Text.Json.Serialization;
+using FluentValidation;
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Infra.Data.Context;
 using Gerenciador.Infra.Data.Repository;
 using Gerenciador.Service.Services;
+using Gerenciador.Service.Validators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -57,6 +60,12 @@ builder.Services.AddControllers(
 builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddAuthorization();
+
+//validation
+builder.Services.AddScoped<IValidator<User>, UserValidator>();
+builder.Services.AddScoped<IValidator<Tarefa>, TarefaValidator>();
+
+//repository
 builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITarefaRepository, TarefaRepository>();

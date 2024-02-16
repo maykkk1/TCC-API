@@ -21,7 +21,7 @@ public class TarefaService : ITarefaService
         _dbContext = dbContext;
     }
 
-    public async Task<Tarefa> Add<TValidator>(Tarefa obj) where TValidator : AbstractValidator<Tarefa>
+    public async Task<Tarefa> Add(Tarefa obj)
     {
        await _tarefaRepository.Insert(obj);
        return obj;
@@ -42,7 +42,7 @@ public class TarefaService : ITarefaService
         throw new NotImplementedException();
     }
 
-    public async Task<Tarefa> Update<TValidator>(Tarefa obj) where TValidator : AbstractValidator<Tarefa>
+    public async Task<Tarefa> Update(Tarefa obj)
     {
         await _tarefaRepository.Update(obj);
         return obj;

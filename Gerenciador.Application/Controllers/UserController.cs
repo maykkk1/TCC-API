@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Interfaces;
-using Gerenciador.Service.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +20,7 @@ namespace Gerenciador.Application.Controllers
         [HttpPost]
         public int Create([FromBody] User user)
         {
-            return _userService.Add<UserValidator>(user).Id;
+            return _userService.Add(user).Id;
         }
         
         [HttpGet]

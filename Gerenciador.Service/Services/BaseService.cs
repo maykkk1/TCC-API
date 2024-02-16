@@ -13,9 +13,8 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
         _baseRepository = baseRepository;
     }
 
-    public async Task<TEntity> Add<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
+    public async Task<TEntity> Add(TEntity obj)
     {
-        Validate(obj, Activator.CreateInstance<TValidator>());
         await _baseRepository.Insert(obj);
         return obj;
     }
@@ -26,18 +25,9 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
 
     public async Task<TEntity> GetById(int id) => await _baseRepository.Select(id);
 
-    public async Task<TEntity> Update<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
+    public async Task<TEntity> Update(TEntity obj)
     {
-        Validate(obj, Activator.CreateInstance<TValidator>());
         await _baseRepository.Update(obj);
         return obj;
-    }
-
-    private void Validate(TEntity obj, AbstractValidator<TEntity> validator)
-    {
-        if (obj == null)
-            throw new Exception("Registros não detectados!");
-
-        validator.ValidateAndThrow(obj);
     }
 }

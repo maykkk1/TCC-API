@@ -5,7 +5,7 @@ namespace Gerenciador.Domain.Interfaces;
 
 public interface IBaseService<TEntity> where TEntity : BaseEntity
 {
-    Task<TEntity> Add<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>;
+    Task<TEntity> Add(TEntity obj);
 
     Task Delete(int id);
 
@@ -13,5 +13,5 @@ public interface IBaseService<TEntity> where TEntity : BaseEntity
 
     Task<TEntity> GetById(int id);
 
-    Task<TEntity> Update<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>;
+    Task<TEntity> Update(TEntity obj);
 }
