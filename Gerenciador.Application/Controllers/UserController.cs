@@ -20,7 +20,8 @@ namespace Gerenciador.Application.Controllers
         [HttpPost]
         public int Create([FromBody] User user)
         {
-            return _userService.Add(user).Id;
+            var result = _userService.Add(user);
+            return result.Id;
         }
         
         [HttpGet]

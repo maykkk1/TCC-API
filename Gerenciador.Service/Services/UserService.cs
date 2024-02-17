@@ -17,9 +17,13 @@ public class UserService : IUserService
     }
     public async Task<User> Add(User obj)
     {
-        _userValidator.ValidateAndThrow(obj);
-        await _userRepository.Insert(obj);
-        return obj;
+        var validate = _userValidator.ValidateAsync(obj).Result;
+        if (validate.IsValid)
+        {
+            return obj;
+        }
+
+        return null;
     }
 
     public async Task Delete(int id)
