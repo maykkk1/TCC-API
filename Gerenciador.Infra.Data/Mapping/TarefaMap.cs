@@ -48,5 +48,10 @@ public class TarefaMap :  IEntityTypeConfiguration<Tarefa>
         builder.HasOne(tarefa => tarefa.CreatedBy)
             .WithMany(user => user.TarefasCriadas)
             .HasForeignKey(tarefa => tarefa.CreatedById);
+        
+        builder.HasOne(tarefa => tarefa.TarefaRelacionada)
+            .WithMany()
+            .HasForeignKey(tarefa => tarefa.IdTarefaRelacionada)
+            .IsRequired(false);
     }
 }

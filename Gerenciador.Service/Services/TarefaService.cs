@@ -73,7 +73,8 @@ public class TarefaService : ITarefaService
                 Situacao = SituacaoTarefaEnum.Pendente,
                 CreatedById = orientando.Id,
                 IdPessoa = orientando.Orientador.Id,
-                DataCriacao = DateTime.Now
+                DataCriacao = DateTime.Now,
+                IdTarefaRelacionada = tarefa.Id
             };
             await InsertTarefaPrincipal(tarefaOrientador);
         }
