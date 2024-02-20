@@ -67,6 +67,7 @@ public class TarefaRepository : ITarefaRepository
             },
             DataCriacao = t.DataCriacao,
             DataFinal = t.DataFinal,
+            IdTarefaRelacionada = t.IdTarefaRelacionada
         }).ToList();
     }
 
