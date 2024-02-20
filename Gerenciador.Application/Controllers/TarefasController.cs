@@ -28,8 +28,12 @@ namespace Gerenciador.Application.Controllers
         public async Task<ActionResult> Update([FromBody] Tarefa tarefa)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            await _tarefaService.UpdateTarefaPrincipal(tarefa, userId);
-            return Ok();
+            var result = await _tarefaService.UpdateTarefaPrincipal(tarefa, userId);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.ErrorMessage);
         }
         
         [HttpGet]
@@ -45,7 +49,6 @@ namespace Gerenciador.Application.Controllers
         [Route("save-principal")]
         public async Task<ActionResult> SavePrincipal([FromBody] Tarefa tarefa)
         {
-            // implementar validador no servico
             await _tarefaService.InsertTarefaPrincipal(tarefa);
             return Ok();
         }
