@@ -2,6 +2,7 @@ using FluentValidation;
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Interfaces;
+using Gerenciador.Service.Common;
 
 namespace Gerenciador.Service.Services;
 
@@ -36,10 +37,11 @@ public class UserService : IUserService
         return await _userRepository.Select();
     }
 
-    public async Task<User> GetById(int id)
+    public Task<ServiceResult<T>> GetById<T>(int id)
     {
-        return await _userRepository.Select(id);
+        throw new NotImplementedException();
     }
+
 
     public async Task<User> Update(User obj)
     {
@@ -55,13 +57,5 @@ public class UserService : IUserService
     public async Task<List<User>> GetOrientandosById(int orientadorId)
     {
         return await _userRepository.GetOrientandosById(orientadorId);
-    }
-
-    private void Validate(User obj, AbstractValidator<User> validator)
-    {
-        if (obj == null)
-            throw new Exception("Registros não detectados!");
-
-        validator.ValidateAndThrow(obj);
     }
 }

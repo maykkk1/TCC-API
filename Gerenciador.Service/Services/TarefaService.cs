@@ -1,4 +1,3 @@
-using FluentValidation;
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Enums;
@@ -33,12 +32,12 @@ public class TarefaService : ITarefaService
         throw new NotImplementedException();
     }
 
-    public async Task<IList<Tarefa>> Get()
+    public async Task<IList<TarefaDto>> Get()
     {
         return await _tarefaRepository.Select();
     }
 
-    public Task<Tarefa> GetById(int id)
+    public Task<ServiceResult<T>> GetById<T>(int id)
     {
         throw new NotImplementedException();
     }

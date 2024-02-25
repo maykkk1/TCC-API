@@ -1,5 +1,6 @@
 using FluentValidation;
 using Gerenciador.Domain.Entities;
+using Gerenciador.Service.Common;
 
 namespace Gerenciador.Domain.Interfaces;
 
@@ -11,7 +12,7 @@ public interface IBaseService<TEntity> where TEntity : BaseEntity
 
     Task<IList<TEntity>> Get();
 
-    Task<TEntity> GetById(int id);
+    public Task<ServiceResult<T>> GetById<T>(int id);
 
     Task<TEntity> Update(TEntity obj);
 }

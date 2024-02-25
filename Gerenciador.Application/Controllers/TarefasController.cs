@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Gerenciador.Domain.Entities;
+using Gerenciador.Domain.Entities.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,6 +44,16 @@ namespace Gerenciador.Application.Controllers
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var result = await _tarefaService.getByUserId(userId, isPrincipal);
             return Ok(result);
+        }
+        
+        [HttpPost]
+        [Authorize]
+        [Route("tarefa")]
+        public async Task<ActionResult<List<Tarefa>>> GetTarefaById([FromBody] int id)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var result = _tarefaService.GetById<TarefaDto>(id);
+            return Ok();
         }
         
         [HttpPost]
