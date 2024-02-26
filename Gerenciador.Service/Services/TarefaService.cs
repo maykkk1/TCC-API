@@ -30,9 +30,14 @@ public class TarefaService : ITarefaService
        return obj;
     }
 
-    public Task<ServiceResult<TarefaDto>> Add(TarefaDto obj)
+    public async Task<ServiceResult<TarefaDto>> Add(TarefaDto obj)
     {
-        throw new NotImplementedException();
+        var entity = _tarefaMapper.ToEntity(obj);
+        _tarefaRepository.Insert(entity);
+        return new ServiceResult<TarefaDto>()
+        {
+            Data = obj
+        };
     }
 
     public Task Delete(int id)
