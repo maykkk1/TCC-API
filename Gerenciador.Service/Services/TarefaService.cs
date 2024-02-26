@@ -117,6 +117,11 @@ public class TarefaService : ITarefaService
             result.ErrorMessage = "Você não pode modificar o status dessa tarefa pois o orientador já começou o processo de análise dela.";
             return result;
         }
+
+        if (tarefaOrientador != null && oldTarefa.Situacao == SituacaoTarefaEnum.Analise)
+        {
+            await _tarefaRepository.Delete(tarefaOrientador.Id);
+        }
         
         await _tarefaRepository.Update(tarefa);
         if (tarefa.Situacao == SituacaoTarefaEnum.Analise)
