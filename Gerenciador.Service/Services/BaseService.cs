@@ -1,6 +1,7 @@
 using FluentValidation;
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Interfaces;
+using Gerenciador.Service.Common;
 
 namespace Gerenciador.Service.Services;
 
@@ -22,6 +23,10 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEn
     public async Task Delete(int id) => await _baseRepository.Delete(id);
 
     public async Task<IList<TEntity>> Get() => await _baseRepository.Select();
+    public Task<ServiceResult<T>> GetById<T>(int id)
+    {
+        throw new NotImplementedException();
+    }
 
     public async Task<TEntity> GetById(int id) => await _baseRepository.Select(id);
 

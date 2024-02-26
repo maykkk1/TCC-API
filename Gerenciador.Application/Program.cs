@@ -3,10 +3,12 @@ using System.Text;
 using System.Text.Json.Serialization;
 using FluentValidation;
 using Gerenciador.Domain.Entities;
+using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Infra.Data.Context;
 using Gerenciador.Infra.Data.Repository;
 using Gerenciador.Service.Services;
+using Gerenciador.Service.Utils;
 using Gerenciador.Service.Validators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -64,6 +66,9 @@ builder.Services.AddAuthorization();
 //validation
 builder.Services.AddScoped<IValidator<User>, UserValidator>();
 builder.Services.AddScoped<IValidator<Tarefa>, TarefaValidator>();
+
+//mapper
+builder.Services.AddSingleton<DtoEntityMapper<TarefaDto, Tarefa>>();
 
 //repository
 builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();

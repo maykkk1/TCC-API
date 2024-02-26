@@ -4,6 +4,7 @@ using Gerenciador.Domain.Enums;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Infra.Data.Context;
 using Gerenciador.Service.Common;
+using Gerenciador.Service.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gerenciador.Service.Services;
@@ -13,12 +14,14 @@ public class TarefaService : ITarefaService
     private readonly ITarefaRepository _tarefaRepository;
     private readonly IUserRepository _userRepository;
     private readonly GerenciadorContext _dbContext;
+    private readonly DtoEntityMapper<TarefaDto, Tarefa> _tarefaMapper;
 
-    public TarefaService(ITarefaRepository tarefaRepository, IUserRepository userRepository, GerenciadorContext dbContext)
+    public TarefaService(ITarefaRepository tarefaRepository, IUserRepository userRepository, GerenciadorContext dbContext, DtoEntityMapper<TarefaDto, Tarefa> tarefaMapper)
     {
         _tarefaRepository = tarefaRepository;
         _userRepository = userRepository;
         _dbContext = dbContext;
+        _tarefaMapper = tarefaMapper;
     }
 
     public async Task<Tarefa> Add(Tarefa obj)
@@ -27,17 +30,35 @@ public class TarefaService : ITarefaService
        return obj;
     }
 
+    public Task<ServiceResult<TarefaDto>> Add(TarefaDto obj)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task Delete(int id)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<IList<TarefaDto>> Get()
+    public async Task<ServiceResult<IList<TarefaDto>>> Get()
     {
-        return await _tarefaRepository.Select();
+        var result = new ServiceResult<IList<TarefaDto>>();
+        var data = await _tarefaRepository.Select();
+        result.Data = data.Select(tarefas => _tarefaMapper.ToDto(tarefas)).ToList();
+        return result;
     }
 
-    public Task<ServiceResult<T>> GetById<T>(int id)
+    public Task<ServiceResult<TarefaDto>> GetById<T>(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<ServiceResult<TarefaDto>> Update(TarefaDto obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<ServiceResult<TarefaDto>> GetById(int id)
     {
         throw new NotImplementedException();
     }
@@ -48,15 +69,21 @@ public class TarefaService : ITarefaService
         return obj;
     }
 
-    public async Task<List<TarefaDto>> getByUserId(int userId, bool isPrincipal)
+    public async Task<ServiceResult<List<TarefaDto>>> getByUserId(int userId, bool isPrincipal)
     {
-        return await _tarefaRepository.GetByUserId(userId, isPrincipal);
+        var result = new ServiceResult<List<TarefaDto>>();
+        var data = await _tarefaRepository.GetByUserId(userId, isPrincipal);
+        result.Data = data;
+        return result;
     }
 
-    public async Task<Tarefa> InsertTarefaPrincipal(Tarefa tarefa)
+    public async Task<ServiceResult<Tarefa>> InsertTarefaPrincipal(Tarefa tarefa)
     {
+        // revisar isso aqui
         await _tarefaRepository.InsertTarefaPrincipal(tarefa);
-        return tarefa;
+        var result = new ServiceResult<Tarefa>();
+        result.Data = tarefa;
+        return result;
     }
 
     // ajustar para receber dto e não entidade

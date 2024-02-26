@@ -19,7 +19,7 @@ namespace Gerenciador.Application.Controllers
 
         [HttpPost]
         [Route("save")]
-        public async Task<ActionResult> Save([FromBody] Tarefa tarefa)
+        public async Task<ActionResult> Save([FromBody] TarefaDto tarefa)
         {
             await _tarefaService.Add(tarefa);
             return Ok();
