@@ -13,7 +13,7 @@ public interface ITarefaService
 
     Task<ServiceResult<IList<TarefaDto>>> Get();
 
-    public Task<ServiceResult<TarefaDto>> GetById<T>(int id);
+    public Task<ServiceResult<TarefaDto>> GetById(int id);
 
     Task<ServiceResult<TarefaDto>> Update(TarefaDto obj);
     Task<ServiceResult<List<TarefaDto>>> getByUserId(int userId, bool isPrincipal);

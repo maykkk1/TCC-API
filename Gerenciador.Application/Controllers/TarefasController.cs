@@ -52,8 +52,12 @@ namespace Gerenciador.Application.Controllers
         public async Task<ActionResult<List<Tarefa>>> GetTarefaById([FromBody] int id)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            var result = _tarefaService.GetById<TarefaDto>(id);
-            return Ok();
+            var result = await _tarefaService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.ErrorMessage);
         }
         
         [HttpPost]

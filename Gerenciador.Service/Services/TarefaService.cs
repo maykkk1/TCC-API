@@ -53,17 +53,16 @@ public class TarefaService : ITarefaService
         return result;
     }
 
-    public Task<ServiceResult<TarefaDto>> GetById<T>(int id)
+    public async Task<ServiceResult<TarefaDto>>GetById(int id)
     {
-        throw new NotImplementedException();
+        var entity = await _tarefaRepository.Select(id);
+        return new ServiceResult<TarefaDto>()
+        {
+            Data = _tarefaMapper.ToDto(entity)
+        };
     }
 
     public Task<ServiceResult<TarefaDto>> Update(TarefaDto obj)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<ServiceResult<TarefaDto>> GetById(int id)
     {
         throw new NotImplementedException();
     }
