@@ -89,8 +89,7 @@ public class TarefaService : ITarefaService
         result.Data = tarefa;
         return result;
     }
-
-    // ajustar para receber dto e não entidade
+    
     public async Task<ServiceResult<TarefaDto>> UpdateTarefaPrincipal(Tarefa tarefa, int userId)
     {
         var result = new ServiceResult<TarefaDto>();
