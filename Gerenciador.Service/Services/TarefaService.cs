@@ -1,5 +1,6 @@
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
+using Gerenciador.Domain.Enums;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Infra.Data.Context;
 using Gerenciador.Service.Common;
@@ -91,6 +92,17 @@ public class TarefaService : ITarefaService
     public async Task<ServiceResult<TarefaDto>> UpdateTarefaPrincipal(Tarefa tarefa, int userId)
     {
         var user = await _userRepository.Select(userId);
+
+        if (user.Tipo == TipoPessoaEnum.Aluno && (tarefa.Situacao == SituacaoTarefaEnum.Concluida || tarefa.Situacao == SituacaoTarefaEnum.Retorno))
+        {
+            return new ServiceResult<TarefaDto>()
+            {
+                Success = false,
+                ErrorMessage = tarefa.Situacao == SituacaoTarefaEnum.Concluida 
+                    ? "Apenas o orientador pode concluir tarefas principais."
+                    : "Apenas o orientador pode mover a tarefa para o Retorno"
+            };
+        }
         
         
         await _tarefaRepository.Update(tarefa);
