@@ -1,11 +1,9 @@
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
-using Gerenciador.Domain.Enums;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Infra.Data.Context;
 using Gerenciador.Service.Common;
 using Gerenciador.Service.Utils;
-using Microsoft.EntityFrameworkCore;
 
 namespace Gerenciador.Service.Services;
 
@@ -14,9 +12,9 @@ public class TarefaService : ITarefaService
     private readonly ITarefaRepository _tarefaRepository;
     private readonly IUserRepository _userRepository;
     private readonly GerenciadorContext _dbContext;
-    private readonly DtoEntityMapper<TarefaDto, Tarefa> _tarefaMapper;
+    private readonly IEntityDtoMapper<Tarefa, TarefaDto> _tarefaMapper;
 
-    public TarefaService(ITarefaRepository tarefaRepository, IUserRepository userRepository, GerenciadorContext dbContext, DtoEntityMapper<TarefaDto, Tarefa> tarefaMapper)
+    public TarefaService(ITarefaRepository tarefaRepository, IUserRepository userRepository, GerenciadorContext dbContext, IEntityDtoMapper<Tarefa, TarefaDto> tarefaMapper)
     {
         _tarefaRepository = tarefaRepository;
         _userRepository = userRepository;
@@ -32,7 +30,7 @@ public class TarefaService : ITarefaService
 
     public async Task<ServiceResult<TarefaDto>> Add(TarefaDto obj)
     {
-        var entity = _tarefaMapper.ToEntity(obj);
+        var entity = _tarefaMapper.DtoToEntity(obj);
         _tarefaRepository.Insert(entity);
         return new ServiceResult<TarefaDto>()
         {
@@ -49,7 +47,7 @@ public class TarefaService : ITarefaService
     {
         var result = new ServiceResult<IList<TarefaDto>>();
         var data = await _tarefaRepository.Select();
-        result.Data = data.Select(tarefas => _tarefaMapper.ToDto(tarefas)).ToList();
+        result.Data = data.Select(tarefas => _tarefaMapper.EntityToDto(tarefas)).ToList();
         return result;
     }
 
@@ -58,7 +56,7 @@ public class TarefaService : ITarefaService
         var entity = await _tarefaRepository.Select(id);
         return new ServiceResult<TarefaDto>()
         {
-            Data = _tarefaMapper.ToDto(entity)
+            Data = _tarefaMapper.EntityToDto(entity)
         };
     }
 
@@ -92,8 +90,11 @@ public class TarefaService : ITarefaService
     
     public async Task<ServiceResult<TarefaDto>> UpdateTarefaPrincipal(Tarefa tarefa, int userId)
     {
+        var user = await _userRepository.Select(userId);
+        
+        
         await _tarefaRepository.Update(tarefa);
-        var dto = _tarefaMapper.ToDto(tarefa);
+        var dto = _tarefaMapper.EntityToDto(tarefa);
         return new ServiceResult<TarefaDto>()
         {
             Data = dto

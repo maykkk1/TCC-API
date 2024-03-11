@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 using FluentValidation;
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
+using Gerenciador.Domain.Entities.Mappers;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Infra.Data.Context;
 using Gerenciador.Infra.Data.Repository;
@@ -69,6 +70,8 @@ builder.Services.AddScoped<IValidator<Tarefa>, TarefaValidator>();
 
 //mapper
 builder.Services.AddSingleton<DtoEntityMapper<TarefaDto, Tarefa>>();
+
+builder.Services.AddScoped<IEntityDtoMapper<Tarefa, TarefaDto>, TarefaMapper>();
 
 //repository
 builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
