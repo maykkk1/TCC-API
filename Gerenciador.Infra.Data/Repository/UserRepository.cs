@@ -52,4 +52,15 @@ public class UserRepository : IUserRepository
     {
         return await _dbContext.Set<User>().Where(t => t.OrientadorId == orientadorId).ToListAsync();
     }
+
+    public async Task<UserDto?> GetAlunoById(int id)
+    {
+        var query = _dbContext.Set<User>().Where(t => t.Id == id);
+        return await query.Select(aluno => new UserDto()
+        {
+            Id = aluno.Id,
+            Name = aluno.Name,
+            Tipo = aluno.Tipo
+        }).FirstOrDefaultAsync();
+    }
 }

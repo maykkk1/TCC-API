@@ -58,4 +58,9 @@ public class UserService : IUserService
     {
         return await _userRepository.GetOrientandosById(orientadorId);
     }
+
+    public Task<UserDto> GetAlunoById(int id)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -35,10 +35,19 @@ namespace Gerenciador.Application.Controllers
         [HttpGet]
         [Authorize]
         [Route("orientandos")]
-        public async Task<ActionResult<List<Tarefa>>> getOrientandosById()
+        public async Task<ActionResult<List<Tarefa>>> GetOrientandosById()
         {
             var orientadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var result = await _userService.GetOrientandosById(orientadorId);
+            return Ok(result);
+        }
+        
+        [HttpGet]
+        [Authorize]
+        [Route("aluno")]
+        public async Task<ActionResult<List<Tarefa>>> GetAlunoById(int id)
+        {
+            var result = await _userService.GetOrientandosById(id);
             return Ok(result);
         }
     }
