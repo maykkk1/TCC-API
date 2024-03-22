@@ -47,7 +47,7 @@ namespace Gerenciador.Application.Controllers
         [Route("aluno")]
         public async Task<ActionResult<List<Tarefa>>> GetAlunoById(int id)
         {
-            var result = await _userService.GetOrientandosById(id);
+            var result = await _userService.GetAlunoById(id);
             return Ok(result);
         }
     }
