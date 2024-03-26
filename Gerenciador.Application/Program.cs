@@ -6,6 +6,7 @@ using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Entities.Mappers;
 using Gerenciador.Domain.Interfaces;
+using Gerenciador.Domain.Interfaces.TarefasComentario;
 using Gerenciador.Infra.Data.Context;
 using Gerenciador.Infra.Data.Repository;
 using Gerenciador.Service.Services;
@@ -77,12 +78,14 @@ builder.Services.AddScoped<IEntityDtoMapper<Tarefa, TarefaDto>, TarefaMapper>();
 builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITarefaRepository, TarefaRepository>();
+builder.Services.AddScoped<ITarefaComentarioRepository, TarefaComentarioRepository>();
 
 //services
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<IBaseService<User>, BaseService<User>>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITarefaService, TarefaService>();
+builder.Services.AddScoped<ITarefaComentarioService, TarefaComentarioService>();
 
 var app = builder.Build();
 app.UseCors("AllowAnyOrigin");
