@@ -1,13 +1,23 @@
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Interfaces.TarefasComentario;
+using Gerenciador.Infra.Data.Context;
 
 namespace Gerenciador.Infra.Data.Repository;
 
 public class TarefaComentarioRepository : ITarefaComentarioRepository
 {
-    public Task Insert(TarefaComentario obj)
+    protected readonly GerenciadorContext _dbContext;
+
+    public TarefaComentarioRepository(GerenciadorContext dbContext)
     {
-        throw new NotImplementedException();
+        _dbContext = dbContext;
+    }
+
+    public async Task Insert(TarefaComentario obj)
+    {
+        // obj.DataCriacao = DateTime.Now IMPLEMENTAR;
+        _dbContext.Set<TarefaComentario>().Add(obj);
+        await _dbContext.SaveChangesAsync();
     }
 
     public Task Update(TarefaComentario obj)

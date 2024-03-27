@@ -71,8 +71,8 @@ builder.Services.AddScoped<IValidator<Tarefa>, TarefaValidator>();
 
 //mapper
 builder.Services.AddSingleton<DtoEntityMapper<TarefaDto, Tarefa>>();
-
 builder.Services.AddScoped<IEntityDtoMapper<Tarefa, TarefaDto>, TarefaMapper>();
+builder.Services.AddScoped<IEntityDtoMapper<TarefaComentario, TarefaComentarioDto>, TarefaComentarioMapper>();
 
 //repository
 builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();

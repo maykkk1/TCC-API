@@ -11,9 +11,10 @@ public class TarefaComentarioService : ITarefaComentarioService
     private readonly ITarefaComentarioRepository _tarefaComentarioRepository;
     private readonly IEntityDtoMapper<TarefaComentario, TarefaComentarioDto> _dtoMapper;
 
-    public TarefaComentarioService(ITarefaComentarioRepository tarefaComentarioRepository)
+    public TarefaComentarioService(ITarefaComentarioRepository tarefaComentarioRepository, IEntityDtoMapper<TarefaComentario, TarefaComentarioDto> dtoMapper)
     {
         _tarefaComentarioRepository = tarefaComentarioRepository;
+        _dtoMapper = dtoMapper;
     }
     
     public async Task<ServiceResult<int>> Insert(TarefaComentarioDto comentarioDto)
