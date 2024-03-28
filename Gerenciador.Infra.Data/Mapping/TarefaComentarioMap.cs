@@ -8,18 +8,18 @@ public class TarefaComentarioMap : IEntityTypeConfiguration<TarefaComentario>
 {
     public void Configure(EntityTypeBuilder<TarefaComentario> builder)
     {
-        builder.ToTable("TAREFA_COMENTARIO");
+        builder.ToTable("tarefa_comentario");
 
         builder.HasKey(prop => prop.Id);
         
         builder.Property(prop => prop.Conteudo)
             .HasConversion(prop => prop.ToString(), prop => prop)
             .IsRequired()
-            .HasColumnName("CONTEUDO")
+            .HasColumnName("conteudo")
             .HasColumnType("TEXT");
         
-        builder.HasOne(comentario => comentario.Tarefa)
+        builder.HasOne(tarefaComentario => tarefaComentario.Tarefa)
             .WithMany(tarefa => tarefa.Comentarios)
-            .HasForeignKey(comentario => comentario.IdTarefa);
+            .HasForeignKey(tarefaComentario => tarefaComentario.IdTarefa);
     }
 }
