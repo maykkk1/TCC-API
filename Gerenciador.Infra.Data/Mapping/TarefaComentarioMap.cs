@@ -8,14 +8,17 @@ public class TarefaComentarioMap : IEntityTypeConfiguration<TarefaComentario>
 {
     public void Configure(EntityTypeBuilder<TarefaComentario> builder)
     {
-        builder.ToTable("tarefa_comentario");
+        builder.ToTable("TAREFA_COMENTARIO");
 
-        builder.HasKey(prop => prop.Id);
+        builder.Property(prop => prop.Id)
+            .HasColumnName("ID")
+            .IsRequired()
+            .UseIdentityColumn();
         
         builder.Property(prop => prop.Conteudo)
             .HasConversion(prop => prop.ToString(), prop => prop)
             .IsRequired()
-            .HasColumnName("conteudo")
+            .HasColumnName("CONTEUDO")
             .HasColumnType("TEXT");
         
         builder.HasOne(tarefaComentario => tarefaComentario.Tarefa)

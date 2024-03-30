@@ -8,41 +8,42 @@ public class UserMap : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable("User");
+        builder.ToTable("USER");
 
-        builder.HasKey(prop => prop.Id);
-
+        builder.Property(prop => prop.Id)
+            .HasColumnName("ID")
+            .IsRequired()
+            .UseIdentityColumn();
+        
         builder.Property(prop => prop.Name)
             .HasConversion(prop => prop.ToString(), prop => prop)
             .IsRequired()
-            .HasColumnName("Name")
+            .HasColumnName("NAME")
             .HasColumnType("varchar(100)");
 
         builder.Property(prop => prop.Email)
             .HasConversion(prop => prop.ToString(), prop => prop)
             .IsRequired()
-            .HasColumnName("Email")
+            .HasColumnName("EMAIL")
             .HasColumnType("varchar(100)");
 
         builder.Property(prop => prop.Password)
             .HasConversion(prop => prop.ToString(), prop => prop)
             .IsRequired()
-            .HasColumnName("Password")
+            .HasColumnName("PASSWORD")
             .HasColumnType("varchar(50)");
         
         builder.Property(prop => prop.Tipo)
             .IsRequired()
-            .HasColumnName("tipo")
+            .HasColumnName("TIPO")
             .HasColumnType("int");
         
-        builder.Property(prop => prop.Tipo)
-            .IsRequired()
-            .HasColumnName("Tipo")
-            .HasColumnType("int");
+        builder.Property(prop => prop.OrientadorId)
+            .HasColumnName("ORIENTADOR_ID");
         
         builder.HasOne(user => user.Orientador)
             .WithMany()
             .HasForeignKey(user => user.OrientadorId)
-            .IsRequired(false);
+            .HasConstraintName("fk_orientador");
     }
 }

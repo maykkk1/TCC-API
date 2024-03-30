@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Gerenciador.Domain.Enums;
 
 namespace Gerenciador.Domain.Entities;
@@ -11,8 +12,6 @@ public class Tarefa : BaseEntity
     public User? Pessoa { get; set; }
     public User? CreatedBy { get; set; }
     public int CreatedById { get; set; }
-    public Tarefa? TarefaRelacionada { get; set; }
-    public int? IdTarefaRelacionada { get; set; }
     public int IdPessoa { get; set; }
     public DateTime? DataCriacao { get; set; }
     public DateTime? DataFinal { get; set; }
