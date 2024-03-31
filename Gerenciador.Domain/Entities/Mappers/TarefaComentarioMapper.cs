@@ -11,7 +11,7 @@ public class TarefaComentarioMapper : IEntityDtoMapper<TarefaComentario, TarefaC
         {
             Id = dto.Id,
             Conteudo = dto.Conteudo,
-            IdTarefa = dto.IdTarefa
+            TarefaId = dto.IdTarefa
         };
     }
 
@@ -21,7 +21,7 @@ public class TarefaComentarioMapper : IEntityDtoMapper<TarefaComentario, TarefaC
         {
             Id = entity.Id,
             Conteudo = entity.Conteudo,
-            IdTarefa = entity.IdTarefa
+            IdTarefa = entity.TarefaId
         };
     }
 }

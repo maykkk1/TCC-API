@@ -17,7 +17,7 @@ public class TarefaMapper : IEntityDtoMapper<Tarefa, TarefaDto>
             DataCriacao = dto.DataCriacao,
             DataFinal = dto.DataFinal,
             CreatedById = dto.CreatedById,
-            IdPessoa = dto.IdPessoa
+            PessoaId = dto.IdPessoa
         };
     }
 
@@ -33,7 +33,7 @@ public class TarefaMapper : IEntityDtoMapper<Tarefa, TarefaDto>
             DataCriacao = entity.DataCriacao,
             DataFinal = entity.DataFinal,
             CreatedById = entity.CreatedById,
-            IdPessoa = entity.IdPessoa
+            IdPessoa = entity.PessoaId
         };
     }
 }

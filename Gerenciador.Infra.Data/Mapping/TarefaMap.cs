@@ -43,21 +43,11 @@ public class TarefaMap :  IEntityTypeConfiguration<Tarefa>
         builder.Property(prop => prop.DataFinal)
             .HasColumnName("DATA_FINAL")
             .HasColumnType("date");
-        
-        builder.Property(prop => prop.IdPessoa)
-            .HasColumnName("ID_PESSOA");
 
-        builder.HasOne(tarefa => tarefa.Pessoa)
-            .WithMany()
-            .HasForeignKey(tarefa => tarefa.IdPessoa);
-        
-        
-        builder.Property(prop => prop.CreatedById)
-            .HasColumnName("CREATED_BY_ID");
-        
-        builder.HasOne(tarefa => tarefa.CreatedBy)
-            .WithMany()
-            .HasForeignKey(tarefa => tarefa.CreatedById);
-        
+        builder.HasOne(x => x.Pessoa)
+            .WithMany(x => x.Tarefas);
+
+        builder.HasOne(x => x.CreatedBy)
+            .WithMany(x => x.TarefasCriadas);
     }
 }

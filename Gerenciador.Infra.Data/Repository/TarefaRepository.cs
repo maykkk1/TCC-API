@@ -46,14 +46,14 @@ public class TarefaRepository : ITarefaRepository
 
     public async Task<List<TarefaDto>> GetByUserId(int userId, bool isPrincipal)
     {
-        var query = await _dbContext.Set<Tarefa>().Where(t => t.IdPessoa == userId).Include(t => t.CreatedBy).ToListAsync();
+        var query = await _dbContext.Set<Tarefa>().Where(t => t.PessoaId == userId).Include(t => t.CreatedBy).ToListAsync();
         var filtro = isPrincipal ? TipoTarefa.Principal : TipoTarefa.Secundaria;
         query = query.Where(t => t.Tipo == filtro).ToList();
         
         return (List<TarefaDto>)query.Select(t => new TarefaDto()
         {
             Id = t.Id,
-            IdPessoa = t.IdPessoa,
+            IdPessoa = t.PessoaId,
             CreatedById = t.CreatedById,
             Titulo = t.Titulo,
             Tipo = t.Tipo,

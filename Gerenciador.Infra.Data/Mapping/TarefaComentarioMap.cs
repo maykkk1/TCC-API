@@ -23,6 +23,6 @@ public class TarefaComentarioMap : IEntityTypeConfiguration<TarefaComentario>
         
         builder.HasOne(tarefaComentario => tarefaComentario.Tarefa)
             .WithMany(tarefa => tarefa.Comentarios)
-            .HasForeignKey(tarefaComentario => tarefaComentario.IdTarefa);
+            .HasForeignKey(tarefaComentario => tarefaComentario.TarefaId);
     }
 }
