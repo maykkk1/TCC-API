@@ -11,6 +11,7 @@ public class TarefaDto
     public TipoTarefa Tipo { get; set; }
     public UserDto Pessoa { get; set; }
     public UserDto CreatedBy { get; set; }
+    public List<TarefaComentarioDto> Comentarios { get; set; }
     public int CreatedById { get; set; }
     public int IdPessoa { get; set; }
     public DateTime? DataCriacao { get; set; }

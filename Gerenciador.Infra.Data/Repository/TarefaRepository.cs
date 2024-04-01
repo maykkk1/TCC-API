@@ -68,6 +68,12 @@ public class TarefaRepository : ITarefaRepository
                 Name = t.CreatedBy.Name,
                 Tipo = t.CreatedBy.Tipo
             },
+            Comentarios = t.Comentarios.Select(c => new TarefaComentarioDto()
+            {
+                Id = c.Id,
+                Conteudo = c.Conteudo,
+                TarefaId = c.TarefaId
+            }).ToList(),
             DataCriacao = t.DataCriacao,
             DataFinal = t.DataFinal
         }).ToList();
