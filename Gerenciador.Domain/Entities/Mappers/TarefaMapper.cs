@@ -33,7 +33,13 @@ public class TarefaMapper : IEntityDtoMapper<Tarefa, TarefaDto>
             DataCriacao = entity.DataCriacao,
             DataFinal = entity.DataFinal,
             CreatedById = entity.CreatedById,
-            IdPessoa = entity.PessoaId
+            IdPessoa = entity.PessoaId,
+            Comentarios = entity.Comentarios.Select(c => new TarefaComentarioDto()
+            {
+                Id = c.Id,
+                Conteudo = c.Conteudo,
+                TarefaId = c.TarefaId
+            }).ToList()
         };
     }
 }

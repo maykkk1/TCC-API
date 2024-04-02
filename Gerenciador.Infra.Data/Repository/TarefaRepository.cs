@@ -41,7 +41,7 @@ public class TarefaRepository : ITarefaRepository
 
     public async Task<Tarefa> Select(int id)
     {
-        return await _dbContext.Set<Tarefa>().Include(t => t.Comentarios).FirstOrDefaultAsync();
+        return await _dbContext.Set<Tarefa>().Include(t => t.Comentarios).Where(t => t.Id == id).FirstOrDefaultAsync();
     }
 
     public async Task<List<TarefaDto>> GetByUserId(int userId, bool isPrincipal)
