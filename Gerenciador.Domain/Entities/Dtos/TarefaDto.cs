@@ -13,7 +13,7 @@ public class TarefaDto
     public UserDto CreatedBy { get; set; }
     public List<TarefaComentarioDto> Comentarios { get; set; }
     public int CreatedById { get; set; }
-    public int IdPessoa { get; set; }
+    public int PessoaId { get; set; }
     public DateTime? DataCriacao { get; set; }
     public DateTime? DataFinal { get; set; }
     public int? IdTarefaRelacionada { get; set; }

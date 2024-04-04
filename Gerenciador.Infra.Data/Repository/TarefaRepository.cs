@@ -56,7 +56,7 @@ public class TarefaRepository : ITarefaRepository
         return (List<TarefaDto>)query.Select(t => new TarefaDto()
         {
             Id = t.Id,
-            IdPessoa = t.PessoaId,
+            PessoaId = t.PessoaId,
             CreatedById = t.CreatedById,
             Titulo = t.Titulo,
             Tipo = t.Tipo,
