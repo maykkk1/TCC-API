@@ -15,11 +15,12 @@ public class TarefaRepository : ITarefaRepository
         _dbContext = dbContext;
     }
 
-    public async Task Insert(Tarefa obj)
+    public async Task<Tarefa> Insert(Tarefa obj)
     {
         obj.DataCriacao = DateTime.Now;
         _dbContext.Set<Tarefa>().Add(obj);
         await _dbContext.SaveChangesAsync();
+        return obj;
     }
 
     public async Task Update(Tarefa obj)

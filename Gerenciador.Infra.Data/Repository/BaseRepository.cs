@@ -14,10 +14,11 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         _dbContext = dbContext;
     }
 
-    public async Task Insert(TEntity obj)
+    public async Task<TEntity> Insert(TEntity obj)
     {
         _dbContext.Set<TEntity>().Add(obj);
         await _dbContext.SaveChangesAsync();
+        return obj;
     }
 
     public async Task Update(TEntity obj)

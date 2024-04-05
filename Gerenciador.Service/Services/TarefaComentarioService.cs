@@ -17,13 +17,14 @@ public class TarefaComentarioService : ITarefaComentarioService
         _dtoMapper = dtoMapper;
     }
     
-    public async Task<ServiceResult<int>> Insert(TarefaComentarioDto comentarioDto)
+    public async Task<ServiceResult<TarefaComentarioDto>> Insert(TarefaComentarioDto comentarioDto)
     {
         var entity = _dtoMapper.DtoToEntity(comentarioDto);
-        await _tarefaComentarioRepository.Insert(entity);
-        return new ServiceResult<int>()
+        var response = await _tarefaComentarioRepository.Insert(entity);
+        var dto = _dtoMapper.EntityToDto(response);
+        return new ServiceResult<TarefaComentarioDto>()
         {
-            Data = comentarioDto.Id
+            Data = dto
         };
     }
 }

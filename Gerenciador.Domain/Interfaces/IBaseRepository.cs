@@ -4,7 +4,7 @@ namespace Gerenciador.Domain.Interfaces;
 
 public interface IBaseRepository<TEntity> where TEntity : BaseEntity
 {
-    Task Insert(TEntity obj);
+    Task<TEntity> Insert(TEntity obj);
 
     Task Update(TEntity obj);
 

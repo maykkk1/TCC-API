@@ -13,11 +13,12 @@ public class TarefaComentarioRepository : ITarefaComentarioRepository
         _dbContext = dbContext;
     }
 
-    public async Task Insert(TarefaComentario obj)
+    public async Task<TarefaComentario> Insert(TarefaComentario obj)
     {
         // obj.DataCriacao = DateTime.Now IMPLEMENTAR;
         _dbContext.Set<TarefaComentario>().Add(obj);
         await _dbContext.SaveChangesAsync();
+        return obj;
     }
 
     public Task Update(TarefaComentario obj)

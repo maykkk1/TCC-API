@@ -14,10 +14,11 @@ public class UserRepository : IUserRepository
     {
         _dbContext = dbContext;
     }
-    public async Task Insert(User obj)
+    public async Task<User> Insert(User obj)
     {
         _dbContext.Set<User>().Add(obj);
         await _dbContext.SaveChangesAsync();
+        return obj;
     }
 
     public async Task Update(User obj)

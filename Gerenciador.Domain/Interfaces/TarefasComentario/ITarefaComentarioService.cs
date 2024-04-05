@@ -5,5 +5,5 @@ namespace Gerenciador.Domain.Interfaces.TarefasComentario;
 
 public interface ITarefaComentarioService 
 {
-    Task<ServiceResult<int>> Insert(TarefaComentarioDto comentarioDto);
+    Task<ServiceResult<TarefaComentarioDto>> Insert(TarefaComentarioDto comentarioDto);
 }

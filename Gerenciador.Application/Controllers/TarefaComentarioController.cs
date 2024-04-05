@@ -24,8 +24,8 @@ namespace Gerenciador.Application.Controllers
         [Route("save")]
         public async Task<ActionResult> Save([FromBody] TarefaComentarioDto comentario)
         {
-            await _tarefaComentarioService.Insert(comentario);
-            return Ok();
+            var response = await _tarefaComentarioService.Insert(comentario);
+            return Ok(response.Data);
         }
         
         
