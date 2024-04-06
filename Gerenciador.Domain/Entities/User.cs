@@ -13,4 +13,5 @@ public class User : BaseEntity
     public string Password { get; set; }
     public ICollection<Tarefa>? Tarefas { get; set; }
     public ICollection<Tarefa>? TarefasCriadas { get; set; }
+    public ICollection<TarefaComentario>? Comentarios { get; set; }
 }

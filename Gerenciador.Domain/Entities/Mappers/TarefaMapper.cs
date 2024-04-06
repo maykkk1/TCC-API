@@ -38,7 +38,9 @@ public class TarefaMapper : IEntityDtoMapper<Tarefa, TarefaDto>
             {
                 Id = c.Id,
                 Conteudo = c.Conteudo,
-                TarefaId = c.TarefaId
+                TarefaId = c.TarefaId,
+                AutorNome = c.AutorNome,
+                DataComentario = c.DataComentario
             }).ToList()
         };
     }

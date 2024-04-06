@@ -11,7 +11,10 @@ public class TarefaComentarioMapper : IEntityDtoMapper<TarefaComentario, TarefaC
         {
             Id = dto.Id,
             Conteudo = dto.Conteudo,
-            TarefaId = dto.TarefaId
+            TarefaId = dto.TarefaId,
+            AutorNome = dto.AutorNome,
+            DataComentario = dto.DataComentario,
+            AutorId = dto.AutorId
         };
     }
 
@@ -21,7 +24,10 @@ public class TarefaComentarioMapper : IEntityDtoMapper<TarefaComentario, TarefaC
         {
             Id = entity.Id,
             Conteudo = entity.Conteudo,
-            TarefaId = entity.TarefaId
+            TarefaId = entity.TarefaId,
+            AutorNome = entity.AutorNome,
+            DataComentario = entity.DataComentario,
+            AutorId = entity.AutorId
         };
     }
 }

@@ -21,8 +21,22 @@ public class TarefaComentarioMap : IEntityTypeConfiguration<TarefaComentario>
             .HasColumnName("CONTEUDO")
             .HasColumnType("TEXT");
         
+        builder.Property(prop => prop.AutorNome)
+            .HasConversion(prop => prop.ToString(), prop => prop)
+            .IsRequired()
+            .HasColumnName("AutorNome")
+            .HasColumnType("varchar(50)");
+        
+        builder.Property(prop => prop.DataComentario)
+            .HasColumnName("DataComentario")
+            .HasColumnType("timestamp");
+        
         builder.HasOne(tarefaComentario => tarefaComentario.Tarefa)
             .WithMany(tarefa => tarefa.Comentarios)
             .HasForeignKey(tarefaComentario => tarefaComentario.TarefaId);
+        
+        builder.HasOne(tarefaComentario => tarefaComentario.Autor)
+            .WithMany(autor => autor.Comentarios)
+            .HasForeignKey(tarefaComentario => tarefaComentario.AutorId);
     }
 }

@@ -15,7 +15,7 @@ public class TarefaComentarioRepository : ITarefaComentarioRepository
 
     public async Task<TarefaComentario> Insert(TarefaComentario obj)
     {
-        // obj.DataCriacao = DateTime.Now IMPLEMENTAR;
+        obj.DataComentario = DateTime.Now;
         _dbContext.Set<TarefaComentario>().Add(obj);
         await _dbContext.SaveChangesAsync();
         return obj;
