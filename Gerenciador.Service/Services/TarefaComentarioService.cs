@@ -31,4 +31,36 @@ public class TarefaComentarioService : ITarefaComentarioService
             Data = dto
         };
     }
+
+    public async Task<ServiceResult<int>> Delete(int comentarioId, int userId)
+    {
+        var comentario = await _tarefaComentarioRepository.Select(comentarioId);
+
+        if (comentario == null)
+        {
+            return new ServiceResult<int>()
+            {
+                Data = comentarioId,
+                ErrorMessage = "Comentario não encontarado",
+                Success = false
+            };
+        }
+
+        if (comentario.AutorId != userId)
+        {
+            return new ServiceResult<int>()
+            {
+                Data = comentarioId,
+                ErrorMessage = "Só é possível excluir comentários feitos pelo usuário",
+                Success = false
+            };
+        }
+
+        _tarefaComentarioRepository.Delete(comentarioId);
+        
+        return new ServiceResult<int>()
+        {
+            Data = comentarioId
+        };
+    }
 }

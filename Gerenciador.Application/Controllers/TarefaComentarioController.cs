@@ -31,6 +31,18 @@ namespace Gerenciador.Application.Controllers
             return Ok(response.Data);
         }
         
-        
+        [HttpDelete]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var response = await _tarefaComentarioService.Delete(id, userId);
+
+            if (response.Success)
+            {
+                return Ok(response.Data);
+            };
+            
+            return BadRequest(response.ErrorMessage);
+        }
     }
 }

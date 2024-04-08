@@ -26,9 +26,10 @@ public class TarefaComentarioRepository : ITarefaComentarioRepository
         throw new NotImplementedException();
     }
 
-    public Task Delete(int id)
+    public async Task Delete(int id)
     {
-        throw new NotImplementedException();
+        _dbContext.Set<TarefaComentario>().Remove(await Select(id));
+        await _dbContext.SaveChangesAsync();
     }
 
     public Task<IList<TarefaComentario>> Select()
@@ -36,8 +37,8 @@ public class TarefaComentarioRepository : ITarefaComentarioRepository
         throw new NotImplementedException();
     }
 
-    public Task<TarefaComentario> Select(int id)
+    public async Task<TarefaComentario> Select(int id)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Set<TarefaComentario>().FindAsync(id);
     }
 }
