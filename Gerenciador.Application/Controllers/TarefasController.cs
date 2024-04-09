@@ -66,5 +66,19 @@ namespace Gerenciador.Application.Controllers
             await _tarefaService.InsertTarefaPrincipal(tarefa);
             return Ok();
         }
+        
+        [HttpDelete]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var response = await _tarefaService.Delete(id, userId);
+
+            if (response.Success)
+            {
+                return Ok(response.Data);
+            };
+            
+            return BadRequest(response.ErrorMessage);
+        }
     }
 }

@@ -56,7 +56,7 @@ public class TarefaComentarioService : ITarefaComentarioService
             };
         }
 
-        _tarefaComentarioRepository.Delete(comentarioId);
+        await _tarefaComentarioRepository.Delete(comentarioId);
         
         return new ServiceResult<int>()
         {

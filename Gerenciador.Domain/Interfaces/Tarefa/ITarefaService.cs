@@ -8,7 +8,7 @@ public interface ITarefaService
 {    
     Task<ServiceResult<TarefaDto>> Add(TarefaDto obj);
 
-    Task Delete(int id);
+    Task<ServiceResult<int>> Delete(int tarefaId, int userId);
 
     Task<ServiceResult<IList<TarefaDto>>> Get();
 

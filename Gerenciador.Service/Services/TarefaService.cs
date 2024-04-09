@@ -4,7 +4,6 @@ using Gerenciador.Domain.Enums;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Infra.Data.Context;
 using Gerenciador.Service.Common;
-using Gerenciador.Service.Utils;
 
 namespace Gerenciador.Service.Services;
 
@@ -39,9 +38,46 @@ public class TarefaService : ITarefaService
         };
     }
 
-    public Task Delete(int id)
+    public async Task<ServiceResult<int>> Delete(int tarefaId, int userId)
     {
-        throw new NotImplementedException();
+        var tarefa = await _tarefaRepository.Select(tarefaId);
+
+        if (tarefa == null)
+        {
+            return new ServiceResult<int>()
+            {
+                Data = tarefaId,
+                ErrorMessage = "Tarefa não encontarada",
+                Success = false
+            };
+        }
+
+        if (tarefa.Tipo == TipoTarefa.Principal && tarefa.CreatedById != userId)
+        {
+            return new ServiceResult<int>()
+            {
+                Data = tarefaId,
+                ErrorMessage = "Apenas o orientador pode excluir essa tarefa",
+                Success = false
+            };
+        } 
+        
+        if (tarefa.Tipo == TipoTarefa.Secundaria && tarefa.CreatedById != userId)
+        {
+            return new ServiceResult<int>()
+            {
+                Data = tarefaId,
+                ErrorMessage = "Você não pode excluir essa tarefa",
+                Success = false
+            };
+        }
+
+        await _tarefaRepository.Delete(tarefaId);
+        
+        return new ServiceResult<int>()
+        {
+            Data = tarefaId
+        };
     }
 
     public async Task<ServiceResult<IList<TarefaDto>>> Get()
