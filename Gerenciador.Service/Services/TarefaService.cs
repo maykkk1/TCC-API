@@ -2,6 +2,7 @@ using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Enums;
 using Gerenciador.Domain.Interfaces;
+using Gerenciador.Domain.Interfaces.Atividade;
 using Gerenciador.Infra.Data.Context;
 using Gerenciador.Service.Common;
 
@@ -11,15 +12,17 @@ public class TarefaService : ITarefaService
 {
     private readonly ITarefaRepository _tarefaRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IAtividadeService _atividadeService;
     private readonly GerenciadorContext _dbContext;
     private readonly IEntityDtoMapper<Tarefa, TarefaDto> _tarefaMapper;
 
-    public TarefaService(ITarefaRepository tarefaRepository, IUserRepository userRepository, GerenciadorContext dbContext, IEntityDtoMapper<Tarefa, TarefaDto> tarefaMapper)
+    public TarefaService(ITarefaRepository tarefaRepository, IUserRepository userRepository, GerenciadorContext dbContext, IEntityDtoMapper<Tarefa, TarefaDto> tarefaMapper, IAtividadeService atividadeService)
     {
         _tarefaRepository = tarefaRepository;
         _userRepository = userRepository;
         _dbContext = dbContext;
         _tarefaMapper = tarefaMapper;
+        _atividadeService = atividadeService;
     }
 
     public async Task<Tarefa> Add(Tarefa obj)
@@ -139,7 +142,15 @@ public class TarefaService : ITarefaService
                     : "Apenas o orientador pode mover a tarefa para o Retorno"
             };
         }
-        
+
+        var atividade = new AtividadeDto()
+        {
+            Descricao = "Atividade",
+            PessoaId = userId,
+            TarefaId = tarefa.Id
+        };
+
+        await _atividadeService.Add(atividade);
         
         await _tarefaRepository.Update(tarefa);
         var dto = _tarefaMapper.EntityToDto(tarefa);
