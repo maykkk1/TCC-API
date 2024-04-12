@@ -146,12 +146,13 @@ public class TarefaService : ITarefaService
         var atividade = new AtividadeDto()
         {
             Descricao = "Atividade",
-            PessoaId = userId,
-            TarefaId = tarefa.Id
+            PessoaId = tarefa.PessoaId,
+            TarefaId = tarefa.Id,
+            Tipo = TipoAtividadeEnum.AlteracaoTarefa,
+            NovaSituacaoTarefa = tarefa.Situacao
         };
 
         await _atividadeService.Add(atividade);
-        
         await _tarefaRepository.Update(tarefa);
         var dto = _tarefaMapper.EntityToDto(tarefa);
         return new ServiceResult<TarefaDto>()

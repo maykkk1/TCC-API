@@ -26,6 +26,16 @@ public class AtividadeMap : IEntityTypeConfiguration<Atividade>
             .HasColumnName("DataAtividade")
             .HasColumnType("timestamp");
         
+        builder.Property(prop => prop.Tipo)
+            .IsRequired()
+            .HasColumnName("Tipo")
+            .HasColumnType("int");
+        
+        builder.Property(prop => prop.NovaSituacaoTarefa)
+            .IsRequired()
+            .HasColumnName("NovaSituacaoTarefa")
+            .HasColumnType("int");
+        
         builder.HasOne(atividade => atividade.User)
             .WithMany(tarefa => tarefa.Atividades)
             .HasForeignKey(atividade => atividade.PessoaId);

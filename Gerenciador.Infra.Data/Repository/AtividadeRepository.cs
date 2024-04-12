@@ -43,4 +43,13 @@ public class AtividadeRepository : IAtividadeRepository
     {
         return await _dbContext.Set<Atividade>().FindAsync(id);
     }
+
+    public async Task<List<Atividade>> GetByUserId(int userId)
+    {
+        var entities = await _dbContext.Set<Atividade>()
+            .Include(x => x.User)
+            .Include(x => x.Tarefa)
+            .Where(x => x.PessoaId == userId).ToListAsync();
+        return entities;
+    }
 }

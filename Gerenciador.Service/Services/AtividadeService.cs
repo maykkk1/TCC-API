@@ -47,8 +47,15 @@ public class AtividadeService : IAtividadeService
         throw new NotImplementedException();
     }
 
-    public Task<ServiceResult<List<AtividadeDto>>> getByUserId(int userId)
+    public async Task<ServiceResult<List<AtividadeDto>>> getByUserId(int userId)
     {
-        throw new NotImplementedException();
+        var entities = await _atividadeRepository.GetByUserId(userId);
+        
+        var atividades = entities.Select(atividades => _atividadeMapper.EntityToDto(atividades)).ToList();
+
+        return new ServiceResult<List<AtividadeDto>>()
+        {
+            Data = atividades
+        };
     }
 }

@@ -13,7 +13,9 @@ public class AtividadeMapper : IEntityDtoMapper<Atividade, AtividadeDto>
             Descricao = dto.Descricao,
             PessoaId = dto.PessoaId,
             TarefaId = dto.TarefaId,
-            DataAtividade = dto.DataAtividade
+            DataAtividade = dto.DataAtividade,
+            Tipo = dto.Tipo,
+            NovaSituacaoTarefa = dto.NovaSituacaoTarefa
         };
     }
 
@@ -25,7 +27,11 @@ public class AtividadeMapper : IEntityDtoMapper<Atividade, AtividadeDto>
             Descricao = entity.Descricao,
             PessoaId = entity.PessoaId,
             TarefaId = entity.TarefaId,
-            DataAtividade = entity.DataAtividade
+            DataAtividade = entity.DataAtividade,
+            Tipo = entity.Tipo,
+            TarefaTitulo = entity.Tarefa.Titulo,
+            Responsavel = entity.User.Name,
+            NovaSituacaoTarefa = entity.NovaSituacaoTarefa
         };
     }
 }
