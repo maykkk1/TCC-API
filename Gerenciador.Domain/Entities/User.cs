@@ -14,5 +14,6 @@ public class User : BaseEntity
     public ICollection<Tarefa>? Tarefas { get; set; }
     public ICollection<Tarefa>? TarefasCriadas { get; set; }
     public ICollection<TarefaComentario>? Comentarios { get; set; }
-    public ICollection<Atividade>? Atividades { get; set; }
+    public ICollection<Atividade>? AtividadesCriadas { get; set; }
+    public ICollection<AtividadePessoaRelacionamento>? AtividadesRelacionadas { get; set; }
 }

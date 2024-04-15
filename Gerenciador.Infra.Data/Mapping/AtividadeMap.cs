@@ -37,7 +37,7 @@ public class AtividadeMap : IEntityTypeConfiguration<Atividade>
             .HasColumnType("int");
         
         builder.HasOne(atividade => atividade.User)
-            .WithMany(tarefa => tarefa.Atividades)
+            .WithMany(user => user.AtividadesCriadas)
             .HasForeignKey(atividade => atividade.PessoaId);
         
         builder.HasOne(atividade => atividade.Tarefa)
