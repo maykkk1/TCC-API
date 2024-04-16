@@ -51,6 +51,7 @@ public class AtividadeRepository : IAtividadeRepository
             .Include(x => x.Atividade)
             .ThenInclude(x => x.Tarefa)
             .Include(x => x.Atividade.Pessoa)
+            .Where(x => x.PessoaId == userId)
             .Select(x => x.Atividade).ToListAsync();
         return entities;
     }
