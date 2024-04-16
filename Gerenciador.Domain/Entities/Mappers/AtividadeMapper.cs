@@ -30,7 +30,7 @@ public class AtividadeMapper : IEntityDtoMapper<Atividade, AtividadeDto>
             DataAtividade = entity.DataAtividade,
             Tipo = entity.Tipo,
             TarefaTitulo = entity.Tarefa.Titulo,
-            Responsavel = entity.User.Name,
+            Responsavel = entity.Pessoa.Name,
             NovaSituacaoTarefa = entity.NovaSituacaoTarefa
         };
     }

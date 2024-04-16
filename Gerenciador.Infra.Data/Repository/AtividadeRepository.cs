@@ -1,3 +1,4 @@
+using System.Xml.XPath;
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Interfaces.Atividade;
 using Gerenciador.Infra.Data.Context;
@@ -46,10 +47,17 @@ public class AtividadeRepository : IAtividadeRepository
 
     public async Task<List<Atividade>> GetByUserId(int userId)
     {
-        var entities = await _dbContext.Set<Atividade>()
-            .Include(x => x.User)
-            .Include(x => x.Tarefa)
-            .Where(x => x.PessoaId == userId).ToListAsync();
+        var entities = await _dbContext.Set<AtividadePessoaRelacionamento>()
+            .Include(x => x.Atividade)
+            .ThenInclude(x => x.Tarefa)
+            .Include(x => x.Atividade.Pessoa)
+            .Select(x => x.Atividade).ToListAsync();
         return entities;
+    }
+
+    public async Task insertRelacionamento(AtividadePessoaRelacionamento relacionamento)
+    {
+        _dbContext.Set<AtividadePessoaRelacionamento>().Add(relacionamento);
+        await _dbContext.SaveChangesAsync();
     }
 }

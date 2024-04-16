@@ -23,15 +23,15 @@ namespace Gerenciador.Application.Controllers
             _atividadeService = atividadeService;
         }
 
-        [HttpPost]
-        [Authorize]
-        [Route("save")]
-        public async Task<ActionResult> Save([FromBody] AtividadeDto comentario)
-        {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            var response = await _atividadeService.Add(comentario);
-            return Ok(response.Data);
-        }
+        // [HttpPost]
+        // [Authorize]
+        // [Route("save")]
+        // public async Task<ActionResult> Save([FromBody] AtividadeDto atividade)
+        // {
+        //     var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        //     var response = await _atividadeService.Add(atividade);
+        //     return Ok(response.Data);
+        // }
         
         [HttpGet]
         [Authorize]
