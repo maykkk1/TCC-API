@@ -80,10 +80,11 @@ public class TarefaRepository : ITarefaRepository
         }).ToList();
     }
 
-    public async Task InsertTarefaPrincipal(Tarefa tarefa)
+    public async Task<Tarefa> InsertTarefaPrincipal(Tarefa tarefa)
     {
         tarefa.DataCriacao = DateTime.Now;
         _dbContext.Set<Tarefa>().Add(tarefa);
         await _dbContext.SaveChangesAsync();
+        return tarefa;
     }
 }

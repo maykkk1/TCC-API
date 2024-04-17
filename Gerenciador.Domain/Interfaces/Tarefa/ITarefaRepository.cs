@@ -7,5 +7,5 @@ using Gerenciador.Domain.Interfaces;
 public interface ITarefaRepository : IBaseRepository<Tarefa>
 {
     Task<List<TarefaDto>> GetByUserId(int userId, bool isPrincipal);
-    Task InsertTarefaPrincipal(Tarefa tarefa);
+    Task<Tarefa> InsertTarefaPrincipal(Tarefa tarefa);
 }

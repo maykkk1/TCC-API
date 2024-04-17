@@ -34,6 +34,18 @@ public class TarefaService : ITarefaService
     public async Task<ServiceResult<TarefaDto>> Add(TarefaDto obj)
     {
         var entity = _tarefaMapper.DtoToEntity(obj);
+        var atividade = new AtividadeDto()
+        {
+            Descricao = "Criação de atividade",
+            PessoaId = obj.CreatedById,
+            TarefaId = obj.Id,
+            Tipo = TipoAtividadeEnum.CriacaoTarefa,
+            NovaSituacaoTarefa = obj.Situacao
+        };
+
+        var listaPessoas = new List<int>();
+        listaPessoas.Add(obj.PessoaId);
+        await _atividadeService.Add(atividade, listaPessoas);
         _tarefaRepository.Insert(entity);
         return new ServiceResult<TarefaDto>()
         {
@@ -121,11 +133,25 @@ public class TarefaService : ITarefaService
 
     public async Task<ServiceResult<Tarefa>> InsertTarefaPrincipal(Tarefa tarefa)
     {
-        // revisar isso aqui
-        await _tarefaRepository.InsertTarefaPrincipal(tarefa);
-        var result = new ServiceResult<Tarefa>();
-        result.Data = tarefa;
-        return result;
+        var obj = await _tarefaRepository.InsertTarefaPrincipal(tarefa);
+        
+        // tranformar isso em um funcao
+        var atividade = new AtividadeDto()
+        {
+            Descricao = "Criação de atividade",
+            PessoaId = tarefa.CreatedById,
+            TarefaId = tarefa.Id,
+            Tipo = TipoAtividadeEnum.CriacaoTarefa,
+            NovaSituacaoTarefa = tarefa.Situacao
+        };
+        var listaPessoas = new List<int>();
+        listaPessoas.Add(tarefa.PessoaId);
+        await _atividadeService.Add(atividade, listaPessoas);
+
+        return new ServiceResult<Tarefa>()
+        {
+            Data = obj
+        };
     }
     
     public async Task<ServiceResult<TarefaDto>> UpdateTarefaPrincipal(Tarefa tarefa, int userId)
