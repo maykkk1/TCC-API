@@ -75,6 +75,7 @@ builder.Services.AddSingleton<DtoEntityMapper<TarefaDto, Tarefa>>();
 builder.Services.AddScoped<IEntityDtoMapper<Tarefa, TarefaDto>, TarefaMapper>();
 builder.Services.AddScoped<IEntityDtoMapper<TarefaComentario, TarefaComentarioDto>, TarefaComentarioMapper>();
 builder.Services.AddScoped<IEntityDtoMapper<Atividade, AtividadeDto>, AtividadeMapper>();
+// builder.Services.AddScoped<IEntityDtoMapper<User, CadastroDto>, CadastroMapper>();
 
 //repository
 builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();

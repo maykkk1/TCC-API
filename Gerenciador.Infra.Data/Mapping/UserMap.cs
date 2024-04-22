@@ -20,12 +20,24 @@ public class UserMap : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasColumnName("NAME")
             .HasColumnType("varchar(100)");
+        
+        builder.Property(prop => prop.Sobrenome)
+            .HasConversion(prop => prop.ToString(), prop => prop)
+            .IsRequired()
+            .HasColumnName("Sobrenome")
+            .HasColumnType("varchar(60)");
 
         builder.Property(prop => prop.Email)
             .HasConversion(prop => prop.ToString(), prop => prop)
             .IsRequired()
             .HasColumnName("EMAIL")
             .HasColumnType("varchar(100)");
+        
+        builder.Property(prop => prop.Telefone)
+            .HasConversion(prop => prop.ToString(), prop => prop)
+            .IsRequired()
+            .HasColumnName("Telefone")
+            .HasColumnType("varchar(60)");
 
         builder.Property(prop => prop.Password)
             .HasConversion(prop => prop.ToString(), prop => prop)

@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Gerenciador.Domain.Entities;
+using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +19,9 @@ namespace Gerenciador.Application.Controllers
         }
 
         [HttpPost]
-        public int Create([FromBody] User user)
+        public int Create([FromBody] CadastroDto user)
         {
-            var result = _userService.Add(user);
+            var result = _userService.Cadastrar(user);
             return result.Id;
         }
         

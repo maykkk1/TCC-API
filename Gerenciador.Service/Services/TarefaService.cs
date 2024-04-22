@@ -34,19 +34,19 @@ public class TarefaService : ITarefaService
     public async Task<ServiceResult<TarefaDto>> Add(TarefaDto obj)
     {
         var entity = _tarefaMapper.DtoToEntity(obj);
+
+        var listaPessoas = new List<int>();
+        listaPessoas.Add(obj.PessoaId);
+        _tarefaRepository.Insert(entity);
         var atividade = new AtividadeDto()
         {
             Descricao = "Criação de atividade",
             PessoaId = obj.CreatedById,
-            TarefaId = obj.Id,
+            TarefaId = entity.Id,
             Tipo = TipoAtividadeEnum.CriacaoTarefa,
             NovaSituacaoTarefa = obj.Situacao
         };
-
-        var listaPessoas = new List<int>();
-        listaPessoas.Add(obj.PessoaId);
         await _atividadeService.Add(atividade, listaPessoas);
-        _tarefaRepository.Insert(entity);
         return new ServiceResult<TarefaDto>()
         {
             Data = obj

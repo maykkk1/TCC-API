@@ -1,6 +1,7 @@
 using FluentValidation;
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
+using Gerenciador.Domain.Enums;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Service.Common;
 
@@ -10,6 +11,7 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly IValidator<User> _userValidator;
+    // private readonly IEntityDtoMapper<User, CadastroDto> _cadastroMapper;
 
     public UserService(IUserRepository userRepository, IBaseRepository<User> baseRepository, IValidator<User> userValidator)
     {
@@ -47,6 +49,28 @@ public class UserService : IUserService
     {
         await _userRepository.Update(obj);
         return obj;
+    }
+
+    public async Task<ServiceResult<CadastroDto>> Cadastrar(CadastroDto user)
+    {
+        // var obj = _cadastroMapper.DtoToEntity(user);
+
+        var obj = new User()
+        {
+            Name = user.Name,
+            Sobrenome = user.Sobrenome,
+            Telefone = user.Telefone,
+            Email = user.Email,
+            Tipo = TipoPessoaEnum.Professor,
+            Password = user.Password
+        };
+
+        await _userRepository.Insert(obj);
+
+        return new ServiceResult<CadastroDto>()
+        {
+            Data = user
+        };
     }
 
     public async Task<User> ValidateLogin(UserLoginDto user)
