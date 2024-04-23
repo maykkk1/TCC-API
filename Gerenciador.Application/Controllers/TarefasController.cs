@@ -18,6 +18,7 @@ namespace Gerenciador.Application.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route("save")]
         public async Task<ActionResult> Save([FromBody] TarefaDto tarefa)
         {
@@ -60,6 +61,7 @@ namespace Gerenciador.Application.Controllers
         }
         
         [HttpPost]
+        [Authorize]
         [Route("save-principal")]
         public async Task<ActionResult> SavePrincipal([FromBody] Tarefa tarefa)
         {

@@ -11,22 +11,28 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly IValidator<User> _userValidator;
-    // private readonly IEntityDtoMapper<User, CadastroDto> _cadastroMapper;
+    private readonly IEntityDtoMapper<User, CadastroDto> _cadastroMapper;
 
-    public UserService(IUserRepository userRepository, IBaseRepository<User> baseRepository, IValidator<User> userValidator)
+    public UserService(IUserRepository userRepository, IValidator<User> userValidator, IEntityDtoMapper<User, CadastroDto> cadastroMapper)
     {
         _userRepository = userRepository;
         _userValidator = userValidator;
+        _cadastroMapper = cadastroMapper;
     }
+
     public async Task<User> Add(User obj)
     {
-        var validate = _userValidator.ValidateAsync(obj).Result;
-        if (validate.IsValid)
+        var validationResult = await _userValidator.ValidateAsync(obj);
+        if (validationResult.IsValid)
         {
+            await _userRepository.Insert(obj);
             return obj;
         }
-
-        return null;
+        else
+        {
+            // Tratar o erro de validação de alguma forma
+            return null;
+        }
     }
 
     public async Task Delete(int id)
@@ -39,12 +45,6 @@ public class UserService : IUserService
         return await _userRepository.Select();
     }
 
-    public Task<ServiceResult<T>> GetById<T>(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-
     public async Task<User> Update(User obj)
     {
         await _userRepository.Update(obj);
@@ -53,24 +53,18 @@ public class UserService : IUserService
 
     public async Task<ServiceResult<CadastroDto>> Cadastrar(CadastroDto user)
     {
-        // var obj = _cadastroMapper.DtoToEntity(user);
-
-        var obj = new User()
+        var obj = _cadastroMapper.DtoToEntity(user);
+        
+        try
         {
-            Name = user.Name,
-            Sobrenome = user.Sobrenome,
-            Telefone = user.Telefone,
-            Email = user.Email,
-            Tipo = TipoPessoaEnum.Professor,
-            Password = user.Password
-        };
-
-        await _userRepository.Insert(obj);
-
-        return new ServiceResult<CadastroDto>()
+            await _userRepository.Insert(obj);
+            return new ServiceResult<CadastroDto>() { Data = user };
+        }
+        catch (Exception ex)
         {
-            Data = user
-        };
+            // Tratar exceção de alguma forma
+            return new ServiceResult<CadastroDto>() { ErrorMessage = ex.Message };
+        }
     }
 
     public async Task<User> ValidateLogin(UserLoginDto user)
@@ -86,5 +80,11 @@ public class UserService : IUserService
     public async Task<UserDto> GetAlunoById(int id)
     {
         return await _userRepository.GetAlunoById(id);
+    }
+
+    // Remova ou implemente corretamente este método
+    public Task<ServiceResult<T>> GetById<T>(int id)
+    {
+        throw new NotImplementedException();
     }
 }

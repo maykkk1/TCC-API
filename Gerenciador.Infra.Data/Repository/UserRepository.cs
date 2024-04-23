@@ -8,7 +8,7 @@ namespace Gerenciador.Infra.Data.Repository;
 
 public class UserRepository : IUserRepository
 {
-    protected readonly GerenciadorContext _dbContext;
+    private readonly GerenciadorContext _dbContext;
 
     public UserRepository(GerenciadorContext dbContext)
     {
@@ -16,9 +16,21 @@ public class UserRepository : IUserRepository
     }
     public async Task<User> Insert(User obj)
     {
-        _dbContext.Set<User>().Add(obj);
-        await _dbContext.SaveChangesAsync();
-        return obj;
+        using (var dbContextTransaction = _dbContext.Database.BeginTransaction())
+        {
+            try
+            {
+                _dbContext.Set<User>().Add(obj);
+                await _dbContext.SaveChangesAsync();
+                await dbContextTransaction.CommitAsync(); // Commit da transação
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                await dbContextTransaction.RollbackAsync();
+                throw new Exception("Erro ao inserir o usuário.", ex);
+            }
+        }
     }
 
     public async Task Update(User obj)

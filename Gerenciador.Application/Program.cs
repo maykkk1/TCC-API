@@ -31,7 +31,10 @@ var config = new ConfigurationBuilder()
 builder.Services.AddDbContext<GerenciadorContext>(options =>
 {
     options.UseNpgsql(config.GetConnectionString("postgres"));
+    options.EnableSensitiveDataLogging(); 
+    options.EnableDetailedErrors();
 });
+
 
 builder.Services.AddCors(options =>
 {
@@ -75,7 +78,7 @@ builder.Services.AddSingleton<DtoEntityMapper<TarefaDto, Tarefa>>();
 builder.Services.AddScoped<IEntityDtoMapper<Tarefa, TarefaDto>, TarefaMapper>();
 builder.Services.AddScoped<IEntityDtoMapper<TarefaComentario, TarefaComentarioDto>, TarefaComentarioMapper>();
 builder.Services.AddScoped<IEntityDtoMapper<Atividade, AtividadeDto>, AtividadeMapper>();
-// builder.Services.AddScoped<IEntityDtoMapper<User, CadastroDto>, CadastroMapper>();
+builder.Services.AddScoped<IEntityDtoMapper<User, CadastroDto>, CadastroMapper>();
 
 //repository
 builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();

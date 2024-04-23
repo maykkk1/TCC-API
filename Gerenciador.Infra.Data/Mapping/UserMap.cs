@@ -11,14 +11,14 @@ public class UserMap : IEntityTypeConfiguration<User>
         builder.ToTable("USER");
 
         builder.Property(prop => prop.Id)
-            .HasColumnName("ID")
+            .HasColumnName("Id")
             .IsRequired()
             .UseIdentityColumn();
         
         builder.Property(prop => prop.Name)
             .HasConversion(prop => prop.ToString(), prop => prop)
             .IsRequired()
-            .HasColumnName("NAME")
+            .HasColumnName("Name")
             .HasColumnType("varchar(100)");
         
         builder.Property(prop => prop.Sobrenome)
@@ -30,7 +30,7 @@ public class UserMap : IEntityTypeConfiguration<User>
         builder.Property(prop => prop.Email)
             .HasConversion(prop => prop.ToString(), prop => prop)
             .IsRequired()
-            .HasColumnName("EMAIL")
+            .HasColumnName("Email")
             .HasColumnType("varchar(100)");
         
         builder.Property(prop => prop.Telefone)
@@ -42,16 +42,16 @@ public class UserMap : IEntityTypeConfiguration<User>
         builder.Property(prop => prop.Password)
             .HasConversion(prop => prop.ToString(), prop => prop)
             .IsRequired()
-            .HasColumnName("PASSWORD")
-            .HasColumnType("varchar(50)");
+            .HasColumnName("Password")
+            .HasColumnType("varchar(100)");
         
         builder.Property(prop => prop.Tipo)
             .IsRequired()
-            .HasColumnName("TIPO")
+            .HasColumnName("Tipo")
             .HasColumnType("int");
         
         builder.Property(prop => prop.OrientadorId)
-            .HasColumnName("ORIENTADOR_ID");
+            .HasColumnName("OrientadorId");
         
         builder.HasOne(user => user.Orientador)
             .WithMany()
