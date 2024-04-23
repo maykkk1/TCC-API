@@ -16,21 +16,9 @@ public class UserRepository : IUserRepository
     }
     public async Task<User> Insert(User obj)
     {
-        using (var dbContextTransaction = _dbContext.Database.BeginTransaction())
-        {
-            try
-            {
-                _dbContext.Set<User>().Add(obj);
-                await _dbContext.SaveChangesAsync();
-                await dbContextTransaction.CommitAsync(); // Commit da transação
-                return obj;
-            }
-            catch (Exception ex)
-            {
-                await dbContextTransaction.RollbackAsync();
-                throw new Exception("Erro ao inserir o usuário.", ex);
-            }
-        }
+        _dbContext.Set<User>().Add(obj);
+        await _dbContext.SaveChangesAsync();
+        return obj;
     }
 
     public async Task Update(User obj)
