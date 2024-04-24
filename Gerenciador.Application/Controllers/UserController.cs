@@ -19,10 +19,14 @@ namespace Gerenciador.Application.Controllers
         }
 
         [HttpPost]
-        public async Task<int> Create([FromBody] CadastroDto user)
+        public async Task<ActionResult> Create([FromBody] CadastroDto user)
         {
             var result = await _userService.Cadastrar(user);
-            return result.Data.Id;
+            if (result.Success)
+            {
+                return Ok(result.Data.Id);
+            }
+            return BadRequest(result.ErrorMessage);
         }
         
         [HttpGet]

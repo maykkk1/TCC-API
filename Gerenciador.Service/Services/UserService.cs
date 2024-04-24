@@ -54,6 +54,26 @@ public class UserService : IUserService
     public async Task<ServiceResult<CadastroDto>> Cadastrar(CadastroDto user)
     {
         var obj = _cadastroMapper.DtoToEntity(user);
+        var errors = new List<string>();
+        var validator = _userValidator.Validate(obj);
+
+        if (!user.Password.Equals(user.Confirm))
+            errors.Add("As senhas devem ser iguais");
+
+        if (validator.Errors.Count > 0)
+        {
+            validator.Errors.ForEach(erro =>
+            {
+                errors.Add(erro.ErrorMessage);
+            });
+        }
+
+        if (errors.Count > 0)
+        {
+            string errorMessage = string.Join(Environment.NewLine, errors);
+            errorMessage = errorMessage.Replace(Environment.NewLine, "<br>");
+            return new ServiceResult<CadastroDto>() { ErrorMessage = errorMessage, Success = false };
+        }
         
         try
         {
@@ -62,8 +82,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            // Tratar exceção de alguma forma
-            return new ServiceResult<CadastroDto>() { ErrorMessage = ex.Message };
+            return new ServiceResult<CadastroDto>() { ErrorMessage = ex.Message, Success = false };
         }
     }
 

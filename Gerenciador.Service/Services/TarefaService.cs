@@ -13,14 +13,12 @@ public class TarefaService : ITarefaService
     private readonly ITarefaRepository _tarefaRepository;
     private readonly IUserRepository _userRepository;
     private readonly IAtividadeService _atividadeService;
-    private readonly GerenciadorContext _dbContext;
     private readonly IEntityDtoMapper<Tarefa, TarefaDto> _tarefaMapper;
 
-    public TarefaService(ITarefaRepository tarefaRepository, IUserRepository userRepository, GerenciadorContext dbContext, IEntityDtoMapper<Tarefa, TarefaDto> tarefaMapper, IAtividadeService atividadeService)
+    public TarefaService(ITarefaRepository tarefaRepository, IUserRepository userRepository, IEntityDtoMapper<Tarefa, TarefaDto> tarefaMapper, IAtividadeService atividadeService)
     {
         _tarefaRepository = tarefaRepository;
         _userRepository = userRepository;
-        _dbContext = dbContext;
         _tarefaMapper = tarefaMapper;
         _atividadeService = atividadeService;
     }
