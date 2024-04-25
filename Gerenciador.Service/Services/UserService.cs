@@ -55,10 +55,13 @@ public class UserService : IUserService
     {
         var obj = _cadastroMapper.DtoToEntity(user);
         var errors = new List<string>();
-        var validator = _userValidator.Validate(obj);
-
-        if (!user.Password.Equals(user.Confirm))
+        var validator = await _userValidator.ValidateAsync(obj);
+        
+        if (!String.IsNullOrEmpty(user.Password) && !user.Password.Equals(user.Confirm))
             errors.Add("As senhas devem ser iguais");
+        
+        if(await _userRepository.emailRegistred(obj.Email))
+            errors.Add("Email já cadastrado.");
 
         if (validator.Errors.Count > 0)
         {
@@ -70,8 +73,9 @@ public class UserService : IUserService
 
         if (errors.Count > 0)
         {
+            errors = errors.Distinct().ToList();
             string errorMessage = string.Join(Environment.NewLine, errors);
-            errorMessage = errorMessage.Replace(Environment.NewLine, "<br>");
+            errorMessage = errorMessage.Replace(Environment.NewLine, ";");
             return new ServiceResult<CadastroDto>() { ErrorMessage = errorMessage, Success = false };
         }
         

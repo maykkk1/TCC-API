@@ -64,4 +64,9 @@ public class UserRepository : IUserRepository
             Tipo = aluno.Tipo
         }).FirstOrDefaultAsync();
     }
+
+    public async Task<bool> emailRegistred(string email)
+    {
+        return await _dbContext.Set<User>().AnyAsync(u => u.Email == email);
+    }
 }
