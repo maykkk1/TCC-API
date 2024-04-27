@@ -21,12 +21,19 @@ namespace Gerenciador.Application.Controllers
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] CadastroDto user)
         {
-            var result = await _userService.Cadastrar(user);
-            if (result.Success)
+            try
             {
-                return Ok(result.Data.Id);
+                var result = await _userService.Cadastrar(user);
+                if (result.Success)
+                {
+                    return Ok(result.Data.Id);
+                }
+                return BadRequest(result.ErrorMessage);
             }
-            return BadRequest(result.ErrorMessage);
+            catch (Exception e)
+            {
+                return BadRequest("Ocorreu um erro ao fazer a requição!");
+            }
         }
         
         [HttpGet]
