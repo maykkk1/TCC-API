@@ -1,6 +1,7 @@
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Interfaces.TarefasComentario;
 using Gerenciador.Infra.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gerenciador.Infra.Data.Repository;
 
@@ -21,9 +22,10 @@ public class TarefaComentarioRepository : ITarefaComentarioRepository
         return obj;
     }
 
-    public Task Update(TarefaComentario obj)
+    public async Task Update(TarefaComentario obj)
     {
-        throw new NotImplementedException();
+        _dbContext.Entry(obj).State = EntityState.Modified;
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task Delete(int id)
@@ -32,9 +34,9 @@ public class TarefaComentarioRepository : ITarefaComentarioRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public Task<IList<TarefaComentario>> Select()
+    public async Task<IList<TarefaComentario>> Select()
     {
-        throw new NotImplementedException();
+        return await _dbContext.Set<TarefaComentario>().ToListAsync();
     }
 
     public async Task<TarefaComentario> Select(int id)

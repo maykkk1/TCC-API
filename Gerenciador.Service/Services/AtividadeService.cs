@@ -50,9 +50,22 @@ public class AtividadeService : IAtividadeService
         throw new NotImplementedException();
     }
 
-    public Task<ServiceResult<AtividadeDto>> Update(AtividadeDto obj)
+    public async Task<ServiceResult<AtividadeDto>> Update(AtividadeDto obj)
     {
-        throw new NotImplementedException();
+        var entity = _atividadeMapper.DtoToEntity(obj);
+        try
+        {
+            await _atividadeRepository.Update(entity);
+            return new ServiceResult<AtividadeDto>() { Data = obj };
+        }
+        catch (Exception e)
+        {
+            return new ServiceResult<AtividadeDto>()
+            {
+                Success = false,
+                ErrorMessage = e.Message
+            };
+        }
     }
 
     public async Task<ServiceResult<List<AtividadeDto>>> getByUserId(int userId)
