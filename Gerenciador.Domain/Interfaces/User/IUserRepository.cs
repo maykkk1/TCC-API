@@ -8,5 +8,7 @@ public interface IUserRepository : IBaseRepository<User>
     Task<User> ValidateLogin(UserLoginDto user);
     Task<List<User>> GetOrientandosById(int orientadorId);
     Task<UserDto?> GetAlunoById(int id);
-    Task<bool> emailRegistred(string email);
+    Task<bool> EmailRegistred(string email);
+    Task<int> GerarCodigoCadastro(int userId);
+
 }

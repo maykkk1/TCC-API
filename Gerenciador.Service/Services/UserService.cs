@@ -60,7 +60,7 @@ public class UserService : IUserService
         if (!String.IsNullOrEmpty(user.Password) && !user.Password.Equals(user.Confirm))
             errors.Add("As senhas devem ser iguais");
         
-        if(await _userRepository.emailRegistred(obj.Email))
+        if(await _userRepository.EmailRegistred(obj.Email))
             errors.Add("Email já cadastrado.");
 
         if (validator.Errors.Count > 0)
@@ -88,6 +88,16 @@ public class UserService : IUserService
         {
             return new ServiceResult<CadastroDto>() { ErrorMessage = ex.Message, Success = false };
         }
+    }
+
+    public async Task<ServiceResult<int>> GerarCodigoCadastro(int userId)
+    {
+        var codigo = await _userRepository.GerarCodigoCadastro(userId);
+
+        return new ServiceResult<int>()
+        {
+            Data = codigo
+        };
     }
 
     public async Task<User> ValidateLogin(UserLoginDto user)

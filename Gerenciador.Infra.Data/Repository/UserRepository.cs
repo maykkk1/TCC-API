@@ -65,8 +65,32 @@ public class UserRepository : IUserRepository
         }).FirstOrDefaultAsync();
     }
 
-    public async Task<bool> emailRegistred(string email)
+    public async Task<bool> EmailRegistred(string email)
     {
         return await _dbContext.Set<User>().AnyAsync(u => u.Email == email);
+    }
+
+    public async Task<int> GerarCodigoCadastro(int userId)
+    {
+        var bd = _dbContext.Set<CodigoCadastro>();
+        Random rnd = new Random();
+        int novoCodigo;
+
+        do
+        {
+            novoCodigo = rnd.Next(1000, 10000);
+        } while (await bd.AnyAsync(c => c.Codigo == novoCodigo));
+
+        var novoCadastro = new CodigoCadastro
+        {
+            Codigo = novoCodigo,
+            DataExpiracao = DateTime.Now.AddDays(7),
+            OrientadorId = userId,
+        };
+
+        bd.Add(novoCadastro);
+        await _dbContext.SaveChangesAsync();
+
+        return novoCodigo;
     }
 }

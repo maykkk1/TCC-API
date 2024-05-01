@@ -16,6 +16,7 @@ public class GerenciadorContext : DbContext
     public DbSet<TarefaComentario> TarefaComentarios { get; set; }
     public DbSet<Atividade> Atividade { get; set; }
     public DbSet<AtividadePessoaRelacionamento> AtividadePessoaRelacionamentos { get; set; }
+    public DbSet<CodigoCadastro> CodigosCadastro { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -26,5 +27,6 @@ public class GerenciadorContext : DbContext
         modelBuilder.Entity<TarefaComentario>(new TarefaComentarioMap().Configure);
         modelBuilder.Entity<Atividade>(new AtividadeMap().Configure);
         modelBuilder.Entity<AtividadePessoaRelacionamento>(new AtividadePessoaRelacionamentoMap().Configure);
+        modelBuilder.Entity<CodigoCadastro>(new CodigoCadastroMap().Configure);
     }
 }

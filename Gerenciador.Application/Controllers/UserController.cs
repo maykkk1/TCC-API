@@ -62,5 +62,15 @@ namespace Gerenciador.Application.Controllers
             var result = await _userService.GetAlunoById(id);
             return Ok(result);
         }
+        
+        [HttpGet]
+        [Authorize]
+        [Route("codigo")]
+        public async Task<ActionResult<List<Tarefa>>> GetCodigoCadastro()
+        {
+            var orientadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var result = await _userService.GerarCodigoCadastro(orientadorId);
+            return Ok(result);
+        }
     }
 }
