@@ -19,6 +19,11 @@ public class CodigoCadastroMap : IEntityTypeConfiguration<CodigoCadastro>
             .HasColumnName("Codigo")
             .HasColumnType("int")
             .IsRequired();
+        
+        builder.Property(prop => prop.Status)
+            .HasColumnName("Status")
+            .HasColumnType("int")
+            .IsRequired();
 
         builder.Property(prop => prop.OrientadorId)
             .HasColumnName("OrientadorId")

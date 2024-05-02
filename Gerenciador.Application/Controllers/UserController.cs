@@ -66,11 +66,24 @@ namespace Gerenciador.Application.Controllers
         [HttpGet]
         [Authorize]
         [Route("codigo")]
-        public async Task<ActionResult<List<Tarefa>>> GetCodigoCadastro()
+        public async Task<ActionResult<int>> GetCodigoCadastro()
         {
             var orientadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var result = await _userService.GerarCodigoCadastro(orientadorId);
             return Ok(result);
+        }
+        
+        [HttpGet]
+        [Route("validar")]
+        public async Task<ActionResult<CodigoCadastroDto>> validarCodigoCadastro(int codigo)
+        {
+            var result = await _userService.ValidarCodigoCadastro(codigo);
+
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.ErrorMessage);
         }
     }
 }

@@ -1,5 +1,6 @@
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
+using Gerenciador.Domain.Enums;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
@@ -86,11 +87,38 @@ public class UserRepository : IUserRepository
             Codigo = novoCodigo,
             DataExpiracao = DateTime.Now.AddDays(7),
             OrientadorId = userId,
+            Status = Status.Ativo
         };
 
         bd.Add(novoCadastro);
         await _dbContext.SaveChangesAsync();
 
         return novoCodigo;
+    }
+
+    public async Task<bool> ValidarCodigoCadastro(int? codigo)
+    {
+        var bd = _dbContext.Set<CodigoCadastro>();
+        return await bd.Where(c => c.Codigo == codigo && 
+                                   c.DataExpiracao > DateTime.Now && 
+                                   c.Status == Status.Ativo).AnyAsync();
+    }
+
+    public async Task DesativarCodigoCadastro(int? codigo)
+    {
+        var bd = _dbContext.Set<CodigoCadastro>();
+        var entity = await bd.Where(c => c.Codigo == codigo).FirstOrDefaultAsync();
+        entity.Status = Status.Inativo;
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<CodigoCadastroDto> GetCodigoCadastro(int codigo)
+    {
+        var entity = await _dbContext.Set<CodigoCadastro>().Where(c => c.Codigo == codigo).FirstOrDefaultAsync();
+        return new CodigoCadastroDto()
+        {
+            Codigo = entity.Codigo,
+            OrientadorId = entity.OrientadorId
+        };
     }
 }

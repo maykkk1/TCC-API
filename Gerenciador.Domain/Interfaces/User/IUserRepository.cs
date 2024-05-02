@@ -10,5 +10,8 @@ public interface IUserRepository : IBaseRepository<User>
     Task<UserDto?> GetAlunoById(int id);
     Task<bool> EmailRegistred(string email);
     Task<int> GerarCodigoCadastro(int userId);
+    Task<bool> ValidarCodigoCadastro(int? codigo);
+    Task DesativarCodigoCadastro(int? codigo);
+    Task<CodigoCadastroDto> GetCodigoCadastro(int codigo);
 
 }

@@ -56,6 +56,21 @@ public class UserService : IUserService
         var obj = _cadastroMapper.DtoToEntity(user);
         var errors = new List<string>();
         var validator = await _userValidator.ValidateAsync(obj);
+        obj.Tipo = TipoPessoaEnum.Professor;
+
+        if (user.CodigoCadastro != null && user.OrientadorId != null)
+        {
+            obj.OrientadorId = user.OrientadorId;
+            obj.Tipo = TipoPessoaEnum.Aluno;
+            if (await _userRepository.ValidarCodigoCadastro(user.CodigoCadastro))
+            {
+                await _userRepository.DesativarCodigoCadastro(user.CodigoCadastro);
+            }
+            else
+            {
+                errors.Add("Código inválido!");
+            }
+        }
         
         if (!String.IsNullOrEmpty(user.Password) && !user.Password.Equals(user.Confirm))
             errors.Add("As senhas devem ser iguais");
@@ -98,6 +113,19 @@ public class UserService : IUserService
         {
             Data = codigo
         };
+    }
+
+    public async Task<ServiceResult<CodigoCadastroDto>> ValidarCodigoCadastro(int codigo)
+    {
+        var isValid = await _userRepository.ValidarCodigoCadastro(codigo);
+
+        if (isValid)
+        {
+            var dto = await _userRepository.GetCodigoCadastro(codigo);
+            return new ServiceResult<CodigoCadastroDto>() { Data = dto };
+        }
+
+        return new ServiceResult<CodigoCadastroDto>() { Success = false, ErrorMessage = "Código inválido." };
     }
 
     public async Task<User> ValidateLogin(UserLoginDto user)

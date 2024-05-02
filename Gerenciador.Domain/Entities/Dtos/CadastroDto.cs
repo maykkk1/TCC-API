@@ -12,4 +12,6 @@ public class CadastroDto
     public string Email { get; set; }
     public string Password { get; set; }
     public string Confirm { get; set; }
+    public int? OrientadorId { get; set; }
+    public int? CodigoCadastro { get; set; }
 }
