@@ -49,5 +49,9 @@ public class TarefaMap :  IEntityTypeConfiguration<Tarefa>
 
         builder.HasOne(x => x.CreatedBy)
             .WithMany(x => x.TarefasCriadas);
+        
+        builder.HasOne(x => x.Projeto)
+            .WithMany(x => x.Tarefas);
+        
     }
 }

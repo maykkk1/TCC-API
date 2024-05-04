@@ -11,8 +11,10 @@ public class Tarefa : BaseEntity
     public TipoTarefa Tipo { get; set; }
     public User? Pessoa { get; set; }
     public User? CreatedBy { get; set; }
+    public Projeto? Projeto { get; set; }
     public int CreatedById { get; set; }
     public int PessoaId { get; set; }
+    public int ProjetoId { get; set; }
     public DateTime? DataCriacao { get; set; }
     public DateTime? DataFinal { get; set; }
     public ICollection<TarefaComentario>? Comentarios { get; set; }
