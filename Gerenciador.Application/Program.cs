@@ -7,6 +7,7 @@ using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Entities.Mappers;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Domain.Interfaces.Atividade;
+using Gerenciador.Domain.Interfaces.Projeto;
 using Gerenciador.Domain.Interfaces.TarefasComentario;
 using Gerenciador.Infra.Data.Context;
 using Gerenciador.Infra.Data.Repository;
@@ -86,6 +87,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITarefaRepository, TarefaRepository>();
 builder.Services.AddScoped<ITarefaComentarioRepository, TarefaComentarioRepository>();
 builder.Services.AddScoped<IAtividadeRepository, AtividadeRepository>();
+builder.Services.AddScoped<IProjetoRepository, ProjetoRepository>();
 
 //services
 builder.Services.AddScoped<TokenService>();
@@ -94,6 +96,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITarefaService, TarefaService>();
 builder.Services.AddScoped<ITarefaComentarioService, TarefaComentarioService>();
 builder.Services.AddScoped<IAtividadeService, AtividadeService>();
+builder.Services.AddScoped<IProjetoService, ProjetoService>();
 
 var app = builder.Build();
 app.UseCors("AllowAnyOrigin");
