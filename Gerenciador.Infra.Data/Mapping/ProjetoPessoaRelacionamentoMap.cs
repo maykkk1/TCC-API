@@ -15,14 +15,14 @@ public class ProjetoPessoaRelacionamentoMap  : IEntityTypeConfiguration<ProjetoP
             .IsRequired()
             .UseIdentityColumn();
         
-        builder.HasOne(relacionamento => relacionamento.Atividade)
-            .WithMany(atividade => atividade.PessoasRelacionadas)
+        builder.HasOne(relacionamento => relacionamento.Projeto)
+            .WithMany(projeto => projeto.PessoasRelacionadas)
             .IsRequired()
-            .HasForeignKey(relacionamento => relacionamento.AtividadeId);
+            .HasForeignKey(relacionamento => relacionamento.ProjetoId);
         
         
         builder.HasOne(relacionamento => relacionamento.Pessoa)
-            .WithMany(pessoa => pessoa.AtividadesRelacionadas)
+            .WithMany(pessoa => pessoa.ProjetosRelacionados)
             .IsRequired()
             .HasForeignKey(relacionamento => relacionamento.PessoaId);
     }

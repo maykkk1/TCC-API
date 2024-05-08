@@ -6,5 +6,6 @@ public class Projeto : BaseEntity
     public int OrientadorId { get; set; }
     public User Orientador { get; set; }
     public ICollection<Tarefa>? Tarefas { get; set; }
+    public ICollection<ProjetoPessoaRelacionamento>? PessoasRelacionadas { get; set; }
     public DateTime DataCriacao { get; set; }
 }
