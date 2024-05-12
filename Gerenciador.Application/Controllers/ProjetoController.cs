@@ -28,8 +28,8 @@ namespace Gerenciador.Application.Controllers
         public async Task<ActionResult> Save([FromBody]  ProjetoDto projeto)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            // var response = await _projetoService.Add(projeto);
-            // return Ok(response.Data);
+            var response = await _projetoService.Add(projeto);
+            return Ok(response.Data);
         }
     }
 }
