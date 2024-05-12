@@ -10,6 +10,7 @@ public class ProjetoMapper : IEntityDtoMapper<Projeto, ProjetoDto>
         return new Projeto()
         {
             Id = dto.Id,
+            Titulo = dto.Titulo,
             Descricao = dto.Descricao,
             OrientadorId = dto.OrientadorId,
             DataCriacao = dto.DataCriacao
@@ -21,6 +22,7 @@ public class ProjetoMapper : IEntityDtoMapper<Projeto, ProjetoDto>
         return new ProjetoDto()
         {
             Id = entity.Id,
+            Titulo = entity.Titulo,
             Descricao = entity.Descricao,
             OrientadorId = entity.OrientadorId,
             DataCriacao = entity.DataCriacao

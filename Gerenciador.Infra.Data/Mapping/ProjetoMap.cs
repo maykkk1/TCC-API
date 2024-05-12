@@ -15,6 +15,12 @@ public class ProjetoMap : IEntityTypeConfiguration<Projeto>
             .IsRequired()
             .UseIdentityColumn();
         
+        builder.Property(prop => prop.Titulo)
+            .HasConversion(prop => prop.ToString(), prop => prop)
+            .IsRequired()
+            .HasColumnName("Titulo")
+            .HasColumnType("varchar(50)");
+        
         builder.Property(prop => prop.Descricao)
             .HasConversion(prop => prop.ToString(), prop => prop)
             .IsRequired()

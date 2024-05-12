@@ -15,7 +15,6 @@ using Gerenciador.Service.Services;
 using Gerenciador.Service.Utils;
 using Gerenciador.Service.Validators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 

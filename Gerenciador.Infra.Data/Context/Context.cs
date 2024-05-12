@@ -1,4 +1,5 @@
 using Gerenciador.Domain.Entities;
+using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Infra.Data.Mapping;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,8 @@ public class GerenciadorContext : DbContext
     public DbSet<Atividade> Atividade { get; set; }
     public DbSet<AtividadePessoaRelacionamento> AtividadePessoaRelacionamentos { get; set; }
     public DbSet<CodigoCadastro> CodigosCadastro { get; set; }
+    public DbSet<Projeto> Projeto { get; set; }
+    public DbSet<ProjetoPessoaRelacionamento> ProjetoPessoaRelacionamentos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -28,5 +31,7 @@ public class GerenciadorContext : DbContext
         modelBuilder.Entity<Atividade>(new AtividadeMap().Configure);
         modelBuilder.Entity<AtividadePessoaRelacionamento>(new AtividadePessoaRelacionamentoMap().Configure);
         modelBuilder.Entity<CodigoCadastro>(new CodigoCadastroMap().Configure);
+        modelBuilder.Entity<Projeto>(new ProjetoMap().Configure);
+        modelBuilder.Entity<ProjetoPessoaRelacionamento>(new ProjetoPessoaRelacionamentoMap().Configure);
     }
 }

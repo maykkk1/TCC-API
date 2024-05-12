@@ -1,6 +1,7 @@
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Interfaces.Projeto;
 using Gerenciador.Infra.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gerenciador.Infra.Data.Repository;
 
@@ -38,5 +39,25 @@ public class ProjetoRepository : IProjetoRepository
     public Task<Projeto> Select(int id)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task AddUser(int userId, int projetoId)
+    {
+        var relacionamento = new ProjetoPessoaRelacionamento()
+        {
+            PessoaId = userId,
+            ProjetoId = projetoId
+        };
+        _dbContext.Set<ProjetoPessoaRelacionamento>().Add(relacionamento);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<List<Projeto>> GetByUserId(int userId)
+    {
+        var entities = await _dbContext.Set<ProjetoPessoaRelacionamento>()
+            .Include(x => x.Projeto)
+            .Where(x => x.PessoaId == userId)
+            .Select(x => x.Projeto).ToListAsync();
+        return entities;
     }
 }

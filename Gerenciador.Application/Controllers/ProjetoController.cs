@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Gerenciador.Application.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ProjetoController : ControllerBase
     {
@@ -28,8 +28,17 @@ namespace Gerenciador.Application.Controllers
         public async Task<ActionResult> Save([FromBody]  ProjetoDto projeto)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            projeto.OrientadorId = userId;
             var response = await _projetoService.Add(projeto);
             return Ok(response.Data);
+        }
+        
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<List<ProjetoDto>>> Get(int userId)
+        {
+            var result = await _projetoService.GetByUserId(userId);
+            return Ok(result);
         }
     }
 }

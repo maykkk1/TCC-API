@@ -2,6 +2,7 @@ namespace Gerenciador.Domain.Entities;
 
 public class Projeto : BaseEntity
 {
+    public string Titulo { get; set; }
     public string Descricao { get; set; }
     public int OrientadorId { get; set; }
     public User Orientador { get; set; }
