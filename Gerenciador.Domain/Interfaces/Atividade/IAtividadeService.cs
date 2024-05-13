@@ -5,7 +5,7 @@ namespace Gerenciador.Domain.Interfaces.Atividade;
 
 public interface IAtividadeService
 {
-    Task<ServiceResult<AtividadeDto>> Add(AtividadeDto dto, List<int> pessoaIds);
+    Task<ServiceResult<AtividadeDto>> Add(AtividadeDto dto, List<int?> pessoaIds);
 
     Task<ServiceResult<int>> Delete(int atividadeId, int userId);
 

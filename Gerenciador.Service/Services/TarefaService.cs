@@ -109,12 +109,22 @@ public class TarefaService : ITarefaService
         return obj;
     }
 
-    public async Task<ServiceResult<List<TarefaDto>>> getByUserId(int userId, bool isPrincipal)
+    public async Task<ServiceResult<List<TarefaDto>>> getByUserId(int projetoId)
     {
         var result = new ServiceResult<List<TarefaDto>>();
-        var data = await _tarefaRepository.GetByUserId(userId, isPrincipal);
+        var data = await _tarefaRepository.GetByUserId(projetoId);
         result.Data = data;
         return result;
+    }
+
+    public async Task<ServiceResult<List<TarefaDto>>> getByProjetctId(int projetoId)
+    {
+        var result = await _tarefaRepository.GetByProjectId(projetoId);
+        var dtos = result.Select(tarefas => _tarefaMapper.EntityToDto(tarefas)).ToList();
+        return new ServiceResult<List<TarefaDto>>()
+        {
+            Data = dtos
+        };
     }
 
     public async Task<ServiceResult<Tarefa>> InsertTarefaPrincipal(Tarefa tarefa)
@@ -130,7 +140,7 @@ public class TarefaService : ITarefaService
             Tipo = TipoAtividadeEnum.CriacaoTarefa,
             NovaSituacaoTarefa = tarefa.Situacao
         };
-        var listaPessoas = new List<int>();
+        var listaPessoas = new List<int?>();
         listaPessoas.Add(tarefa.PessoaId);
         await _atividadeService.Add(atividade, listaPessoas);
 
@@ -164,7 +174,7 @@ public class TarefaService : ITarefaService
             NovaSituacaoTarefa = tarefa.Situacao
         };
 
-        var listaPessoas = new List<int>();
+        var listaPessoas = new List<int?>();
         listaPessoas.Add(tarefa.PessoaId);
         await _atividadeService.Add(atividade, listaPessoas);
         await _tarefaRepository.Update(tarefa);

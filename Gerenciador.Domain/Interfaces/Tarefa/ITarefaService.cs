@@ -15,7 +15,8 @@ public interface ITarefaService
     public Task<ServiceResult<TarefaDto>> GetById(int id);
 
     Task<ServiceResult<TarefaDto>> Update(TarefaDto obj);
-    Task<ServiceResult<List<TarefaDto>>> getByUserId(int userId, bool isPrincipal);
+    Task<ServiceResult<List<TarefaDto>>> getByUserId(int projetoId);
+    Task<ServiceResult<List<TarefaDto>>> getByProjetctId(int projetoId);
     Task<ServiceResult<Tarefa>> InsertTarefaPrincipal(Tarefa tarefa);
     Task<ServiceResult<TarefaDto>> UpdateTarefaPrincipal(Tarefa tarefa, int userId);
 }

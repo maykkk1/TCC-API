@@ -40,5 +40,27 @@ namespace Gerenciador.Application.Controllers
             var result = await _projetoService.GetByUserId(userId);
             return Ok(result);
         }
+        
+        [HttpGet]
+        [Authorize]
+        [Route("projeto")]
+        public async Task<ActionResult<ProjetoDto>> GetById(int projetoId)
+        {
+            var result = await _projetoService.GetById(projetoId);
+            return Ok(result);
+        }
+        
+        [HttpPost]
+        [Authorize]
+        [Route("tarefa")]
+        public async Task<ActionResult> AddTarefa([FromBody] TarefaDto tarefa)
+        {
+            var result = await _projetoService.AddTarefa(tarefa);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.ErrorMessage);
+        }
     }
 }

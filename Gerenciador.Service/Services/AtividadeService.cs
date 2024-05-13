@@ -17,11 +17,11 @@ public class AtividadeService : IAtividadeService
         _atividadeMapper = atividadeMapper;
     }
 
-    public async Task<ServiceResult<AtividadeDto>> Add(AtividadeDto dto, List<int> pessoaIds)
+    public async Task<ServiceResult<AtividadeDto>> Add(AtividadeDto dto, List<int?> pessoaIds)
     {
         var obj = _atividadeMapper.DtoToEntity(dto);
         await _atividadeRepository.Insert(obj);
-        foreach (var pessoaId in pessoaIds)
+        foreach (int pessoaId in pessoaIds)
         {
             await _atividadeRepository.insertRelacionamento(new AtividadePessoaRelacionamento()
             {

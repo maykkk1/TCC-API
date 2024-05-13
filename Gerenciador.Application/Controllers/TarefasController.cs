@@ -40,10 +40,30 @@ namespace Gerenciador.Application.Controllers
         
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<List<Tarefa>>> Get(bool isPrincipal, int userId)
+        [Route("user")]
+        public async Task<ActionResult<List<Tarefa>>> GetByUserId(int userId)
         {
-            var result = await _tarefaService.getByUserId(userId, isPrincipal);
-            return Ok(result);
+            var result = await _tarefaService.getByUserId(userId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result.ErrorMessage);
+        }
+        
+        [HttpGet]
+        [Authorize]
+        [Route("projeto")]
+        public async Task<ActionResult<List<Tarefa>>> GetByProjetorId(int projetoId)
+        {
+            var result = await _tarefaService.getByProjetctId(projetoId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result.ErrorMessage);
         }
         
         [HttpPost]

@@ -7,4 +7,6 @@ public interface IProjetoService
 {
     Task<ServiceResult<ProjetoDto>> Add(ProjetoDto dto);
     Task<ServiceResult<List<ProjetoDto>>> GetByUserId(int userId);
+    Task<ServiceResult<ProjetoDto>> GetById(int projetoId);
+    Task<ServiceResult<TarefaDto>> AddTarefa(TarefaDto tarefa);
 }

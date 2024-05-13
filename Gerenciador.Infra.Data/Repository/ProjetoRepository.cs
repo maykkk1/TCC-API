@@ -60,4 +60,9 @@ public class ProjetoRepository : IProjetoRepository
             .Select(x => x.Projeto).ToListAsync();
         return entities;
     }
+
+    public async Task<Projeto> GetById(int projetoId)
+    {
+        return await _dbContext.Set<Projeto>().Where(p => p.Id == projetoId).FirstOrDefaultAsync();
+    }
 }

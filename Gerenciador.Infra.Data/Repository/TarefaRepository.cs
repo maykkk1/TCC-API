@@ -45,14 +45,12 @@ public class TarefaRepository : ITarefaRepository
         return await _dbContext.Set<Tarefa>().Include(t => t.Comentarios).Where(t => t.Id == id).FirstOrDefaultAsync();
     }
 
-    public async Task<List<TarefaDto>> GetByUserId(int userId, bool isPrincipal)
+    public async Task<List<TarefaDto>> GetByUserId(int userId)
     {
         var query = await _dbContext.Set<Tarefa>().Where(t => t.PessoaId == userId)
             .Include(t => t.CreatedBy)
             .Include(t => t.Comentarios)
             .ToListAsync();
-        var filtro = isPrincipal ? TipoTarefa.Principal : TipoTarefa.Secundaria;
-        query = query.Where(t => t.Tipo == filtro).ToList();
         
         return (List<TarefaDto>)query.Select(t => new TarefaDto()
         {
@@ -78,6 +76,14 @@ public class TarefaRepository : ITarefaRepository
             DataCriacao = t.DataCriacao,
             DataFinal = t.DataFinal
         }).ToList();
+    }
+
+    public async Task<List<Tarefa>> GetByProjectId(int projetoId)
+    {
+        return  await _dbContext.Set<Tarefa>().Where(t => t.ProjetoId == projetoId)
+            .Include(t => t.CreatedBy)
+            .Include(t => t.Comentarios)
+            .ToListAsync();
     }
 
     public async Task<Tarefa> InsertTarefaPrincipal(Tarefa tarefa)
