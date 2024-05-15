@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Interfaces;
@@ -61,6 +62,24 @@ public class ProjetoService : IProjetoService
         return new ServiceResult<TarefaDto>()
         {
             Data = tarefa
+        };
+    }
+
+    public async Task<ServiceResult<int>> Delete(int projetoId, int userId)
+    {
+        var projeto = await _projetoRepository.GetById(projetoId);
+        if (projeto.OrientadorId != userId)
+        {
+            return new ServiceResult<int>()
+            {
+                Success = false,
+                ErrorMessage = "Você não tem autorização para excluir esse projeto."
+            };
+        }
+        await _projetoRepository.Delete(projetoId);
+        return new ServiceResult<int>()
+        {
+            Data = projetoId
         };
     }
 }

@@ -90,6 +90,7 @@ namespace Gerenciador.Application.Controllers
         }
         
         [HttpDelete]
+        [Authorize]
         public async Task<ActionResult> Delete(int id)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);

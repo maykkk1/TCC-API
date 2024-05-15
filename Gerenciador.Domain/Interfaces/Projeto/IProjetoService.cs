@@ -9,4 +9,5 @@ public interface IProjetoService
     Task<ServiceResult<List<ProjetoDto>>> GetByUserId(int userId);
     Task<ServiceResult<ProjetoDto>> GetById(int projetoId);
     Task<ServiceResult<TarefaDto>> AddTarefa(TarefaDto tarefa);
+    Task<ServiceResult<int>> Delete(int projetoId, int userId);
 }
