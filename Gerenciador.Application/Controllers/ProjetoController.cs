@@ -62,5 +62,18 @@ namespace Gerenciador.Application.Controllers
             }
             return BadRequest(result.ErrorMessage);
         }
+        
+        [HttpDelete]
+        [Authorize]
+        public async Task<ActionResult> Delete([FromBody] int projetoId)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var result = await _projetoService.Delete(projetoId, userId);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.ErrorMessage);
+        }
     }
 }
