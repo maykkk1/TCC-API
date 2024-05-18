@@ -21,9 +21,10 @@ public class ProjetoRepository : IProjetoRepository
         return obj;
     }
 
-    public Task Update(Projeto obj)
+    public async Task Update(Projeto obj)
     {
-        throw new NotImplementedException();
+        _dbContext.Entry(obj).State = EntityState.Modified;
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task Delete(int id)
@@ -32,9 +33,9 @@ public class ProjetoRepository : IProjetoRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public Task<IList<Projeto>> Select()
+    public async Task<IList<Projeto>> Select()
     {
-        throw new NotImplementedException();
+        return await _dbContext.Set<Projeto>().ToListAsync();
     }
 
     public async Task<Projeto> Select(int id)
