@@ -10,4 +10,6 @@ public interface IProjetoService
     Task<ServiceResult<ProjetoDto>> GetById(int projetoId);
     Task<ServiceResult<TarefaDto>> AddTarefa(TarefaDto tarefa);
     Task<ServiceResult<int>> Delete(int projetoId, int userId);
+    Task<ServiceResult<int>> Update(ProjetoDto projeto, int userId);
+    Task<string> Validate(Entities.Projeto dto);
 }

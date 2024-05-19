@@ -75,5 +75,18 @@ namespace Gerenciador.Application.Controllers
             }
             return BadRequest(result.ErrorMessage);
         }
+        
+        [HttpPut]
+        [Authorize]
+        public async Task<ActionResult> Update([FromBody] ProjetoDto projeto)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var result = await _projetoService.Update(projeto, userId);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.ErrorMessage);
+        }
     }
 }

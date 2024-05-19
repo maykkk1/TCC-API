@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using FluentValidation;
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Interfaces;
@@ -13,14 +14,16 @@ public class ProjetoService : IProjetoService
     private readonly ITarefaRepository _tarefaRepository;
     private readonly IEntityDtoMapper<Tarefa, TarefaDto> _tarefaMapper;
     private readonly IEntityDtoMapper<Projeto, ProjetoDto> _projetoMapper;
+    private readonly IValidator<Projeto> _projetoValidator;
     
 
-    public ProjetoService(IProjetoRepository projetoRepository, IEntityDtoMapper<Projeto, ProjetoDto> projetoMapper, ITarefaRepository tarefaRepository, IEntityDtoMapper<Tarefa, TarefaDto> tarefaMapper)
+    public ProjetoService(IProjetoRepository projetoRepository, IEntityDtoMapper<Projeto, ProjetoDto> projetoMapper, ITarefaRepository tarefaRepository, IEntityDtoMapper<Tarefa, TarefaDto> tarefaMapper, IValidator<Projeto> projetoValidator)
     {
         _projetoRepository = projetoRepository;
         _projetoMapper = projetoMapper;
         _tarefaRepository = tarefaRepository;
         _tarefaMapper = tarefaMapper;
+        _projetoValidator = projetoValidator;
     }
 
     public async Task<ServiceResult<ProjetoDto>> Add(ProjetoDto dto)
@@ -81,5 +84,56 @@ public class ProjetoService : IProjetoService
         {
             Data = projetoId
         };
+    }
+
+    public async Task<ServiceResult<int>> Update(ProjetoDto projeto, int userId)
+    {
+        if (projeto.OrientadorId != userId)
+        {
+            return new ServiceResult<int>()
+            {
+                Success = false,
+                ErrorMessage = "Você não tem autorização para excluir esse projeto."
+            };
+        }
+
+        var entity = _projetoMapper.DtoToEntity(projeto);
+        
+        var errorMessage = await Validate(entity);
+
+        if (!String.IsNullOrEmpty(errorMessage))
+        {
+            return new ServiceResult<int>()
+            {
+                Success = false,
+                ErrorMessage = errorMessage
+            };
+        }
+        
+        await _projetoRepository.Update(entity);
+        return new ServiceResult<int>()
+        {
+            Data = entity.Id
+        };
+    }
+
+    public async Task<string> Validate(Projeto obj)
+    {
+        var errors = new List<string>();
+        var validator = await _projetoValidator.ValidateAsync(obj);
+        string errorMessage = "";
+        if (validator.Errors.Count > 0)
+        {
+            validator.Errors.ForEach(erro =>
+            {
+                errors.Add(erro.ErrorMessage);
+            });
+            errors = errors.Distinct().ToList();
+            errorMessage = string.Join(Environment.NewLine, errors);
+            errorMessage = errorMessage.Replace(Environment.NewLine, ";");
+        }
+        
+        return errorMessage;
+
     }
 }

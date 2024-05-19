@@ -72,6 +72,7 @@ builder.Services.AddAuthorization();
 //validation
 builder.Services.AddScoped<IValidator<User>, UserValidator>();
 builder.Services.AddScoped<IValidator<Tarefa>, TarefaValidator>();
+builder.Services.AddScoped<IValidator<Projeto>, ProjetoValidator>();
 
 //mapper
 builder.Services.AddSingleton<DtoEntityMapper<TarefaDto, Tarefa>>();
