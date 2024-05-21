@@ -67,4 +67,29 @@ public class ProjetoRepository : IProjetoRepository
     {
         return await _dbContext.Set<Projeto>().Where(p => p.Id == projetoId).FirstOrDefaultAsync();
     }
+
+    public async Task AddIntegrante(int projetoId, int integranteId)
+    {
+        _dbContext.Set<ProjetoPessoaRelacionamento>().Add(new ProjetoPessoaRelacionamento()
+        {
+            PessoaId = integranteId,
+            ProjetoId = projetoId
+        });
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<bool> RelacionamentoExist(int projetoId, int integranteId)
+    {
+        return await  _dbContext.Set<ProjetoPessoaRelacionamento>()
+            .Where(r => r.ProjetoId == projetoId && r.PessoaId == integranteId).AnyAsync();
+    }
+
+    public async Task RemoverIntegrante(int projetoId, int integranteId)
+    {
+        var relacionamento = await _dbContext.Set<ProjetoPessoaRelacionamento>()
+            .Where(r => r.ProjetoId == projetoId & r.PessoaId == integranteId).FirstOrDefaultAsync();
+        
+        _dbContext.Set<ProjetoPessoaRelacionamento>().Remove(relacionamento);
+        await _dbContext.SaveChangesAsync();
+    }
 }

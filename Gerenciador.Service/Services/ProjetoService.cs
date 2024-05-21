@@ -12,18 +12,20 @@ public class ProjetoService : IProjetoService
 {
     private readonly IProjetoRepository _projetoRepository;
     private readonly ITarefaRepository _tarefaRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IEntityDtoMapper<Tarefa, TarefaDto> _tarefaMapper;
     private readonly IEntityDtoMapper<Projeto, ProjetoDto> _projetoMapper;
     private readonly IValidator<Projeto> _projetoValidator;
     
 
-    public ProjetoService(IProjetoRepository projetoRepository, IEntityDtoMapper<Projeto, ProjetoDto> projetoMapper, ITarefaRepository tarefaRepository, IEntityDtoMapper<Tarefa, TarefaDto> tarefaMapper, IValidator<Projeto> projetoValidator)
+    public ProjetoService(IProjetoRepository projetoRepository, IEntityDtoMapper<Projeto, ProjetoDto> projetoMapper, ITarefaRepository tarefaRepository, IEntityDtoMapper<Tarefa, TarefaDto> tarefaMapper, IValidator<Projeto> projetoValidator, IUserRepository userRepository)
     {
         _projetoRepository = projetoRepository;
         _projetoMapper = projetoMapper;
         _tarefaRepository = tarefaRepository;
         _tarefaMapper = tarefaMapper;
         _projetoValidator = projetoValidator;
+        _userRepository = userRepository;
     }
 
     public async Task<ServiceResult<ProjetoDto>> Add(ProjetoDto dto)
@@ -135,5 +137,57 @@ public class ProjetoService : IProjetoService
         
         return errorMessage;
 
+    }
+
+    public async Task<ServiceResult<List<IntegranteDto>>> GetAllIntegrantes(int projetoId, int orientadorId)
+    {
+        var integrantes = await _userRepository.GetAllIntegrantes(projetoId, orientadorId);
+
+        return new ServiceResult<List<IntegranteDto>>()
+        {
+            Data = integrantes
+        };
+    }
+
+    public async Task<ServiceResult<List<IntegranteDto>>> GetIntegrantes(int projetoId, int orientadorId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<ServiceResult<bool>> addIntegrant(ProjetoPessoaRelacionamentoDto relacionamento, int orientadorId)
+    {
+        var projeto = await _projetoRepository.Select(relacionamento.projetoId);
+        if (projeto == null)
+        {
+            return new ServiceResult<bool>()
+            {
+                Success = false,
+                ErrorMessage = "Projeto não encontrado."
+            };
+        } 
+        
+        if (projeto.OrientadorId != orientadorId)
+        {
+            return new ServiceResult<bool>()
+            {
+                Success = false,
+                ErrorMessage = "Apenas o responsável do projeto pode adicionar integrantes."
+            };
+        }
+
+        if (await _projetoRepository.RelacionamentoExist(relacionamento.projetoId, relacionamento.pessoaId))
+        {
+            await _projetoRepository.RemoverIntegrante(relacionamento.projetoId, relacionamento.pessoaId);
+            return new ServiceResult<bool>()
+            {
+                Data = false
+            };
+        }
+        
+        await _projetoRepository.AddIntegrante(relacionamento.projetoId, relacionamento.pessoaId);
+        return new ServiceResult<bool>()
+        {
+            Data = true
+        };
     }
 }

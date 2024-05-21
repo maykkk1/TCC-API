@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Interfaces.Projeto;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gerenciador.Application.Controllers
@@ -50,12 +45,40 @@ namespace Gerenciador.Application.Controllers
             return Ok(result);
         }
         
+        [HttpGet]
+        [Authorize]
+        [Route("all-integrantes")]
+        public async Task<ActionResult<List<IntegranteDto>>> GetAllIntegrantesByOrientadorId(int projetoId)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var result = await _projetoService.GetAllIntegrantes(projetoId, userId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.ErrorMessage);
+        }
+        
         [HttpPost]
         [Authorize]
         [Route("tarefa")]
         public async Task<ActionResult> AddTarefa([FromBody] TarefaDto tarefa)
         {
             var result = await _projetoService.AddTarefa(tarefa);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.ErrorMessage);
+        }
+        
+        [HttpPost]
+        [Authorize]
+        [Route("add-integrante")]
+        public async Task<ActionResult> AddIntegrante([FromBody] ProjetoPessoaRelacionamentoDto relacionamento)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var result = await _projetoService.addIntegrant(relacionamento, userId);
             if (result.Success)
             {
                 return Ok(result.Data);

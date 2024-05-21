@@ -12,4 +12,7 @@ public interface IProjetoService
     Task<ServiceResult<int>> Delete(int projetoId, int userId);
     Task<ServiceResult<int>> Update(ProjetoDto projeto, int userId);
     Task<string> Validate(Entities.Projeto dto);
+    Task<ServiceResult<List<IntegranteDto>>> GetAllIntegrantes(int projetoId, int orientadorId);
+    Task<ServiceResult<List<IntegranteDto>>> GetIntegrantes(int projetoId, int orientadorId);
+    Task<ServiceResult<bool>> addIntegrant(ProjetoPessoaRelacionamentoDto relacionamento, int orientadorId);
 }

@@ -15,6 +15,7 @@ public class UserRepository : IUserRepository
     {
         _dbContext = dbContext;
     }
+
     public async Task<User> Insert(User obj)
     {
         _dbContext.Set<User>().Add(obj);
@@ -46,7 +47,8 @@ public class UserRepository : IUserRepository
 
     public async Task<User> ValidateLogin(UserLoginDto user)
     {
-        var usuario = await _dbContext.Users.FirstOrDefaultAsync(s => s.Name == user.Name && s.Password == user.Password);
+        var usuario =
+            await _dbContext.Users.FirstOrDefaultAsync(s => s.Name == user.Name && s.Password == user.Password);
         return usuario;
     }
 
@@ -99,8 +101,8 @@ public class UserRepository : IUserRepository
     public async Task<bool> ValidarCodigoCadastro(int? codigo)
     {
         var bd = _dbContext.Set<CodigoCadastro>();
-        return await bd.Where(c => c.Codigo == codigo && 
-                                   c.DataExpiracao > DateTime.Now && 
+        return await bd.Where(c => c.Codigo == codigo &&
+                                   c.DataExpiracao > DateTime.Now &&
                                    c.Status == Status.Ativo).AnyAsync();
     }
 
@@ -120,5 +122,24 @@ public class UserRepository : IUserRepository
             Codigo = entity.Codigo,
             OrientadorId = entity.OrientadorId
         };
+    }
+
+    public async Task<List<IntegranteDto>> GetAllIntegrantes(int projetoId, int orientadorId)
+    {
+        var alunos = await _dbContext.Set<User>()
+            .Include(u => u.Projetos)
+            .Include(u => u.ProjetosRelacionados)
+            .Where(u => u.OrientadorId == orientadorId).ToListAsync();
+        return alunos.Select(u => new IntegranteDto()
+        {
+            Id = u.Id,
+            Name = u.Name,
+            Status = u.ProjetosRelacionados.Any(pu => pu.ProjetoId == projetoId) ? Status.Ativo : Status.Inativo
+        }).ToList();
+    }
+
+    public async Task<List<IntegranteDto>> GetIntegrantes(int projetoId, int orientadorId)
+    {
+        throw new NotImplementedException();
     }
 }

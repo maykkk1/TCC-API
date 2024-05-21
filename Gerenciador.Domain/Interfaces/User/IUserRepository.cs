@@ -13,5 +13,7 @@ public interface IUserRepository : IBaseRepository<User>
     Task<bool> ValidarCodigoCadastro(int? codigo);
     Task DesativarCodigoCadastro(int? codigo);
     Task<CodigoCadastroDto> GetCodigoCadastro(int codigo);
+    Task<List<IntegranteDto>> GetAllIntegrantes(int projetoId, int orientadorId);
+    Task<List<IntegranteDto>> GetIntegrantes(int projetoId, int orientadorId);
 
 }
