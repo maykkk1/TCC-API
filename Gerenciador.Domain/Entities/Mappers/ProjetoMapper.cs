@@ -25,7 +25,24 @@ public class ProjetoMapper : IEntityDtoMapper<Projeto, ProjetoDto>
             Titulo = entity.Titulo,
             Descricao = entity.Descricao,
             OrientadorId = entity.OrientadorId,
-            DataCriacao = entity.DataCriacao
+            DataCriacao = entity.DataCriacao,
+            
+            Atividades = entity.Atividades == null 
+                ? new List<AtividadeDto>()
+                :
+                entity.Atividades.Select(a => new AtividadeDto()
+            {
+                Id = a.Id,
+                Descricao = a.Descricao,
+                DataAtividade = a.DataAtividade,
+                Tipo = a.Tipo, 
+                Responsavel = a.Pessoa?.Name,
+                TarefaTitulo = a.Tarefa?.Titulo,
+                PessoaId = a.PessoaId,
+                TarefaId = a.TarefaId,
+                ProjetoId = a.ProjetoId,
+                NovaSituacaoTarefa = a.NovaSituacaoTarefa
+            }).ToList()
         };
     }
 }

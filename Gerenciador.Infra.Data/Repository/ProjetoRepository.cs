@@ -38,9 +38,11 @@ public class ProjetoRepository : IProjetoRepository
         return await _dbContext.Set<Projeto>().ToListAsync();
     }
 
-    public async Task<Projeto> Select(int id)
+    public async Task<Projeto?> Select(int id)
     {
-        return await _dbContext.Set<Projeto>().Where(t => t.Id == id).FirstOrDefaultAsync();
+        return await _dbContext.Set<Projeto>()
+            .Include(p => p.Atividades)
+            .Where(t => t.Id == id).FirstOrDefaultAsync();
     }
 
     public async Task AddUser(int userId, int projetoId)
@@ -65,7 +67,13 @@ public class ProjetoRepository : IProjetoRepository
 
     public async Task<Projeto> GetById(int projetoId)
     {
-        return await _dbContext.Set<Projeto>().Where(p => p.Id == projetoId).FirstOrDefaultAsync();
+        return await _dbContext.Set<Projeto>()
+            .Include(p => p.Atividades)
+            .ThenInclude(a => a.Pessoa)
+            .Include(p => p.Atividades)
+            .ThenInclude(a => a.Tarefa)
+            .Where(p => p.Id == projetoId)
+            .FirstOrDefaultAsync();
     }
 
     public async Task AddIntegrante(int projetoId, int integranteId)

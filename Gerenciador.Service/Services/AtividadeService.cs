@@ -68,7 +68,7 @@ public class AtividadeService : IAtividadeService
         }
     }
 
-    public async Task<ServiceResult<List<AtividadeDto>>> getByUserId(int userId)
+    public async Task<ServiceResult<List<AtividadeDto>>> GetByUserId(int userId)
     {
         var entities = await _atividadeRepository.GetByUserId(userId);
         
@@ -77,6 +77,16 @@ public class AtividadeService : IAtividadeService
         return new ServiceResult<List<AtividadeDto>>()
         {
             Data = atividades
+        };
+    }
+
+    public async Task<ServiceResult<AtividadeDto>> AddAtividadeProjeto(AtividadeDto dto)
+    {
+        var obj = _atividadeMapper.DtoToEntity(dto);
+        await _atividadeRepository.Insert(obj);
+        return new ServiceResult<AtividadeDto>()
+        {
+            Data = dto
         };
     }
 }

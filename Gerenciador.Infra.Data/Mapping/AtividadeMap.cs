@@ -43,5 +43,9 @@ public class AtividadeMap : IEntityTypeConfiguration<Atividade>
         builder.HasOne(atividade => atividade.Tarefa)
             .WithMany(tarefa => tarefa.Atividades)
             .HasForeignKey(atividade => atividade.TarefaId);
+        
+        builder.HasOne(atividade => atividade.Projeto)
+            .WithMany(projeto => projeto.Atividades)
+            .HasForeignKey(atividade => atividade.ProjetoId);
     }
 }

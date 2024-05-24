@@ -14,5 +14,6 @@ public interface IAtividadeService
     public Task<ServiceResult<AtividadeDto>> GetById(int id);
 
     Task<ServiceResult<AtividadeDto>> Update(AtividadeDto obj);
-    Task<ServiceResult<List<AtividadeDto>>> getByUserId(int userId);
+    Task<ServiceResult<List<AtividadeDto>>> GetByUserId(int userId);
+    Task<ServiceResult<AtividadeDto>> AddAtividadeProjeto(AtividadeDto dto);
 }

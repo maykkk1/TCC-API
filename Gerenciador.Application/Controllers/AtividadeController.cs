@@ -37,7 +37,7 @@ namespace Gerenciador.Application.Controllers
         [Authorize]
         public async Task<ActionResult<List<AtividadeDto>>> Get(int userId)
         {
-            var result = await _atividadeService.getByUserId(userId);
+            var result = await _atividadeService.GetByUserId(userId);
             return Ok(result);
         }
     }

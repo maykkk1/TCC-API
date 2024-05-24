@@ -4,6 +4,7 @@ using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Enums;
 using Gerenciador.Domain.Interfaces;
+using Gerenciador.Domain.Interfaces.Atividade;
 using Gerenciador.Domain.Interfaces.Projeto;
 using Gerenciador.Service.Common;
 
@@ -14,12 +15,13 @@ public class ProjetoService : IProjetoService
     private readonly IProjetoRepository _projetoRepository;
     private readonly ITarefaRepository _tarefaRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IAtividadeService _atividadeService;
     private readonly IEntityDtoMapper<Tarefa, TarefaDto> _tarefaMapper;
     private readonly IEntityDtoMapper<Projeto, ProjetoDto> _projetoMapper;
     private readonly IValidator<Projeto> _projetoValidator;
     
 
-    public ProjetoService(IProjetoRepository projetoRepository, IEntityDtoMapper<Projeto, ProjetoDto> projetoMapper, ITarefaRepository tarefaRepository, IEntityDtoMapper<Tarefa, TarefaDto> tarefaMapper, IValidator<Projeto> projetoValidator, IUserRepository userRepository)
+    public ProjetoService(IProjetoRepository projetoRepository, IEntityDtoMapper<Projeto, ProjetoDto> projetoMapper, ITarefaRepository tarefaRepository, IEntityDtoMapper<Tarefa, TarefaDto> tarefaMapper, IValidator<Projeto> projetoValidator, IUserRepository userRepository, IAtividadeService atividadeService)
     {
         _projetoRepository = projetoRepository;
         _projetoMapper = projetoMapper;
@@ -27,6 +29,7 @@ public class ProjetoService : IProjetoService
         _tarefaMapper = tarefaMapper;
         _projetoValidator = projetoValidator;
         _userRepository = userRepository;
+        _atividadeService = atividadeService;
     }
 
     public async Task<ServiceResult<ProjetoDto>> Add(ProjetoDto dto)
@@ -74,7 +77,16 @@ public class ProjetoService : IProjetoService
     public async Task<ServiceResult<TarefaDto>> AddTarefa(TarefaDto tarefa)
     {
         var entity = _tarefaMapper.DtoToEntity(tarefa);
-        await _tarefaRepository.Insert(entity);
+        var obj = await _tarefaRepository.Insert(entity);
+        await _atividadeService.AddAtividadeProjeto(new AtividadeDto()
+        {
+            Descricao = "Criação de atividade",
+            PessoaId = tarefa.CreatedById,
+            TarefaId = obj.Id,
+            ProjetoId = tarefa.ProjetoId,
+            Tipo = TipoAtividadeEnum.CriacaoTarefa,
+            NovaSituacaoTarefa = tarefa.Situacao
+        });
         return new ServiceResult<TarefaDto>()
         {
             Data = tarefa
