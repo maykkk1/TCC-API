@@ -2,6 +2,7 @@ using System.Security.Claims;
 using FluentValidation;
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
+using Gerenciador.Domain.Enums;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Domain.Interfaces.Projeto;
 using Gerenciador.Service.Common;
@@ -31,7 +32,17 @@ public class ProjetoService : IProjetoService
     public async Task<ServiceResult<ProjetoDto>> Add(ProjetoDto dto)
     {
         var obj = _projetoMapper.DtoToEntity(dto);
+        var user = await _userRepository.Select(dto.OrientadorId);
+        if (user.Tipo != TipoPessoaEnum.Professor)
+        {
+            return new ServiceResult<ProjetoDto>()
+            {
+                Success = false,
+                ErrorMessage = "Apenas orientadores podem criar novos projetos."
+            };
+        }
         obj.DataCriacao = DateTime.Now;
+        
         var projeto = await _projetoRepository.Insert(obj);
         await _projetoRepository.AddUser(projeto.OrientadorId, projeto.Id);
         return new ServiceResult<ProjetoDto>()
@@ -95,7 +106,7 @@ public class ProjetoService : IProjetoService
             return new ServiceResult<int>()
             {
                 Success = false,
-                ErrorMessage = "Você não tem autorização para excluir esse projeto."
+                ErrorMessage = "Você não tem autorização para atualizar esse projeto."
             };
         }
 

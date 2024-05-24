@@ -25,7 +25,12 @@ namespace Gerenciador.Application.Controllers
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             projeto.OrientadorId = userId;
             var response = await _projetoService.Add(projeto);
-            return Ok(response.Data);
+            if (response.Success)
+            {
+                return Ok(response.Data);
+            }
+
+            return BadRequest(response.ErrorMessage);
         }
         
         [HttpGet]

@@ -176,7 +176,8 @@ public class TarefaService : ITarefaService
 
         var listaPessoas = new List<int?>();
         listaPessoas.Add(tarefa.PessoaId);
-        await _atividadeService.Add(atividade, listaPessoas);
+        // ajustar para adicionar para todas as pessoas do projeto e para o projeto (criar tabela de relacao entre projeto e ativaidades)
+        // await _atividadeService.Add(atividade, listaPessoas);
         await _tarefaRepository.Update(tarefa);
         var dto = _tarefaMapper.EntityToDto(tarefa);
         return new ServiceResult<TarefaDto>()

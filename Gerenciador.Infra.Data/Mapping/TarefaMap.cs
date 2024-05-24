@@ -26,6 +26,11 @@ public class TarefaMap :  IEntityTypeConfiguration<Tarefa>
             .HasColumnName("SITUACAO")
             .HasColumnType("int");
         
+        builder.Property(prop => prop.Dificuldade)
+            .IsRequired()
+            .HasColumnName("Dificuldade")
+            .HasColumnType("int");
+        
         builder.Property(prop => prop.Tipo)
             .IsRequired()
             .HasColumnName("TIPO")

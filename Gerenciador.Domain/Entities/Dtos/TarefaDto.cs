@@ -8,6 +8,7 @@ public class TarefaDto
     public string Titulo { get; set; }
     public string Descricao { get; set; }
     public SituacaoTarefaEnum Situacao  { get; set; }
+    public DificuldadeTarefaEnum Dificuldade  { get; set; }
     public TipoTarefa Tipo { get; set; }
     public UserDto Pessoa { get; set; }
     public UserDto CreatedBy { get; set; }

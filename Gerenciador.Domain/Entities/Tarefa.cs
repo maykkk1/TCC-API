@@ -8,6 +8,7 @@ public class Tarefa : BaseEntity
     public string Titulo { get; set; }
     public string Descricao { get; set; }
     public SituacaoTarefaEnum Situacao  { get; set; }
+    public DificuldadeTarefaEnum  Dificuldade  { get; set; }
     public TipoTarefa Tipo { get; set; }
     public User? Pessoa { get; set; }
     public User? CreatedBy { get; set; }
