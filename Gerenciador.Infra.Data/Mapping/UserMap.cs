@@ -50,6 +50,11 @@ public class UserMap : IEntityTypeConfiguration<User>
             .HasColumnName("Tipo")
             .HasColumnType("int");
         
+        builder.Property(prop => prop.Pontos)
+            .IsRequired()
+            .HasColumnName("Pontos")
+            .HasColumnType("int");
+        
         builder.Property(prop => prop.OrientadorId)
             .HasColumnName("OrientadorId");
         
@@ -57,5 +62,9 @@ public class UserMap : IEntityTypeConfiguration<User>
             .WithMany()
             .HasForeignKey(user => user.OrientadorId)
             .HasConstraintName("fk_orientador");
+        
+        
+        builder.HasOne(x => x.Rank)
+            .WithMany(x => x.Users);
     }
 }

@@ -38,7 +38,16 @@ public class AuthController : ControllerBase
             {
                 Id = usuario.Id,
                 Name = usuario.Name,
-                Tipo = usuario.Tipo
+                Tipo = usuario.Tipo,
+                Pontos = usuario.Pontos,
+                Rank = new RankDto()
+                {
+                    Id = usuario.Rank.Id,
+                    Nome = usuario.Rank.Nome,
+                    Tipo = usuario.Rank.Tipo,
+                    PontosMaximos = usuario.Rank.PontosMaximos,
+                    PontosMinimos = usuario.Rank.PontosMinimos
+                }
             }
         };
             

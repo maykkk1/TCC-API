@@ -48,7 +48,7 @@ public class UserRepository : IUserRepository
     public async Task<User> ValidateLogin(UserLoginDto user)
     {
         var usuario =
-            await _dbContext.Users.FirstOrDefaultAsync(s => s.Name == user.Name && s.Password == user.Password);
+            await _dbContext.Set<User>().Include(u => u.Rank).FirstOrDefaultAsync(s => s.Name == user.Name && s.Password == user.Password);
         return usuario;
     }
 
