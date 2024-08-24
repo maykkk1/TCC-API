@@ -3,7 +3,7 @@ using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Enums;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Domain.Interfaces.Atividade;
-using Gerenciador.Infra.Data.Context;
+using Gerenciador.Domain.Interfaces.Projeto;
 using Gerenciador.Service.Common;
 
 namespace Gerenciador.Service.Services;
@@ -12,15 +12,19 @@ public class TarefaService : ITarefaService
 {
     private readonly ITarefaRepository _tarefaRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IUserService _userService;
     private readonly IAtividadeService _atividadeService;
+    private readonly IProjetoRepository _projetoRepository;
     private readonly IEntityDtoMapper<Tarefa, TarefaDto> _tarefaMapper;
 
-    public TarefaService(ITarefaRepository tarefaRepository, IUserRepository userRepository, IEntityDtoMapper<Tarefa, TarefaDto> tarefaMapper, IAtividadeService atividadeService)
+    public TarefaService(ITarefaRepository tarefaRepository, IUserRepository userRepository, IEntityDtoMapper<Tarefa, TarefaDto> tarefaMapper, IAtividadeService atividadeService, IProjetoRepository projetoRepository, IUserService userService)
     {
         _tarefaRepository = tarefaRepository;
         _userRepository = userRepository;
         _tarefaMapper = tarefaMapper;
         _atividadeService = atividadeService;
+        _projetoRepository = projetoRepository;
+        _userService = userService;
     }
 
     public async Task<Tarefa> Add(Tarefa obj)
@@ -131,7 +135,6 @@ public class TarefaService : ITarefaService
     {
         var obj = await _tarefaRepository.InsertTarefaPrincipal(tarefa);
         
-        // tranformar isso em um funcao
         var atividade = new AtividadeDto()
         {
             Descricao = "Criação de atividade",
@@ -140,9 +143,8 @@ public class TarefaService : ITarefaService
             Tipo = TipoAtividadeEnum.CriacaoTarefa,
             NovaSituacaoTarefa = tarefa.Situacao
         };
-        var listaPessoas = new List<int?>();
-        listaPessoas.Add(tarefa.PessoaId);
-        await _atividadeService.Add(atividade, listaPessoas);
+        var pessoasRelacionadas = await _projetoRepository.GetIntegrantesIds(tarefa.ProjetoId); 
+        await _atividadeService.Add(atividade, pessoasRelacionadas);
 
         return new ServiceResult<Tarefa>()
         {
@@ -173,11 +175,17 @@ public class TarefaService : ITarefaService
             Tipo = TipoAtividadeEnum.AlteracaoTarefa,
             NovaSituacaoTarefa = tarefa.Situacao
         };
-
-        var listaPessoas = new List<int?>();
-        listaPessoas.Add(tarefa.PessoaId);
-        // ajustar para adicionar para todas as pessoas do projeto e para o projeto (criar tabela de relacao entre projeto e ativaidades)
-        // await _atividadeService.Add(atividade, listaPessoas);
+        
+        var pessoasRelacionadas = await _projetoRepository.GetIntegrantesIds(tarefa.ProjetoId); 
+        
+        if (tarefa.Situacao == SituacaoTarefaEnum.Concluida)
+        {
+            foreach (var pessoaRelacionada in pessoasRelacionadas)
+            {
+                await _userService.AddPontos(tarefa.Dificuldade, pessoaRelacionada);
+            }
+        }
+        await _atividadeService.Add(atividade, pessoasRelacionadas);
         await _tarefaRepository.Update(tarefa);
         var dto = _tarefaMapper.EntityToDto(tarefa);
         return new ServiceResult<TarefaDto>()

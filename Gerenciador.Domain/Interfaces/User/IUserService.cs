@@ -1,5 +1,6 @@
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
+using Gerenciador.Domain.Enums;
 using Gerenciador.Service.Common;
 
 namespace Gerenciador.Domain.Interfaces;
@@ -12,4 +13,5 @@ public interface IUserService : IBaseService<User>
     Task<User> ValidateLogin(UserLoginDto user);
     Task<List<User>> GetOrientandosById(int orientadorId);
     Task<UserDto> GetAlunoById(int id);
+    Task AddPontos(DificuldadeTarefaEnum dificudade, int userId);
 }

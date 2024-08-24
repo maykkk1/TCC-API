@@ -143,6 +143,11 @@ public class UserService : IUserService
         return await _userRepository.GetAlunoById(id);
     }
 
+    public Task AddPontos(DificuldadeTarefaEnum dificudade, int userId)
+    {
+        return _userRepository.AddPontos(dificudade, userId);
+    }
+
     // Remova ou implemente corretamente este método
     public Task<ServiceResult<T>> GetById<T>(int id)
     {

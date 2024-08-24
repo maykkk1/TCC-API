@@ -1,5 +1,6 @@
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
+using Gerenciador.Domain.Enums;
 
 namespace Gerenciador.Domain.Interfaces;
 
@@ -15,5 +16,6 @@ public interface IUserRepository : IBaseRepository<User>
     Task<CodigoCadastroDto> GetCodigoCadastro(int codigo);
     Task<List<IntegranteDto>> GetAllIntegrantes(int projetoId, int orientadorId);
     Task<List<IntegranteDto>> GetIntegrantes(int projetoId, int orientadorId);
+    Task AddPontos(DificuldadeTarefaEnum dificudade, int userId);
 
 }

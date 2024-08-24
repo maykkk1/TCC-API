@@ -1,5 +1,6 @@
 using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
+using Gerenciador.Domain.Entities.Mappers;
 using Gerenciador.Domain.Enums;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Infra.Data.Context;
@@ -141,5 +142,15 @@ public class UserRepository : IUserRepository
     public async Task<List<IntegranteDto>> GetIntegrantes(int projetoId, int orientadorId)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task AddPontos(DificuldadeTarefaEnum dificuldade, int userId)
+    {
+        var user = await _dbContext.Set<User>().Where(u => u.Id == userId).FirstOrDefaultAsync();
+        user.Pontos += DificuldadeTarefa.ObterPontos(dificuldade);
+        var updatedRank = await _dbContext.Set<Ranks>()
+            .Where(r => user.Pontos >= r.PontosMinimos && user.Pontos <= r.PontosMaximos).FirstOrDefaultAsync();
+        user.RankId = updatedRank.Id;
+        await _dbContext.SaveChangesAsync();
     }
 }

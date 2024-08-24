@@ -100,4 +100,15 @@ public class ProjetoRepository : IProjetoRepository
         _dbContext.Set<ProjetoPessoaRelacionamento>().Remove(relacionamento);
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task<List<int>> GetIntegrantesIds(int? projetoId)
+    {
+        var projeto = _dbContext.Set<Projeto>()
+            .Where(x => x.Id == projetoId)
+            .Include(x => x.PessoasRelacionadas).FirstOrDefault();
+        
+        List<int> ids = projeto.PessoasRelacionadas.Select(p => p.PessoaId).ToList();
+        
+        return ids;
+    }
 }

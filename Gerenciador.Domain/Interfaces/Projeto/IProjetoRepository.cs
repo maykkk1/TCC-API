@@ -8,4 +8,5 @@ public interface IProjetoRepository : IBaseRepository<Entities.Projeto>
     Task AddIntegrante(int projetoId, int integranteId);
     Task<bool> RelacionamentoExist(int projetoId, int integranteId);
     Task RemoverIntegrante(int projetoId, int integranteId);
+    Task<List<int>> GetIntegrantesIds(int? projetoId);
 }
