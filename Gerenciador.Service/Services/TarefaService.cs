@@ -3,8 +3,11 @@ using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Enums;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Domain.Interfaces.Atividade;
+using Gerenciador.Domain.Interfaces.Conquista;
 using Gerenciador.Domain.Interfaces.Projeto;
+using Gerenciador.Infra.Data.Context;
 using Gerenciador.Service.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gerenciador.Service.Services;
 
@@ -16,8 +19,10 @@ public class TarefaService : ITarefaService
     private readonly IAtividadeService _atividadeService;
     private readonly IProjetoRepository _projetoRepository;
     private readonly IEntityDtoMapper<Tarefa, TarefaDto> _tarefaMapper;
+    private readonly GerenciadorContext _gerenciadorContext;
+    private readonly IConquistaRepository _conquistaRepository;
 
-    public TarefaService(ITarefaRepository tarefaRepository, IUserRepository userRepository, IEntityDtoMapper<Tarefa, TarefaDto> tarefaMapper, IAtividadeService atividadeService, IProjetoRepository projetoRepository, IUserService userService)
+    public TarefaService(ITarefaRepository tarefaRepository, IUserRepository userRepository, IEntityDtoMapper<Tarefa, TarefaDto> tarefaMapper, IAtividadeService atividadeService, IProjetoRepository projetoRepository, IUserService userService, GerenciadorContext gerenciadorContext, IConquistaRepository conquistaRepository)
     {
         _tarefaRepository = tarefaRepository;
         _userRepository = userRepository;
@@ -25,6 +30,8 @@ public class TarefaService : ITarefaService
         _atividadeService = atividadeService;
         _projetoRepository = projetoRepository;
         _userService = userService;
+        _gerenciadorContext = gerenciadorContext;
+        _conquistaRepository = conquistaRepository;
     }
 
     public async Task<Tarefa> Add(Tarefa obj)
@@ -178,19 +185,65 @@ public class TarefaService : ITarefaService
         
         var pessoasRelacionadas = await _projetoRepository.GetIntegrantesIds(tarefa.ProjetoId); 
         
+        await _atividadeService.Add(atividade, pessoasRelacionadas);
+        await _tarefaRepository.Update(tarefa);
+        var dto = _tarefaMapper.EntityToDto(tarefa);
+        
         if (tarefa.Situacao == SituacaoTarefaEnum.Concluida)
         {
             foreach (var pessoaRelacionada in pessoasRelacionadas)
             {
+                tarefa.DataCompleta = DateTime.Now;
                 await _userService.AddPontos(tarefa.Dificuldade, pessoaRelacionada);
+                await VerificarConquistasTarefasConcluidas(pessoaRelacionada, tarefa.ProjetoId); 
             }
         }
-        await _atividadeService.Add(atividade, pessoasRelacionadas);
-        await _tarefaRepository.Update(tarefa);
-        var dto = _tarefaMapper.EntityToDto(tarefa);
+        
         return new ServiceResult<TarefaDto>()
         {
             Data = dto
         };
+    }
+    
+    private async Task VerificarConquistasTarefasConcluidas( int userId, int? projetoId)
+    {
+        var tarefasConcluidas = await _gerenciadorContext.Set<Tarefa>()
+            .Where(t => t.ProjetoId == projetoId && t.Situacao == SituacaoTarefaEnum.Concluida)
+            .ToListAsync();
+        
+        var tarefasConcluidasAntesTempo = await _gerenciadorContext.Set<Tarefa>()
+            .Where(t => t.ProjetoId == projetoId && t.Situacao == SituacaoTarefaEnum.Concluida && 
+                        t.DataFinal.HasValue &&
+                        t.DataFinal > t.DataCompleta)
+            .ToListAsync();
+
+        var conquistas = await _conquistaRepository.GetConquistasByUserId(userId);
+
+        // conquistas de tarefas concluidas
+        if (tarefasConcluidas.Count > 0 && !conquistas.Any(c => c.Id == 1))
+            await _conquistaRepository.InsertRelacionamento(userId, 1);
+
+        if (tarefasConcluidas.Count > 4 && !conquistas.Any(c => c.Id == 14))
+            await _conquistaRepository.InsertRelacionamento(userId, 14);
+
+        if (tarefasConcluidas.Count > 9 && !conquistas.Any(c => c.Id == 15))
+            await _conquistaRepository.InsertRelacionamento(userId, 15);
+
+        if (tarefasConcluidas.Count > 19 && !conquistas.Any(c => c.Id == 16))
+            await _conquistaRepository.InsertRelacionamento(userId, 16); 
+        
+        if (tarefasConcluidas.Count > 49 && !conquistas.Any(c => c.Id == 4))
+            await _conquistaRepository.InsertRelacionamento(userId, 4); 
+
+        
+        // conquistas de tarefas concluidas antes do tempo
+        if (tarefasConcluidasAntesTempo.Count > 4 && !conquistas.Any(c => c.Id == 2))
+            await _conquistaRepository.InsertRelacionamento(userId, 2);
+
+        if (tarefasConcluidasAntesTempo.Count > 9 && !conquistas.Any(c => c.Id == 6))
+            await _conquistaRepository.InsertRelacionamento(userId, 6);
+
+        if (tarefasConcluidasAntesTempo.Count > 14 && !conquistas.Any(c => c.Id == 7))
+            await _conquistaRepository.InsertRelacionamento(userId, 7);
     }
 }

@@ -11,7 +11,7 @@ public class AtividadeDto
     public string Responsavel { get; set; }
     public string TarefaTitulo { get; set; }
     public int PessoaId { get; set; }
-    public int TarefaId { get; set; }
+    public int? TarefaId { get; set; }
     public int? ProjetoId { get; set; }
     public SituacaoTarefaEnum NovaSituacaoTarefa { get; set; }
 }

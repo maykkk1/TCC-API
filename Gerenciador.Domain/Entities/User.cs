@@ -22,5 +22,7 @@ public class User : BaseEntity
     public ICollection<Atividade>? AtividadesCriadas { get; set; }
     public ICollection<AtividadePessoaRelacionamento>? AtividadesRelacionadas { get; set; }
     public ICollection<ProjetoPessoaRelacionamento>? ProjetosRelacionados { get; set; }
+    
+    public ICollection<ConquistaPessoaRelacionamento>? ConquistasRelacionadas { get; set; }
     public ICollection<Projeto>? Projetos { get; set; }
 }

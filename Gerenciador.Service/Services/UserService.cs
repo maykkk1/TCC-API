@@ -3,7 +3,10 @@ using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Enums;
 using Gerenciador.Domain.Interfaces;
+using Gerenciador.Domain.Interfaces.Conquista;
+using Gerenciador.Infra.Data.Context;
 using Gerenciador.Service.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gerenciador.Service.Services;
 
@@ -12,12 +15,16 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly IValidator<User> _userValidator;
     private readonly IEntityDtoMapper<User, CadastroDto> _cadastroMapper;
+    private readonly IConquistaRepository _conquistaRepository;
+    private readonly GerenciadorContext _gerenciador;
 
-    public UserService(IUserRepository userRepository, IValidator<User> userValidator, IEntityDtoMapper<User, CadastroDto> cadastroMapper)
+    public UserService(IUserRepository userRepository, IValidator<User> userValidator, IEntityDtoMapper<User, CadastroDto> cadastroMapper, IConquistaRepository conquistaRepository, GerenciadorContext gerenciador)
     {
         _userRepository = userRepository;
         _userValidator = userValidator;
         _cadastroMapper = cadastroMapper;
+        _conquistaRepository = conquistaRepository;
+        _gerenciador = gerenciador;
     }
 
     public async Task<User> Add(User obj)
@@ -57,11 +64,13 @@ public class UserService : IUserService
         var errors = new List<string>();
         var validator = await _userValidator.ValidateAsync(obj);
         obj.Tipo = TipoPessoaEnum.Professor;
+        obj.RankId = 8;
 
         if (user.CodigoCadastro != null && user.OrientadorId != null)
         {
             obj.OrientadorId = user.OrientadorId;
             obj.Tipo = TipoPessoaEnum.Aluno;
+            obj.RankId = 1;
             if (await _userRepository.ValidarCodigoCadastro(user.CodigoCadastro))
             {
                 await _userRepository.DesativarCodigoCadastro(user.CodigoCadastro);
@@ -140,6 +149,7 @@ public class UserService : IUserService
 
     public async Task<UserDto> GetAlunoById(int id)
     {
+        
         return await _userRepository.GetAlunoById(id);
     }
 
@@ -148,9 +158,25 @@ public class UserService : IUserService
         return _userRepository.AddPontos(dificudade, userId);
     }
 
-    // Remova ou implemente corretamente este método
+    public async Task<List<ConquistaDto>> GetConquistas(int userId)
+    {
+        return await _conquistaRepository.GetConquistasByUserId(userId);
+    }
+
+    public async Task AddLink(Link linkDto)
+    {
+        _gerenciador.Set<Link>().Add(linkDto);
+        await _gerenciador.SaveChangesAsync();
+    }
+
+    public async Task<List<Link>> GetLinks()
+    {
+        return await _gerenciador.Set<Link>().ToListAsync();
+    }
+
     public Task<ServiceResult<T>> GetById<T>(int id)
     {
         throw new NotImplementedException();
     }
+    
 }

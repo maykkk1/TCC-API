@@ -22,6 +22,9 @@ public class GerenciadorContext : DbContext
     public DbSet<Projeto> Projeto { get; set; }
     public DbSet<ProjetoPessoaRelacionamento> ProjetoPessoaRelacionamentos { get; set; }
     public DbSet<Ranks> Ranks { get; set; }
+    public DbSet<Conquista> Conquistas { get; set; }
+    public DbSet<ConquistaPessoaRelacionamento> ConquistaPessoaRelacionamentos { get; set; }
+    public DbSet<Link> Links { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -36,5 +39,8 @@ public class GerenciadorContext : DbContext
         modelBuilder.Entity<Projeto>(new ProjetoMap().Configure);
         modelBuilder.Entity<ProjetoPessoaRelacionamento>(new ProjetoPessoaRelacionamentoMap().Configure);
         modelBuilder.Entity<Ranks>(new RanksMap().Configure);
+        modelBuilder.Entity<Conquista>(new ConquistaMap().Configure);
+        modelBuilder.Entity<ConquistaPessoaRelacionamento>(new ConquistaPessoaRelacionamentoMap().Configure);
+        modelBuilder.Entity<Link>(new LinkMap().Configure);
     }
 }

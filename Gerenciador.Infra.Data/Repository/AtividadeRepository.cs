@@ -55,6 +55,7 @@ public class AtividadeRepository : IAtividadeRepository
             .Select(x => x.Atividade)
             .OrderByDescending(x => x.DataAtividade)
             .ToListAsync();
+        
         return entities;
     }
 

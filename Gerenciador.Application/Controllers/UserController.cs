@@ -85,5 +85,23 @@ namespace Gerenciador.Application.Controllers
             }
             return BadRequest(result.ErrorMessage);
         }
+        
+        [HttpGet]
+        [Authorize]
+        [Route("conquistas")]
+        public async Task<ActionResult<int>> GetConquistas(int userId)
+        {
+            var result = await _userService.GetConquistas(userId);
+            return Ok(result);
+        }
+        
+        [HttpPost]
+        [Authorize]
+        [Route("link/save")]
+        public async Task<ActionResult<int>> SaveLink([FromBody] Link link)
+        {
+            await _userService.AddLink(link);
+            return Ok(true);
+        }
     }
 }

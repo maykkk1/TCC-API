@@ -3,6 +3,7 @@ using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Entities.Mappers;
 using Gerenciador.Domain.Enums;
 using Gerenciador.Domain.Interfaces;
+using Gerenciador.Domain.Interfaces.Conquista;
 using Gerenciador.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,10 +12,12 @@ namespace Gerenciador.Infra.Data.Repository;
 public class UserRepository : IUserRepository
 {
     private readonly GerenciadorContext _dbContext;
+    private readonly IConquistaRepository _conquistaRepository;
 
-    public UserRepository(GerenciadorContext dbContext)
+    public UserRepository(GerenciadorContext dbContext, IConquistaRepository conquistaRepository)
     {
         _dbContext = dbContext;
+        _conquistaRepository = conquistaRepository;
     }
 
     public async Task<User> Insert(User obj)
@@ -49,13 +52,27 @@ public class UserRepository : IUserRepository
     public async Task<User> ValidateLogin(UserLoginDto user)
     {
         var usuario =
-            await _dbContext.Set<User>().Include(u => u.Rank).FirstOrDefaultAsync(s => s.Name == user.Name && s.Password == user.Password);
+            await _dbContext.Set<User>().Include(u => u.Rank).FirstOrDefaultAsync(s => s.Email == user.Email && s.Password == user.Password);
         return usuario;
     }
 
     public async Task<List<User>> GetOrientandosById(int orientadorId)
     {
-        return await _dbContext.Set<User>().Where(t => t.OrientadorId == orientadorId).ToListAsync();
+        return await _dbContext.Set<User>()
+            .Where(t => t.OrientadorId == orientadorId)
+            .Include(s => s.Rank)
+            .Select(aluno => new User()
+            {
+                Id = aluno.Id,
+                Tipo = aluno.Tipo,
+                Rank = aluno.Rank,
+                RankId = aluno.RankId,
+                Email = aluno.Email,
+                Telefone = aluno.Telefone,
+                Sobrenome = aluno.Sobrenome,
+                Name = aluno.Name
+            })
+            .ToListAsync();
     }
 
     public async Task<UserDto?> GetAlunoById(int id)
@@ -149,8 +166,9 @@ public class UserRepository : IUserRepository
         var user = await _dbContext.Set<User>().Where(u => u.Id == userId).FirstOrDefaultAsync();
         user.Pontos += DificuldadeTarefa.ObterPontos(dificuldade);
         var updatedRank = await _dbContext.Set<Ranks>()
-            .Where(r => user.Pontos >= r.PontosMinimos && user.Pontos <= r.PontosMaximos).FirstOrDefaultAsync();
+            .Where(r => user.Pontos >= r.PontosMinimos && user.Pontos <= r.PontosMaximos && r.Tipo == user.Tipo).FirstOrDefaultAsync();
         user.RankId = updatedRank.Id;
+        await _conquistaRepository.VerificarConquistaRank(userId, updatedRank.Id);
         await _dbContext.SaveChangesAsync();
     }
 }

@@ -19,5 +19,6 @@ public class TarefaDto
     public int? ProjetoId { get; set; }
     public DateTime? DataCriacao { get; set; }
     public DateTime? DataFinal { get; set; }
+    public DateTime? DataCompleta { get; set; }
     public int? IdTarefaRelacionada { get; set; }
 }

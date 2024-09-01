@@ -18,6 +18,7 @@ public class Tarefa : BaseEntity
     public int? ProjetoId { get; set; }
     public DateTime? DataCriacao { get; set; }
     public DateTime? DataFinal { get; set; }
+    public DateTime? DataCompleta { get; set; }
     public ICollection<TarefaComentario>? Comentarios { get; set; }
     public ICollection<Atividade>? Atividades { get; set; }
 }

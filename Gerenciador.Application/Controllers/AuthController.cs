@@ -40,6 +40,9 @@ public class AuthController : ControllerBase
                 Name = usuario.Name,
                 Tipo = usuario.Tipo,
                 Pontos = usuario.Pontos,
+                Sobrenome = usuario.Sobrenome,
+                email = usuario.Email,
+                Telefone = usuario.Telefone,
                 Rank = new RankDto()
                 {
                     Id = usuario.Rank.Id,

@@ -7,6 +7,7 @@ using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Entities.Mappers;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Domain.Interfaces.Atividade;
+using Gerenciador.Domain.Interfaces.Conquista;
 using Gerenciador.Domain.Interfaces.Projeto;
 using Gerenciador.Domain.Interfaces.TarefasComentario;
 using Gerenciador.Infra.Data.Context;
@@ -89,6 +90,7 @@ builder.Services.AddScoped<ITarefaRepository, TarefaRepository>();
 builder.Services.AddScoped<ITarefaComentarioRepository, TarefaComentarioRepository>();
 builder.Services.AddScoped<IAtividadeRepository, AtividadeRepository>();
 builder.Services.AddScoped<IProjetoRepository, ProjetoRepository>();
+builder.Services.AddScoped<IConquistaRepository, ConquistaRepository>();
 
 //services
 builder.Services.AddScoped<TokenService>();

@@ -48,6 +48,10 @@ public class TarefaMap :  IEntityTypeConfiguration<Tarefa>
         builder.Property(prop => prop.DataFinal)
             .HasColumnName("DATA_FINAL")
             .HasColumnType("date");
+        
+        builder.Property(prop => prop.DataCompleta)
+            .HasColumnName("DATA_COMPLETA")
+            .HasColumnType("date");
 
         builder.HasOne(x => x.Pessoa)
             .WithMany(x => x.Tarefas);

@@ -4,5 +4,6 @@ public enum TipoAtividadeEnum
 {
     AlteracaoTarefa = 0,
     CriacaoTarefa = 1,
-    ComentarioTarefa = 3
+    ComentarioTarefa = 2,
+    Notificacao = 3
 }

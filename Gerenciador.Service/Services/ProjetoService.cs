@@ -5,6 +5,7 @@ using Gerenciador.Domain.Entities.Dtos;
 using Gerenciador.Domain.Enums;
 using Gerenciador.Domain.Interfaces;
 using Gerenciador.Domain.Interfaces.Atividade;
+using Gerenciador.Domain.Interfaces.Conquista;
 using Gerenciador.Domain.Interfaces.Projeto;
 using Gerenciador.Service.Common;
 
@@ -19,9 +20,10 @@ public class ProjetoService : IProjetoService
     private readonly IEntityDtoMapper<Tarefa, TarefaDto> _tarefaMapper;
     private readonly IEntityDtoMapper<Projeto, ProjetoDto> _projetoMapper;
     private readonly IValidator<Projeto> _projetoValidator;
+    private readonly IConquistaRepository _conquistaRepository;
     
 
-    public ProjetoService(IProjetoRepository projetoRepository, IEntityDtoMapper<Projeto, ProjetoDto> projetoMapper, ITarefaRepository tarefaRepository, IEntityDtoMapper<Tarefa, TarefaDto> tarefaMapper, IValidator<Projeto> projetoValidator, IUserRepository userRepository, IAtividadeService atividadeService)
+    public ProjetoService(IProjetoRepository projetoRepository, IEntityDtoMapper<Projeto, ProjetoDto> projetoMapper, ITarefaRepository tarefaRepository, IEntityDtoMapper<Tarefa, TarefaDto> tarefaMapper, IValidator<Projeto> projetoValidator, IUserRepository userRepository, IAtividadeService atividadeService, IConquistaRepository conquistaRepository)
     {
         _projetoRepository = projetoRepository;
         _projetoMapper = projetoMapper;
@@ -30,11 +32,18 @@ public class ProjetoService : IProjetoService
         _projetoValidator = projetoValidator;
         _userRepository = userRepository;
         _atividadeService = atividadeService;
+        _conquistaRepository = conquistaRepository;
     }
 
     public async Task<ServiceResult<ProjetoDto>> Add(ProjetoDto dto)
     {
         var obj = _projetoMapper.DtoToEntity(dto);
+        var conquistas = await _conquistaRepository.GetConquistasByUserId(dto.OrientadorId);
+
+        if (!conquistas.Any(c => c.Id == 17))
+        {
+            _conquistaRepository.InsertRelacionamento(dto.OrientadorId, 17);
+        }
         var user = await _userRepository.Select(dto.OrientadorId);
         if (user.Tipo != TipoPessoaEnum.Professor)
         {

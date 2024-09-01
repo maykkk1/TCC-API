@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
+using Gerenciador.Domain.Entities;
 using Gerenciador.Domain.Entities.Dtos;
+using Gerenciador.Domain.Enums;
 using Gerenciador.Domain.Interfaces.Atividade;
+using Gerenciador.Infra.Data.Context;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gerenciador.Application.Controllers
 {
@@ -17,21 +16,33 @@ namespace Gerenciador.Application.Controllers
     {
 
         private IAtividadeService _atividadeService;
+        private readonly GerenciadorContext _context;
 
-        public AtividadeController(IAtividadeService atividadeService)
+        public AtividadeController(IAtividadeService atividadeService, GerenciadorContext context)
         {
             _atividadeService = atividadeService;
+            _context = context;
         }
 
-        // [HttpPost]
-        // [Authorize]
-        // [Route("save")]
-        // public async Task<ActionResult> Save([FromBody] AtividadeDto atividade)
-        // {
-        //     var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        //     var response = await _atividadeService.Add(atividade);
-        //     return Ok(response.Data);
-        // }
+        [HttpPost]
+        [Authorize]
+        [Route("notificacao")]
+        public async Task<ActionResult> Save([FromBody] NotificacaoDto notificacao)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var atividade = new AtividadeDto()
+            {
+                Descricao = notificacao.Descricao,
+                Tipo = TipoAtividadeEnum.Notificacao,
+                Responsavel = "Administração",
+                PessoaId = userId
+            };
+
+            var ids = await _context.Set<User>().Select(u => u.Id).ToListAsync();
+            
+            var response = await _atividadeService.Add(atividade, ids);
+            return Ok(response.Data);
+        }
         
         [HttpGet]
         [Authorize]
