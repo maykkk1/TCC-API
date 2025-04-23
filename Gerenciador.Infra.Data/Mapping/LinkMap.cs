@@ -8,7 +8,7 @@ public class LinkMap  : IEntityTypeConfiguration<Link>
 {
     public void Configure(EntityTypeBuilder<Link> builder)
     {
-        builder.ToTable("ATIVIDADE");
+        builder.ToTable("LINK");
 
         builder.Property(prop => prop.Id)
             .HasColumnName("Id")

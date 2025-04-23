@@ -17,4 +17,5 @@ public interface IUserService : IBaseService<User>
     Task<List<ConquistaDto>> GetConquistas(int userId);
     Task AddLink(Link link);
     Task<List<Link>> GetLinks();
+    Task DeleteLink(int linkId);
 }

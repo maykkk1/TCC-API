@@ -174,6 +174,13 @@ public class UserService : IUserService
         return await _gerenciador.Set<Link>().ToListAsync();
     }
 
+    public async Task DeleteLink(int linkId)
+    {
+        var link =  _gerenciador.Set<Link>().Where(l => l.Id == linkId).FirstOrDefault();
+        _gerenciador.Set<Link>().Remove(link);
+        await _gerenciador.SaveChangesAsync();
+    }
+
     public Task<ServiceResult<T>> GetById<T>(int id)
     {
         throw new NotImplementedException();

@@ -103,5 +103,23 @@ namespace Gerenciador.Application.Controllers
             await _userService.AddLink(link);
             return Ok(true);
         }
+        
+        [HttpGet]
+        [Authorize]
+        [Route("links")]
+        public async Task<ActionResult<List<Link>>> GetLinks()
+        {
+            var result = await _userService.GetLinks();
+            return Ok(result);
+        }
+        
+        [HttpDelete]
+        [Authorize]
+        [Route("link/delete")]
+        public async Task<ActionResult<List<Link>>> DeleteLink(int linkId)
+        {
+            await _userService.DeleteLink(linkId);
+            return Ok(true);
+        }
     }
 }
